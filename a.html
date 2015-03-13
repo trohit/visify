@@ -1,0 +1,37 @@
+
+      <input id="cb" type="checkbox" style="float: left; margin-right: 5px;"><div style="margin-right: 5px;">ith further information)</div> 
+<table border="0" width="100%" style='display:inline'>
+   <tr id="txt_display_vehicle_labels" style='display:none'>
+     <td> <label class="description" for="element_10"> Additional Details</label></td>
+     <td> <label class="description" for="element_10"> Vehicle Type</td>
+     <td> <label class="description" for="element_10"> Registration Number</td>
+<!--
+     <td>Color</td>
+-->
+   </tr>
+   <tr>
+     <td></td>
+   </tr>
+   <tr>
+     <td> <input class="description" type="checkbox" name="isVehicleSelected" id="isVehicleSelected" onclick="showVehicleinfo()" value="vehicle">Add Vehicle</td>
+     <td id="vehicle_type" style='display:none'> 
+	<input class="description" for="element_10" type="radio" name="vehicle_type" id="4w" value="4w"><img src="images/car_bw.png" alt="car" height="48" title="Car"/>
+	&nbsp;
+	<input class="description" for="element_10" type="radio" name="vehicle_type" id="2w" value="2w"><img src="images/bike.png" alt="bike" height="36" title="Bike"/>
+<!--
+	<input class="description" for="element_10" type="radio" name="vehicle_type" value="4w"> Car
+	<input class="description" for="element_10" type="radio" name="vehicle_type" value="2w"> Bike
+-->
+
+     </td>
+     <td id="vehicle_num" name="vehicle_num" style='display:none'> 
+	<input type="text" id="vehicle_reg_num" name="vehicle_reg_num" class="element text big" maxlength="25" value="" placeholder="KA03AB1234" data-trigger="keyup"  data-type="alphanum" data-rangelength="[7,10]"  style="text-transform:uppercase" title="phone consist of 10 numeric characters."/>
+     </td>
+<!--
+     <td>
+	<input type="color" name="favcolor"><br>
+     </td>
+-->
+
+   </tr>
+</table>

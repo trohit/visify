@@ -1,0 +1,104 @@
+		#navcontainer
+		{
+			background: #369;
+			border-top: 1px solid #9CC;
+			font: normal normal 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+		}
+		
+		#navlist
+		{
+			list-style: none outside none;
+			margin: 0;
+			padding: 0;
+		}
+		
+		@media  all {
+			#navlist {
+				text-align: center
+			}
+		}
+		
+		#navlist li
+		{
+			display: inline;
+			margin: 0;
+			padding: 0;
+			position: relative;
+		}
+		
+			/*
+		html>body #navlist li
+		{
+			background: #000;
+			margin: 0 3px 0 0;
+			padding: 4px 0px 4px 0;
+		}
+			*/
+		
+		#navlist a, #navlist a:link, #navlist a:visited
+		{
+			background: #900;
+			border: 1px solid #FFF;
+			bottom: 2px;
+			color: #FFF;
+			cursor: pointer;
+			display: inline;
+			height: 1em;
+			margin: 0;
+			padding: 3px 5px 3px 5px;
+			position: relative;
+			right: 2px;
+			text-decoration: none;
+		}
+		
+		#navlist a:hover
+		{
+			background: #C00;
+			bottom: 1px;
+			color: #FFF;
+			position: relative;
+			right: 1px;
+		}
+		
+		#navlist a:active
+		{
+			background: #999;
+			bottom: 0px;
+			color: #FFF;
+			position: relative;
+			right: 0px;
+		}
+		
+		#navlist li#active
+		{
+			background: #369;
+			/*
+			bottom: 13px;
+			margin: 0 3px 0 0;
+			display: inline;
+			*/
+			padding: 0;
+			position: relative;
+		}
+		
+		html>body #navlist li#active
+		{
+			background: #000;
+			margin: 0 4px 0 4px;
+		}
+		
+		#navlist #active a, #navlist #active a:link, #navlist #active a:visited, #navlist #active a:hover
+		{
+			background: #369;
+			border-bottom: none;
+			border-left: 1px solid #9CC;
+			border-right: 1px solid #9CC;
+			border-top: 1px solid #9CC;
+			bottom: 0;
+			color: #FFF;
+			cursor: text;
+			margin: 0;
+			padding: 2px 5px 0 5px;
+			position: relative;
+			right: 0;
+		}

@@ -1,0 +1,67 @@
+git init
+git config --global core.excludesfile ~/.gitignore
+git remote add origin https://github.com/trohit/visify.git
+find . -name \*.sw\*
+
+git status 
+OR
+git status --porcelain
+
+#to see modified /added/changed code
+git diff
+
+#to list all git files
+git ls-files
+
+
+git add *
+git commit -m "second commit"
+git push -u origin master
+
+the 'git rm --cached <filename>' trick: This removes it from your index. 
+A git status will then inform you that it is now a deleted file, and that the
+delete is scheduled to be committed, even if you add it to your .gitignore
+file.
+When you commit, the file is removed from your repo.
+
+# if you dont want to remove from git, but just dont want git to update it
+git update-index --assume-unchanged <file>
+and to undo
+git update-index --no-assume-unchanged <file>
+
+#PEDANTIC
+
+#to see git files in detail
+git ls-files
+
+# to see what files exist locally but removed from git
+git status --porcelain | awk 'match($1, "D"){print $2}' 
+#to remove the files locally
+git status --porcelain | awk 'match($1, "D"){print $2}' | xargs git rm
+
+# CHRONO
+Quick setup — if you've done this kind of thing before
+or
+HTTPS SSH
+
+We recommend every repository include a README, LICENSE, and .gitignore.
+…or create a new repository on the command line
+
+echo "# visify" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/trohit/visify.git
+git push -u origin master
+
+…or push an existing repository from the command line
+
+git remote add origin https://github.com/trohit/visify.git
+git push -u origin master
+
+…or import code from another repository
+
+You can initialize this repository with code from a Subversion, Mercurial, or
+TFS project.
+
+

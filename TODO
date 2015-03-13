@@ -1,0 +1,31 @@
+to check if variables exists using
+isset($_GET['var'])?
+
+and then to clean them using;
+mysql_escape_string($_GET['var'])
+$username = htmlspecialchars(strip_tags($_GET["twitterUsername"]));
+
+isset($_GET['var'])?$var=mysql_escape_string($_GET['var']):$var='SomeDefaultValue';
+----------------------
+2
+
+Should gender be kept ?
+currently, i visitor_add, gender can show up as male for a female.
+the pic should reasonably capture the gender
+------------------------
+
+3. revise the foorm such that 
+block and apt come first
+no need to scroll, so can be used on mobile devices
+
+4. escape all inout to mysql using mysql_special_escape....
+
+5. insert the logo everywhere
+
+in visitor_add , which adds body.inc. jquery-ui.10.4 not found.
+
+6. Put a dashboard
+7. esatblish a register page so that guards will have the same experience
+8. in visitor checkin page show the last 5 visits
+9. allow visitors to get logged out by enetering the votime
+10. When phone number is changed, no new data is fetched.
