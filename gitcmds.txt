@@ -59,4 +59,9 @@ git push -u origin master
 git remote add origin https://github.com/trohit/visify.git
 git push -u origin master
 
+# adding a commit
+git add
+git commit -m "description"
+git push origin master
 
+http://rogerdudler.github.io/git-guide/

@@ -29,6 +29,7 @@ require_once("common.php");
 require_once("common_lib.php");	
 display_menu_common("Visitor Checkin");
 
+require_once(dirname(__FILE__) . "/print_pass.php");
 ?>
 <div align="center">
 	<img src='images/thankyou-banner.jpg' title='Thank You'/>
@@ -135,6 +136,8 @@ if($is_verbose) {
 			DB::update('visitor', array( 'vcomments' => $vcomments), "vid=%i", $vid);
 		}
 
+		/* handle updation of visitor name. */
+		DB::update('visitor', array( 'vname' => $vname), "vid=%i", $vid);
 
 	}
 
@@ -293,13 +296,63 @@ foreach ($_REQUEST as $key => $value) {
 	echo "</tr>";
 }
 
+
+
 echo "\n</table>";
+/* 
+ * No need for a separate print button, just print. 
+ */
+
+$info = array(
+		$vitime,
+		$vrecordid,
+		$vname,
+		$vphone,
+		//$vid,
+		$vvehicle_reg_num,
+		//$vvehicle_type,
+		//$vphoto,
+		$vnum_visitors,
+		$vtomeet,
+		$vflatnum,
+		$vblock,
+		$vpurpose,
+		$vcomments,
+		//$vcreatedby,
+		$vduration_fillup
+);
+//print_r($info);
+print_pass(
+		$vitime,
+		$vrecordid,
+		$vname,
+		$vphone,
+		//$vid,
+		$vvehicle_reg_num,
+		//$vvehicle_type,
+		//$vphoto,
+		$vnum_visitors,
+		$vtomeet,
+		$vflatnum,
+		$vblock,
+		$vpurpose,
+		$vcomments,
+		//$vcreatedby,
+		$vduration_fillup
+	);
 ?>
 <BR>
 <BR>
 <div align="center">
 <form>
+<!--
 <input type="button" value="Print this page" onClick="window.print()">
+<form method="get" action="posprint.php">
+<input type="hidden" name="form_id" value="826681" />
+<input type="SUBMIT" value="cLICKABLE bUTTON">
+</form>
+-->
+
 </form>
 </div>
 <BR>

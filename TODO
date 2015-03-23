@@ -4,6 +4,7 @@ isset($_GET['var'])?
 and then to clean them using;
 mysql_escape_string($_GET['var'])
 $username = htmlspecialchars(strip_tags($_GET["twitterUsername"]));
+Use PDO MySQL to be safest, for now.
 
 isset($_GET['var'])?$var=mysql_escape_string($_GET['var']):$var='SomeDefaultValue';
 ----------------------

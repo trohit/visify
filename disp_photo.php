@@ -13,17 +13,7 @@ DB::$password 	= $ini_array["password"];
 DB::$dbName 	= $ini_array["db"];
 DB::$host 	= $ini_array["host"];
 
-/*
-DB::$user = 'mysql';
-DB::$password = '';
-DB::$dbName = 'test';
-DB::$host = 'localhost'; //defaults to localhost if omitted
-#DB::$port = '12345'; // defaults to 3306 if omitted
-#DB::$encoding = 'utf8'; // defaults to latin1 if omitted
- */
 $is_debug = 0;
-//echo "<html>";
-//echo "\n";
 if (isset($is_debug) && $is_debug) {
 	echo "<table>";
 
@@ -49,9 +39,9 @@ if (isset($is_debug) && $is_debug) {
 $vid = $_REQUEST['vid'];
 //$vid = 77;
 
-$result = DB::queryFirstRow("SELECT vphoto FROM visitor WHERE vid=%i", $vid);
+$result = DB::queryFirstRow("SELECT vphoto FROM vpic WHERE vid=%i", $vid);
 if (strlen($result['vphoto']) < 32000) {
-	// fallback to priary photo repo
+	// fallback to primary photo repo
 	$result = DB::queryFirstRow("SELECT vphoto FROM visitor WHERE visitor.vid=%i", $vid);
 }
 

@@ -76,7 +76,8 @@ class escpos {
 	 */
 	function __construct($fp = null) {
 		if(is_null($fp)) {
-			$fp = fopen("php://stdout", "wb");
+			#$fp = fopen("php://stdout", "wb");
+			$fp = fopen("/dev/usb/lp0", "wb");
 		}
 		$this -> fp = $fp;
 		
