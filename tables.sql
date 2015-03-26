@@ -59,5 +59,6 @@ CREATE TABLE `vpic` (
 
 
 ALTER TABLE `vrecord` ADD `vvehicle_type` VARCHAR( 16 ) NULL AFTER `vvehicle_reg_num` ;
-ALTER TABLE `vrecord` ADD `vrcomments` VARCHAR( 256 ) NULL DEFAULT NULL ;
+ALTER TABLE `vrecord` ADD `vnum_visitors` int(11) DEFAULT NULL AFTER `vtomeet` ;
+ALTER TABLE `vrecord` ADD `vrcomments` VARCHAR( 256 ) NULL DEFAULT NULL AFTER `vnum_visitors`;
 ALTER TABLE `vrecord` ADD `vduration_fillup` INT( 11 ) NULL ;
