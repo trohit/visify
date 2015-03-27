@@ -79,7 +79,8 @@ function doLoadStuff()
 	getBannerDate();
 	startTime();
 	$("#phone_num").trigger("change");
-				//$("#block").trigger("change");
+	//$("#block").trigger("change");
+	showVehicleinfo();
 }
 
 function startTime() {
@@ -149,9 +150,9 @@ function showVehicleinfo()
 	//alert("showVehicleinfo");
 	if ($('#isVehicleSelected').is(':checked')) {	
 		$('#vehicleTable').attr('border', '1');
-		$("#vehicle_num").show("slow");
-		$("#vehicle_type").show("slow");
-		$("#txt_display_vehicle_labels").show("slow");
+		$("#vehicle_num").show("fast");
+		$("#vehicle_type").show("fast");
+		$("#txt_display_vehicle_labels").show("fast");
 		$("#vehicle_type").focus();
 	} else {
 		$('#vehicleTable').attr('border', '0');
@@ -165,6 +166,7 @@ function showVehicleinfo()
 function ValidateForm()
 {
 	//alert("Doing validation");
+	/*
 	if($("#isVehicleSelected").is(':checked')) {
 		// check that vehicle type is selected and vehicle registration number entered
 		if(!$('input[name=vehicle_type]').is(":checked")) {
@@ -176,6 +178,19 @@ function ValidateForm()
 			$("#vehicle_reg_num").focus();
 			return false;
 		}
+	}
+	*/
+
+	if($('input[name=vehicle_type]').is(":checked") && ($("#isVehicleSelected").is(':checked'))) {
+		if($('#vehicle_reg_num').val().length == 0) {
+			alert( "Vehicle Added but 'Registration Number' is not entered. Uncheck 'Add Vehicle' if there is no vehicle.");
+			$("#vehicle_reg_num").focus();
+			return false;
+		}
+	} else {
+		//alert("setting isVehicleSelected to false");
+		$('#isVehicleSelected').prop('checked', false);
+		$('#isVehicleSelected').val('FALSE');
 	}
 
 	if (document.getElementById("block_other").value=="" && 
@@ -290,6 +305,7 @@ $(document).ready(function(){
 				}
 				ul_data = ul_data + "<BR>";
 				$("#txt_side_msg").append(ul_data);
+
 			});
 
 			if (result) {
@@ -329,6 +345,14 @@ $(document).ready(function(){
 					//}).height(180).width(240);
 				// Next get details and poulate "txt_past_visits"
 				//getPastVisits();
+
+				// now that historical data for visitor is populated
+				// the user needs to scroll down. do it for him
+				//alert("scrolling down");
+				//alert("gonna scroll");
+				//window.scrollBy(0, 300);
+				$('html, body').animate({scrollTop:$(document).height()}, 'fast');
+
 
 			} else {
 				//alert("Guessing its a NEW Visitor!");
@@ -468,7 +492,7 @@ if (strlen($vphone)==0) {
    </tr>
    <tr>
      <td>
-	<input class="description" type="checkbox" name="isVehicleSelected" id="isVehicleSelected" onclick="showVehicleinfo()" value="vehicle" title="Add Vehicle Details"></td>
+	<input class="description" type="checkbox" name="isVehicleSelected" id="isVehicleSelected" onclick="showVehicleinfo()" value="vehicle" checked title="Add Vehicle Details"></td>
      <td id="vehicle_type" style='display:none'> 
 	<input class="description" for="element_10" type="radio" name="vehicle_type" id="4w" value="4w"><img src="images/car_bw.png" alt="car" height="48" title="Car"/>
 	&nbsp;
@@ -609,7 +633,7 @@ alert("checking");
 
 <!--
 Important that this parsley script stays here. 
-Moving it anywhere else tends to break the form validation.
+oving it anywhere else tends to break the form validation.
 -->
 				<script type="text/javascript" src="js/parsley.min.js"></script>
 				<script type="text/javascript" src="js/slimbox2.js"></script>

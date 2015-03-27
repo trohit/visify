@@ -81,7 +81,7 @@ $data=get_last_by_number($phone_num);
 // You can send whatever data you like.
 //$data = array("Hello", $phone_num, $phone_num+1);
 //$data = array("Hello", $phone_num, $phone_num+1);
-sleep(1);
+//sleep(1);
  $json = json_encode($data);
 // Send the data.
 echo isset($_GET['callback'])

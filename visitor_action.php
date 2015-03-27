@@ -223,6 +223,14 @@ echo "<table border=\"1\">";
 // display details before inserting
 foreach ($_REQUEST as $key => $value) {
 	if ($key=="block_other") continue;
+	if($is_debug == false) {
+		if ($key=="isSkipPicSelected") continue;
+		if ($key=="submit") continue;
+		if ($key=="vid") continue;
+		if ($key=="startdate") continue;
+		if ($key=="is_exists_pic") continue;
+	}
+		
 	//echo "\n<tr>";
 	//echo "<td>";
 	

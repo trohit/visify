@@ -189,7 +189,100 @@ if ((isset($is_debug) && $is_debug)) {
 <div class="form_description" align="center">
 <h2><img src="images/entry-icon.png" alt="Entry"> Visitor Check-in</h2>
 <?php 
-echo '<img align="center" src="disp_photo.php?vid='.$vid.'" height="192" width="256"/>';
+#echo "\n<p>";
+
+#echo '<img align="left" src="disp_photo.php?vid='.$vid.'" height="180" width="240"/>';
+echo "<table border=\"1\">";
+echo "<tr>";
+echo "<td>";
+echo '<img align="left" src="disp_photo.php?vid='.$vid.'" height="180" width="240"/>';
+echo "</td>";
+
+
+echo "<td>";
+echo "<table>";
+echo "<td>";
+// display details before inserting
+foreach ($_REQUEST as $key => $value) {
+	if ($key=="block_other") continue;
+	if (!(strpos($key,"hidden")===false)) continue;
+	if ($key == "vehicle_reg_num" && $is_vehicle_selected == "") continue;
+	if ($key == "vehicle_type" && $is_vehicle_selected == "") continue;
+	echo "\n<tr>";
+	echo "<td>";
+
+	//$is_debug = true;
+	if (isset($is_debug) && $is_debug) {
+		echo $key . " / ";
+	}
+
+	if ($key==="vto_meet") {
+		$key = "To Meet";
+	}
+
+	echo ucfirst(str_replace("_"," ",$key));
+	echo "</td>";
+	echo "<td>";
+	echo $value;
+	if ($key == "name" && is_null($vid)) {
+		echo "<img src='images/new-icon.png' title='First-Time Visitor'/>";
+	} else if ($key == "name") {
+		echo "<img src='images/repeat.png' title='Repeat Visitor'/>";
+	}
+	echo "</td>";
+	echo "</tr>";
+}
+echo "\n</table>";
+
+echo "</td>";
+#echo "\n</p>";
+
+echo "<td>";
+
+?>
+
+	    <!-- target for the canvas-->
+	    <div id="canvasHolder" width="240" height="180"></div>
+
+	    <!--preview image captured from canvas-->
+	    <!-- CHANGE HEIGHT and WIDTH in the Line Below--> 
+	    <!-- <img id="preview" src="images/placeholder-hi.png" width="640" height="480" /> -->
+	    <img id="preview" src="images/placeholder-hi.png" width="240" height="180" />
+
+	    <input id="picinfo_hidden" type="hidden" name="picinfo_hidden" type="text" value="" />
+
+		    <!--
+		    <input id="picinfo" name= "picinfo" class="element text small" type="text" maxlength="255" value=""/>
+		    <input id="submit" class="button_text" type="submit" name="submit" value="Submit" />
+		    <label>base64 image:</label>
+		    -->
+		    <!--
+		    <input id="imageToForm" type="text" />
+		    -->
+		    <!--
+	    </form>
+	    -->
+	    </div>
+<?php
+echo "</td>";
+echo "\n</table>";
+?>
+
+<div id="content">
+
+  <audio id="myTune">
+    <source src="sounds/click.mp3">
+    <source src="sounds/click.ogg">
+  </audio>
+
+  <button id="button" type="button" value="Click pic!" onclick="document.getElementById('myTune').play()">Click Pic</button>
+
+  <input class="isSkipPicSelected" type="checkbox" name="isSkipPicSelected" id="isSkipPicSelected" onclick="showSkipPicInfo()" value="isSkipPicSelected">Skip Pic</input>
+</div>
+
+<BR>
+<?php
+echo '<input id="saveForm2" class="button_text" type="submit" name="submit" value="Confirm and Submit" onclick="return ValidateForm();"/>';
 
 
 /*
@@ -210,43 +303,6 @@ if (is_exists_pic($vid)) {
 	if($is_debug) {
 		echo ":Pic exists\n";
 	}
-	echo '<BR>';
-	echo '<input id="saveForm2" class="button_text" type="submit" name="submit" value="Confirm and Submit" onclick="return ValidateForm();"/>';
-	echo "<table border=\"1\">";
-
-	// display details before inserting
-	foreach ($_REQUEST as $key => $value) {
-		if ($key=="block_other") continue;
-		if (!(strpos($key,"hidden")===false)) continue;
-		if ($key == "vehicle_reg_num" && $is_vehicle_selected == "") continue;
-		if ($key == "vehicle_type" && $is_vehicle_selected == "") continue;
-		echo "\n<tr>";
-		echo "<td>";
-
-		//$is_debug = true;
-		if (isset($is_debug) && $is_debug) {
-			echo $key . " / ";
-		}
-
-		if ($key==="vto_meet") {
-			$key = "To Meet";
-		}
-
-		echo ucfirst(str_replace("_"," ",$key));
-		echo "</td>";
-		echo "<td>";
-		echo $value;
-		//if ($key == "name" && $vid == NULL) {
-		if ($key == "name" && is_null($vid)) {
-			echo "<img src='images/new-icon.png' title='First-Time Visitor'/>";
-		} else if ($key == "name") {
-			echo "<img src='images/repeat.png' title='Repeat Visitor'/>";
-		}
-		echo "</td>";
-		echo "</tr>";
-	}
-
-	echo "\n</table>";
 }
 ?>
 
@@ -259,50 +315,7 @@ if (is_exists_pic($vid)) {
     </div>
 
     <div>
-	    <li id="li_1" >
-<!--
-	    <a id="button">Smile and click here to take a picture :-)</a>
--->
-
-<div id="content">
-
-  <audio id="myTune">
-    <source src="sounds/click.mp3">
-    <source src="sounds/click.ogg">
-  </audio>
-
-  <button id="button" type="button" value="Click pic!" onclick="document.getElementById('myTune').play()">Click Pic</button>
-
-</div>
-<!--
-	    <input id="button" type="button" value="Click here to take the pic!">
--->
-	    </li>
-	    <!-- target for the canvas-->
-	    <div id="canvasHolder" width="320" height="240"></div>
-
-	    <!--preview image captured from canvas-->
-	    <!-- CHANGE HEIGHT and WIDTH in the Line Below--> 
-	    <!-- <img id="preview" src="images/placeholder-hi.png" width="640" height="480" /> -->
-	    <img id="preview" src="images/placeholder-hi.png" width="320" height="240" />
-
-	    <input id="picinfo_hidden" type="hidden" name="picinfo_hidden" type="text" value="" />
-
-		    <!--
-		    <input id="picinfo" name= "picinfo" class="element text small" type="text" maxlength="255" value=""/>
-		    <input id="submit" class="button_text" type="submit" name="submit" value="Submit" />
-		    <label>base64 image:</label>
-		    -->
-		    <!--
-		    <input id="imageToForm" type="text" />
-		    -->
-		    <!--
-	    </form>
-	    -->
-
-    </div>
 <?php
-echo '<input id="saveForm2" class="button_text" type="submit" name="submit" value="Confirm and Submit" onclick="return ValidateForm();"/>';
 	if (is_exists_pic($vid)) {
 		$is_exists_pic = true;
 		if($is_debug) {
@@ -328,41 +341,6 @@ if (!is_exists_pic($vid)) {
 	if($is_debug) {
 		echo "No pic exists\n";
 	}
-echo "<table border=\"1\">";
-
-// display details before inserting
-foreach ($_REQUEST as $key => $value) {
-	if ($key=="block_other") continue;
-	if (!(strpos($key,"hidden")===false)) continue;
-	if ($key == "vehicle_reg_num" && $is_vehicle_selected == "") continue;
-	if ($key == "vehicle_type" && $is_vehicle_selected == "") continue;
-	echo "\n<tr>";
-	echo "<td>";
-
-	//$is_debug = true;
-	if (isset($is_debug) && $is_debug) {
-		echo $key . " / ";
-	}
-
-	if ($key==="vto_meet") {
-		$key = "To Meet";
-	}
-
-	echo ucfirst(str_replace("_"," ",$key));
-	echo "</td>";
-	echo "<td>";
-	echo $value;
-	//if ($key == "name" && $vid == NULL) {
-	if ($key == "name" && is_null($vid)) {
-		echo "<img src='images/new-icon.png' title='First-Time Visitor'/>";
-	} else if ($key == "name") {
-		echo "<img src='images/repeat.png' title='Repeat Visitor'/>";
-	}
-	echo "</td>";
-	echo "</tr>";
-}
-
-echo "\n</table>";
 }
 
 foreach ($_REQUEST as $key => $value) {
@@ -380,17 +358,6 @@ foreach ($_REQUEST as $key => $value) {
 	echo "\n<input type=\"hidden\" name=\"vid\" value=\"$vid\" />";
 ?>
 
-<!--
-	<div align="center">
-		<style scoped> form { display: inline; } </style>
-		<input id="saveForm" class="button_text" type="submit" name="submit" value="Confirm and Submit" />
-
-		<a href="index.php"><input type="button" value="Cancel and go back!"></a>
-		<button onclick="goBack()">Go Back and make Changes</button>
-		<input type="submit" value="Cancel" onclick="window.location='index.php';" />  
-	</div>
--->
-  <input class="isSkipPicSelected" type="checkbox" name="isSkipPicSelected" id="isSkipPicSelected" onclick="showSkipPicInfo()" value="isSkipPicSelected">Skip Pic</input>
 
 </form>
 

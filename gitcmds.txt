@@ -65,3 +65,6 @@ git commit -m "description"
 git push origin master
 
 http://rogerdudler.github.io/git-guide/
+
+# equivalent of 
+svn revert <file> == git checkout <file> 

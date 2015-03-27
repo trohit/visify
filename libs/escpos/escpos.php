@@ -70,6 +70,7 @@ class escpos {
 	const BARCODE_ITF = 5;
 	const BARCODE_CODABAR = 6;
 	private $fp;
+	private $allgood = true;
 	
 	/**
 	 * @param resource $fp File pointer to print to
@@ -77,11 +78,24 @@ class escpos {
 	function __construct($fp = null) {
 		if(is_null($fp)) {
 			#$fp = fopen("php://stdout", "wb");
+			$pos_printer_path = "/dev/usb/lp0";
 			$fp = fopen("/dev/usb/lp0", "wb");
+			if ($fp == false) {
+				print("\nUnable to find printer at" . $pos_printer_path . "\n");
+				$this->allgood = false;
+				return;
+			}
 		}
 		$this -> fp = $fp;
 		
 		$this -> initialize();
+	}
+
+	function is_valid() {
+		if (!$this->allgood) {
+			return false;
+		}
+		return true;
 	}
 
 	/**

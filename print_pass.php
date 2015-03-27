@@ -83,6 +83,11 @@ EOT;
 	//return;
 
 	$printer = new escpos();
+	if (!$printer->is_valid()) {
+		print("Unable to initialize printer\n");
+		return;
+	}
+
 
 	/* Initialize */
 	$printer -> initialize();
