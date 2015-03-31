@@ -38,7 +38,7 @@ if ($is_debug) {
   while ($r[] = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	  $row = end($r);
 	  $row["id"]=$row['vid'];
-	  $row["label"]=$row['vname'];
+	  $row["label"]=$row['vphone'] . " (" . $row['vname'] . ")";
 	  $row["value"]=$row['vphone'];
 	  unset($row['vphone']);
 	  unset($row['vname']);

@@ -79,7 +79,8 @@ class escpos {
 		if(is_null($fp)) {
 			#$fp = fopen("php://stdout", "wb");
 			$pos_printer_path = "/dev/usb/lp0";
-			$fp = fopen("/dev/usb/lp0", "wb");
+			#$pos_printer_path = "/tmp/o2";
+			$fp = fopen($pos_printer_path, "wb");
 			if ($fp == false) {
 				print("\nUnable to find printer at" . $pos_printer_path . "\n");
 				$this->allgood = false;

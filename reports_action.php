@@ -138,7 +138,7 @@ $query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,
 if (isset($arrFields)) {
 	$query .= "AND ".implode(" AND ",$arrFields);
 }
-$query .= " LIMIT 100";
+$query .= " LIMIT 2000";
 
 if (isset($is_debug) && $is_debug) {
 	echo "<br>\n$query<br>\n";

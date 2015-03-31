@@ -181,17 +181,23 @@ function ValidateForm()
 	}
 	*/
 
-	if($('input[name=vehicle_type]').is(":checked") && ($("#isVehicleSelected").is(':checked'))) {
-		if($('#vehicle_reg_num').val().length == 0) {
+	if($("#isVehicleSelected").is(':checked')) {
+		if(($('input[name=vehicle_type]').is(":checked")) && ($('#vehicle_reg_num').val().length == 0)) {
 			alert( "Vehicle Added but 'Registration Number' is not entered. Uncheck 'Add Vehicle' if there is no vehicle.");
 			$("#vehicle_reg_num").focus();
 			return false;
-		}
+		} else if (($('#vehicle_reg_num').val().length != 0) && !($('input[name=vehicle_type]').is(":checked") )) {
+			alert( "Select Vehicle Type Car/Bike OR uncheck 'Add Vehicle' if there is no vehicle.");
+			$("#vehicle_type").focus();
+			return false;
+
+		} 
 	} else {
-		//alert("setting isVehicleSelected to false");
-		$('#isVehicleSelected').prop('checked', false);
-		$('#isVehicleSelected').val('FALSE');
-	}
+			//alert($('#vehicle_reg_num').val().length);
+			//alert("setting isVehicleSelected to false");
+			$('#isVehicleSelected').prop('checked', false);
+			$('#isVehicleSelected').val('FALSE');
+		}
 
 	if (document.getElementById("block_other").value=="" && 
 		document.getElementById("flat_num").value=="") {
@@ -495,7 +501,7 @@ if (strlen($vphone)==0) {
 	<input class="description" type="checkbox" name="isVehicleSelected" id="isVehicleSelected" onclick="showVehicleinfo()" value="vehicle" checked title="Add Vehicle Details"></td>
      <td id="vehicle_type" style='display:none'> 
 	<input class="description" for="element_10" type="radio" name="vehicle_type" id="4w" value="4w"><img src="images/car_bw.png" alt="car" height="48" title="Car"/>
-	&nbsp;
+<br>
 	<input class="description" for="element_10" type="radio" name="vehicle_type" id="2w" value="2w"><img src="images/bike.png" alt="bike" height="36" title="Bike"/>
 <!--
 	<input class="description" for="element_10" type="radio" name="vehicle_type" value="4w"> Car
