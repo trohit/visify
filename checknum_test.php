@@ -22,8 +22,8 @@ if ($stmt = mysqli_prepare($link, $query)) {
 }
 
 if($query === FALSE) {
-	die(mysql_error()); // TODO: better error handling
-
+	printf("Query failed: %s\n", mysqli_connect_error());
+	exit();
 }
 /* store result */
 mysqli_stmt_store_result($stmt);

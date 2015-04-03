@@ -1,6 +1,7 @@
 <?php
  
 require_once("parse_config.php");	
+require_once("common_lib.php");	
 $host 		= $ini_array["host"];
 $username 	= $ini_array["username"];
 $password	= $ini_array["password"];
@@ -12,17 +13,14 @@ DB::$password = $password;
 DB::$dbName = $db;
 DB::$host = $host;
 $link = mysqli_connect($host, $username, $password, $db);
-//mysql_connect($host, $username, $password);
-//mysql_select_db($db);
 
-//$link = mysqli_connect("localhost","root","","test");
 /* check connection */
 if (mysqli_connect_errno()) {
 	printf("Connect failed: %s\n", mysqli_connect_error());
 	exit();
 }
 
-$name=$_REQUEST["name"];
+$name=sanitize($_REQUEST["name"]);
 $name = strtoupper($name);
 //$name=$_GET["name"];
 //$name="Sachin";

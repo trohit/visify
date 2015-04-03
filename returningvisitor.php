@@ -144,7 +144,41 @@ $('#isVehicleSelected').click(function () {
     $("#vehicle_num").toggle(this.checked);
     $("#vehicle_type").toggle(this.checked);
 });
-*/
+$(function(){
+  $('input[type="radio"]').click(function(){
+    if ($(this).is(':checked'))
+    {
+      alert($(this).val());
+    }
+  });
+});
+ */
+
+$(function(){
+	$(".vehicleTypeCar").click(function(){
+		if ($(this).is(':checked')) {
+			//alert($(this).val());
+			//#$("#carId").html("");
+			$("#carId").attr("src", "images/car_checked.png");
+			$("#bikeId").attr("src", "images/bike.png");
+		} else {
+			//$("#carId").attr("src", "images/car.png");
+		}
+	});
+});
+
+$(function(){
+	$(".vehicleTypeBike").click(function(){
+		if ($(this).is(':checked')) {
+			//alert($(this).val());
+			//#$("#carId").html("");
+			$("#bikeId").attr("src", "images/bike_checked.png");
+			$("#carId").attr("src", "images/car.png");
+		} else {
+			//$("#bikeId").attr("src", "images/bike.png");
+		}
+	});
+});
 function showVehicleinfo()
 {
 	//alert("showVehicleinfo");
@@ -427,7 +461,7 @@ require_once("common.php");
 display_menu_common("Visitor Checkin");
 
 // check if phone num was already provided
-$vphone			= ((!empty($_REQUEST["phone_num"	]))?$_REQUEST["phone_num"]:NULL);
+$vphone			= ((!empty($_REQUEST["phone_num"	]))?sanitize($_REQUEST["phone_num"]):NULL);
 if (strlen($vphone)==0) {
 	unset($vphone);
 } 
@@ -500,9 +534,16 @@ if (strlen($vphone)==0) {
      <td>
 	<input class="description" type="checkbox" name="isVehicleSelected" id="isVehicleSelected" onclick="showVehicleinfo()" value="vehicle" checked title="Add Vehicle Details"></td>
      <td id="vehicle_type" style='display:none'> 
-	<input class="description" for="element_10" type="radio" name="vehicle_type" id="4w" value="4w"><img src="images/car_bw.png" alt="car" height="48" title="Car"/>
-<br>
-	<input class="description" for="element_10" type="radio" name="vehicle_type" id="2w" value="2w"><img src="images/bike.png" alt="bike" height="36" title="Bike"/>
+
+<label for="4w">
+	<img id="carId" src="images/car.png" alt="car" height="24" title="Car"/>
+	<input class="vehicleTypeCar" for="element_10" type="radio" name="vehicle_type" id="4w" value="4w">
+</label>
+<label for="2w">
+	<img id="bikeId" src="images/bike.png" alt="bike" height="32" title="Bike"/>
+	<input class="vehicleTypeBike" for="element_10" type="radio" name="vehicle_type" id="2w" value="2w">
+</label>
+
 <!--
 	<input class="description" for="element_10" type="radio" name="vehicle_type" value="4w"> Car
 	<input class="description" for="element_10" type="radio" name="vehicle_type" value="2w"> Bike
@@ -536,9 +577,10 @@ if (strlen($vphone)==0) {
 <!-- Begin Owners details-->
 		<div>
 			<li id="li_10" >
-			<label class="description" for="element_6">  <img src="images/tomeet_icon.jpg" width="32" height="32"/>Name of Resident / Block Name / Flat Number *</label>
+			<label class="description" for="element_6">  <img src="images/tomeet_icon.jpg" width="32" height="32"/>Block Name / Flat Number *</label>
+<!--
 			<input id="to_meet" name="to_meet" class="element text small" type="text" maxlength="32" value="" placeholder= "Barrack Obama" style="text-transform:capitalize" data-required="true"/> 
-
+-->
 			<select name="block" id="block" class="element select small" onChange="block_changed(this.value);" data-required="true">
 				<?php
 				require_once("common_lib.php");
@@ -555,12 +597,18 @@ if (strlen($vphone)==0) {
 		</div> 
 
 
+		<div>
+			<li id="li_11" >
+			<label class="description" for="element_6">  Name of Resident *</label>
+			<input id="to_meet" name="to_meet" class="element text small" type="text" maxlength="32" value="" placeholder= "Barrack Obama" style="text-transform:capitalize" data-required="true"/> 
+			</li>
+		</div> 
 
 
 <!-- End Owners details-->
 <img id="top" src="images/top.png" alt="">
 		<div>
-			<li id="li_11" >
+			<li id="li_12" >
 			<label class="description" for="element_7">Purpose *</label>
 <!--
 			<input id="purpose" name="purpose" class="element text medium" type="text" maxlength="128" value="" placeholder="(optional)"/> 

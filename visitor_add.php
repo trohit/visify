@@ -3,6 +3,7 @@ require_once('header.inc');
 require_once('body.inc');
 require_once 'meekrodb.2.2.class.php';
 require_once("common.php");	
+require_once("common_lib.php");
 
 $is_debug 	= false;
 $is_verbose 	= false;
@@ -19,6 +20,7 @@ function goBack() {
 }
 </script>
 <script type="text/javascript">
+
 function showCam()
 {
 	alert("hoo");
@@ -60,6 +62,17 @@ $vname			= ((!empty($_REQUEST["name"                ]))?trim($_REQUEST["name"   
 $vnum_visitors		= ((!empty($_REQUEST["num_visitors"        ]))?trim($_REQUEST["num_visitors"     ]):"");
 $vphone			= ((!empty($_REQUEST["phone_num"              ]))?trim($_REQUEST["phone_num"     ]):"");
 $is_vehicle_selected	= ((!empty($_REQUEST["isVehicleSelected"      ]))?trim($_REQUEST["isVehicleSelected"     ]):"");
+
+$vtomeet		= sanitize($vtomeet);
+$block			= sanitize($block);
+$flat_num		= sanitize($flat_num);
+$block_other		= sanitize($block_other);
+$vname			= sanitize($vname);
+$vnum_visitors		= sanitize($vnum_visitors);
+$vphone			= sanitize($vphone);
+$is_vehicle_selected	= sanitize($is_vehicle_selected);
+
+
 if ($is_vehicle_selected != "") {
 	if ($is_debug) {
 		echo "Setting Vehicle Num and Type";
@@ -73,6 +86,9 @@ if ($is_vehicle_selected != "") {
 
 $purpose		= ((!empty($_REQUEST["purpose"              ]))?trim($_REQUEST["purpose"     ]):"");
 $comments		= ((!empty($_REQUEST["comments"              ]))?trim($_REQUEST["comments"     ]):"");
+
+$purpose		= sanitize($purpose);
+$comments		= sanitize($comments);
 
 //print_r($_REQUEST);
 if ($block=="Others") {
@@ -204,6 +220,7 @@ echo "<table>";
 echo "<td>";
 // display details before inserting
 foreach ($_REQUEST as $key => $value) {
+	$value = sanitize($value);
 	if ($key=="block_other") continue;
 	if (!(strpos($key,"hidden")===false)) continue;
 	if ($key == "vehicle_reg_num" && $is_vehicle_selected == "") continue;
@@ -344,6 +361,7 @@ if (!is_exists_pic($vid)) {
 }
 
 foreach ($_REQUEST as $key => $value) {
+	$value = sanitize($value);
 	if ($key == "block_other") continue;
 	/*
 	if (!(isset($is_debug) && $is_debug)) {
@@ -415,6 +433,7 @@ function ValidateForm()
 
         function captureImage() {
             var canvas = document.createElement('canvas');
+
             canvas.id = 'hiddenCanvas';
             //add canvas to the body element
             document.body.appendChild(canvas);

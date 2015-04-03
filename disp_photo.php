@@ -6,6 +6,7 @@ error_reporting(-1);
 require_once 'meekrodb.2.2.class.php';
 require_once("common.php");	
 
+require_once("common_lib.php");//for sanity check
 require_once("parse_config.php");	
 $ini_array = parse_config();
 DB::$user 	= $ini_array["username"];
@@ -19,6 +20,7 @@ if (isset($is_debug) && $is_debug) {
 
 	// display details before inserting
 	foreach ($_REQUEST as $key => $value) {
+		$value = sanitize($value);
 		echo "<tr>";
 		echo "<td>";
 		echo $key;
@@ -36,7 +38,7 @@ if (isset($is_debug) && $is_debug) {
 //	echo $query;
 }
 
-$vid = $_REQUEST['vid'];
+$vid = sanitize($_REQUEST['vid']);
 //$vid = 77;
 
 $result = DB::queryFirstRow("SELECT vphoto FROM vpic WHERE vid=%i", $vid);

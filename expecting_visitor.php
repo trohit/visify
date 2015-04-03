@@ -392,10 +392,12 @@ $(document).ready(function(){
 	
 <?php
 require_once("common.php");	
+require_once("common_lib.php");	
 display_menu_common("Visitor Checkin");
 
 // check if phone num was already provided
 $vphone			= ((!empty($_REQUEST["phone_num"	]))?$_REQUEST["phone_num"]:NULL);
+$vphone			= sanitize($vphone);
 if (strlen($vphone)==0) {
 	unset($vphone);
 } 

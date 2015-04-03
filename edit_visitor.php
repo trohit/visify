@@ -132,6 +132,7 @@ display_menu_common("Find Records");
 
 // check if phone num was already provided
 $vphone			= ((!empty($_REQUEST["phone_num"	]))?$_REQUEST["phone_num"]:NULL);
+$vphone			= sanitize($vphone);
 if (strlen($vphone)==0) {
 	unset($vphone);
 } 
@@ -148,6 +149,7 @@ if (strlen($vphone)==0) {
 
 <?php
 $vid		= ((!empty($_REQUEST["vid"	]))?$_REQUEST["vid"]:0);
+$vid		= sanitize($vid);
 ?>
 
 <table border="0" width="100%">

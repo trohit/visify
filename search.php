@@ -18,8 +18,11 @@ DB::$dbName = $db;
 DB::$host = $host;
  */
 //print_r($ini_array);
-mysql_connect($host, $username, $password);
-mysql_select_db($db);
+$con = mysqli_connect($host, $username, $password, $db);
+// Check connection
+if (mysqli_connect_errno()) {
+	echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
 
 //$is_debug = true;
 if ($is_debug) {
@@ -30,12 +33,12 @@ if ($is_debug) {
   //$phone_num=$_REQUEST["phone_num"];
   //$phone_num=886330440;
 
-  $result=mysql_query("SELECT (visitor.vid),vphone,vname FROM visitor WHERE visitor.vphone LIKE '$phone_num%' LIMIT 5");
+  $result=mysqli_query($con, "SELECT (visitor.vid),vphone,vname FROM visitor WHERE visitor.vphone LIKE '$phone_num%' LIMIT 5");
 
   //print_r($result);
-  //$row = mysql_fetch_assoc($result);
+  //$row = mysqli_fetch_assoc($result);
 
-  while ($r[] = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  while ($r[] = mysqli_fetch_array($result, MYSQL_ASSOC)) {
 	  $row = end($r);
 	  $row["id"]=$row['vid'];
 	  $row["label"]=$row['vphone'] . " (" . $row['vname'] . ")";
@@ -55,7 +58,7 @@ if ($is_debug) {
   //unset($row['vid']);
   //sleep(1);
   //echo($row[0]);
-  mysql_free_result($result);
+  mysqli_free_result($result);
   return($q);
 }
 

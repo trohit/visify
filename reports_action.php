@@ -39,6 +39,7 @@ display_menu_common("Reports");
 global $results;
 
 require_once("parse_config.php");	
+require_once("common_lib.php");	// TODO: still not sanitized
 
 $ini_array = parse_config();
 DB::$user 	= $ini_array["username"];
@@ -47,22 +48,13 @@ DB::$dbName 	= $ini_array["db"];
 DB::$host 	= $ini_array["host"];
 #DB::$port = '12345'; // defaults to 3306 if omitted
 #DB::$encoding = 'utf8'; // defaults to latin1 if omitted
-
-/*
-DB::$user = 'mysql';
-DB::$password = '';
-DB::$dbName = 'test';
-DB::$host = 'localhost'; //defaults to localhost if omitted
-#DB::$port = '12345'; // defaults to 3306 if omitted
-#DB::$encoding = 'utf8'; // defaults to latin1 if omitted
- */
-
 //$is_debug = true;
 if (isset($is_debug) && $is_debug) {
 	echo "<table>";
 
 	// display details before inserting
 	foreach ($_REQUEST as $key => $value) {
+		$value = sanitize($value);
 		echo "<tr>";
 		echo "<td>";
 		echo $key;
@@ -77,6 +69,7 @@ if (isset($is_debug) && $is_debug) {
 $is_condition_present = false;
 
 foreach($_REQUEST as $name=>$value){
+	$value = sanitize($value);
 	switch($name){
 	case "start_date":
 		if (!empty($_REQUEST["start_date"])) {

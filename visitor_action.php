@@ -222,6 +222,7 @@ if($is_verbose) {
 echo "<table border=\"1\">";
 // display details before inserting
 foreach ($_REQUEST as $key => $value) {
+	$value = sanitize($value);
 	if ($key=="block_other") continue;
 	if($is_debug == false) {
 		if ($key=="isSkipPicSelected") continue;

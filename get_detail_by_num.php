@@ -5,6 +5,7 @@
  */ 
  
 require_once("parse_config.php");	
+require_once("common_lib.php");	
 $host 		= $ini_array["host"];
 $username 	= $ini_array["username"];
 $password	= $ini_array["password"];
@@ -24,7 +25,7 @@ if (mysqli_connect_errno()) {
 	exit();
 }
 
-$name=$_REQUEST["name"];
+$name=sanitize($_REQUEST["name"]);
 $name = strtoupper($name);
 //$name=$_GET["name"];
 //$name="Sachin";

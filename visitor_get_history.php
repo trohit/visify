@@ -6,6 +6,7 @@ error_reporting(-1);
 require_once 'meekrodb.2.2.class.php';
 
 require_once("common.php");	
+require_once("common_lib.php");
 require_once("parse_config.php");	
 $host 		= $ini_array["host"];
 $username 	= $ini_array["username"];
@@ -20,6 +21,7 @@ DB::$host = $host;
 #DB::$port = '12345'; // defaults to 3306 if omitted
 #DB::$encoding = 'utf8'; // defaults to latin1 if omitted
 $vid		= ((!empty($_REQUEST["vid"	]))?$_REQUEST["vid"]:0);
+$vid		= sanitize($vid);
 //$vid=77;
 
 	/* also get some helpful hints on where this visitor has been to in the past. */

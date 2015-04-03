@@ -37,6 +37,7 @@ error_reporting(-1);
 
 require_once 'meekrodb.2.2.class.php';
 require_once("common.php");	
+require_once("common_lib.php");	
 display_menu_common("Find Records");
 echo '<div id="find_result_container">';
 global $results;
@@ -45,14 +46,14 @@ $vnumber		= ((!empty($_REQUEST["number"		]))?trim($_REQUEST["number"     ]):0);
 $vvehicle_reg_num	= ((!empty($_REQUEST["vvehicle_reg_num"	]))?trim($_REQUEST["vvehicle_reg_num"     ]):"");
 $vflatnum		= ((!empty($_REQUEST["flat_num"		]))?trim($_REQUEST["flat_num"             ]):0);
 $vblock			= ((!empty($_REQUEST["block"		]))?trim($_REQUEST["block"                ]):"");
-/*
-DB::$user = 'mysql';
-DB::$password = '';
-DB::$dbName = 'test';
-DB::$host = 'localhost'; //defaults to localhost if omitted
-#DB::$port = '12345'; // defaults to 3306 if omitted
-#DB::$encoding = 'utf8'; // defaults to latin1 if omitted
- */
+
+$vname			= sanitize($vname); 
+$vnumber		= sanitize($vnumber); 
+$vvehicle_reg_num	= sanitize($vvehicle_reg_num); 
+$vflatnum		= sanitize($vflatnum); 
+$vblock			= sanitize($vblock); 
+
+
 require_once("parse_config.php");	
 
 $ini_array = parse_config();
@@ -81,6 +82,7 @@ foreach($_REQUEST as $name=>$value){
 }
  */
 foreach($_REQUEST as $name=>$value){
+	$value = sanitize($value);
 	switch($name){
 	case "name":
 		if (!empty($_REQUEST["name"])) {

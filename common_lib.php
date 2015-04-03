@@ -146,4 +146,44 @@ function getlastvrecord()
 	return $vrecord;
 }
 
+/*
+ * functions to sanitize inputs
+ * source: http://www.catswhocode.com/blog/10-awesome-php-functions-and-snippets
+ */
+
+function cleanInput($input) 
+{
+
+	$search = array(
+		'@<script[^>]*?>.*?</script>@si',   // Strip out javascript
+		'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
+		'@<style[^>]*?>.*?</style>@siU',    // Strip style tags properly
+		'@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments
+	);
+
+	$output = preg_replace($search, '', $input);
+	return $output;
+}
+
+function sanitize($input, $link=NULL) 
+{
+	if (is_array($input)) {
+		foreach($input as $var=>$val) {
+			$output[$var] = sanitize($val);
+		}
+	} else {
+		if (get_magic_quotes_gpc()) {
+			$input = stripslashes($input);
+		}
+		$input  = cleanInput($input);
+		if ($link) {
+			$output = @mysqli_real_escape_string($link, $input);
+		} else {
+			$output = @mysql_real_escape_string($input);
+		}
+	}
+	return $output;
+}
+
+
 ?>

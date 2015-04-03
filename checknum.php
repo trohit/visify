@@ -1,6 +1,7 @@
 <?php
  
 require_once("parse_config.php");	
+require_once("common_lib.php");//for sanity check
 $host 		= $ini_array["host"];
 $username 	= $ini_array["username"];
 $password	= $ini_array["password"];
@@ -11,25 +12,25 @@ DB::$user = $username;
 DB::$password = $password;
 DB::$dbName = $db;
 DB::$host = $host;
-mysql_connect($host, $username, $password);
-mysql_select_db($db);
-//$link = mysqli_connect("localhost","root","","test");
-//$link = mysqli_connect($host, $username, $password, $db);
+$con = mysqli_connect($host, $username, $password, $db);
 
-//mysql_connect("localhost","root","");
-//  mysql_select_db("test");
+// Check connection
+if (mysqli_connect_errno()) {
+	echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+
  
-  $phone_num=$_REQUEST["phone_num"];
+  $phone_num=sanitize($_REQUEST["phone_num"]);
 
   //$phone=$_GET["phone"];
   //$phone=886330440;
-  $query=mysql_query("SELECT vname from visitor where vphone='$phone_num' ");
-  //print_r($query);
-  $row= mysql_fetch_row($query);
+  $result=mysqli_result($con, "SELECT vname from visitor where vphone='$phone_num' ");
+  //print_r($result);
+  $row= mysqli_fetch_row($con, $result);
   //sleep(1);
   echo($row[0]);
   /*
-  $find=mysql_num_rows($query);
+  $find=mysqli_num_rows($result);
  
   echo $find;
    */

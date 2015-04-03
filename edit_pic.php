@@ -3,6 +3,7 @@ require_once('header.inc');
 require_once('body.inc');
 require_once 'meekrodb.2.2.class.php';
 require_once("common.php");	
+require_once("common_lib.php");//for sanity check
 
 $is_debug 	= false;
 $is_verbose 	= false;
@@ -60,12 +61,27 @@ $vname			= ((!empty($_REQUEST["name"                ]))?trim($_REQUEST["name"   
 $vnum_visitors		= ((!empty($_REQUEST["num_visitors"        ]))?trim($_REQUEST["num_visitors"     ]):"");
 $vphone			= ((!empty($_REQUEST["phone_num"              ]))?trim($_REQUEST["phone_num"     ]):"");
 $is_vehicle_selected	= ((!empty($_REQUEST["isVehicleSelected"      ]))?trim($_REQUEST["isVehicleSelected"     ]):"");
+
+$vtomeet		= sanitize($vtomeet); 
+$block			= sanitize($block); 
+$flat_num		= sanitize($flat_num); 
+$block_other		= sanitize($block_other); 
+$vname			= sanitize($vname); 
+$vnum_visitors		= sanitize($vnum_visitors); 
+$vphone			= sanitize($vphone); 
+$is_vehicle_selected	= sanitize($is_vehicle_selected); 
+
+
 if ($is_vehicle_selected != "") {
 	if ($is_debug) {
 		echo "Setting Vehicle Num and Type";
 	}
 	$vehicle_reg_num= ((!empty($_REQUEST["vehicle_reg_num"              ]))?trim($_REQUEST["vehicle_reg_num"     ]):"");
 	$vehicle_type	= ((!empty($_REQUEST["vehicle_type"              ]))?trim($_REQUEST["vehicle_type"     ]):"");
+
+
+	$vehicle_reg_num= sanitize($vehicle_reg_num);
+	$vehicle_type	= sanitize($vehicle_type);
 } else {
 	unset($_REQUEST["vehicle_reg_num"]);
 	unset($_REQUEST["vehicle_type"]);
@@ -74,10 +90,13 @@ if ($is_vehicle_selected != "") {
 $purpose		= ((!empty($_REQUEST["purpose"              ]))?trim($_REQUEST["purpose"     ]):"");
 $comments		= ((!empty($_REQUEST["comments"              ]))?trim($_REQUEST["comments"     ]):"");
 
+$purpose		= sanitize($purpose);
+$comments		= sanitize($comments);
+
 //print_r($_REQUEST);
 if ($block=="Others") {
 	$flat_num = $block_other;
-	$_REQUEST["flat_num"]=$_REQUEST["block_other"];
+	$_REQUEST["flat_num"]=sanitize($_REQUEST["block_other"]);
 	unset($block_other); 
 	
 
