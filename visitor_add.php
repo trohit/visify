@@ -459,8 +459,12 @@ function ValidateForm()
             //add canvas to #canvasHolder
             document.getElementById('canvasHolder').appendChild(canvas);
             var ctx = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            //canvas.width = video.videoWidth;
+	    //canvas.height = video.videoHeight;
+	    // lets save some space in the db
+	    // 800kb should become 129KB from 1:3 ratio
+            canvas.width = video.videoWidth/3;
+            canvas.height = video.videoHeight/3;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             //save canvas image as data url
             dataURL = canvas.toDataURL();
