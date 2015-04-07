@@ -53,6 +53,15 @@ global $vehicle_type;
 global $purpose;
 global $comments;
 
+function show_image_by_vehicle_type($vehicle_type)
+{
+	if ($vehicle_type == "2w") {
+		echo '<img id="bikeId" src="images/bike_checked.png" alt="bike" height="32" title="Bike"/>';
+	} else if ($vehicle_type == "4w") {
+		echo ' <img id="carId" src="images/car_checked.png" alt="car" height="24" title="Car"/>';
+	}
+}
+
 $vtomeet		= ((!empty($_REQUEST["to_meet"             ]))?trim($_REQUEST["to_meet"     ]):"");
 $block			= ((!empty($_REQUEST["block"              ]))?trim($_REQUEST["block"     ]):"");
 $flat_num		= ((!empty($_REQUEST["flat_num"           ]))?trim($_REQUEST["flat_num"     ]):"");
@@ -223,8 +232,14 @@ foreach ($_REQUEST as $key => $value) {
 	$value = sanitize($value);
 	if ($key=="block_other") continue;
 	if (!(strpos($key,"hidden")===false)) continue;
-	if ($key == "vehicle_reg_num" && $is_vehicle_selected == "") continue;
-	if ($key == "vehicle_type" && $is_vehicle_selected == "") continue;
+	//print "[$key] ";
+	if ($is_vehicle_selected) {
+		if ($key == "isVehicleSelected" && !$is_debug) continue;
+	} else {
+
+		if ($key == "vehicle_reg_num") continue;
+		if ($key == "vehicle_type") continue;
+	}
 	echo "\n<tr>";
 	echo "<td>";
 
@@ -240,7 +255,11 @@ foreach ($_REQUEST as $key => $value) {
 	echo ucfirst(str_replace("_"," ",$key));
 	echo "</td>";
 	echo "<td>";
-	echo $value;
+	if ($key=="vehicle_type") {
+		show_image_by_vehicle_type($value);
+	} else {
+		echo $value;
+	}
 	if ($key == "name" && is_null($vid)) {
 		echo "<img src='images/new-icon.png' title='First-Time Visitor'/>";
 	} else if ($key == "name") {
@@ -294,7 +313,7 @@ echo "\n</table>";
 
   <button id="button" type="button" value="Click pic!" onclick="document.getElementById('myTune').play()">Click Pic</button>
 
-  <input class="isSkipPicSelected" type="checkbox" name="isSkipPicSelected" id="isSkipPicSelected" onclick="showSkipPicInfo()" value="isSkipPicSelected">Skip Pic</input>
+  <input class="reset-this" type="checkbox" name="isSkipPicSelected" id="isSkipPicSelected" onclick="showSkipPicInfo()" value="isSkipPicSelected" style="margin-right: 0"/>Skip Pic
 </div>
 
 <BR>

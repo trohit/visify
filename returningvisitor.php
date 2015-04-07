@@ -155,7 +155,7 @@ $(function(){
  */
 
 $(function(){
-	$(".vehicleTypeCar").click(function(){
+	$("#4w").click(function(){
 		if ($(this).is(':checked')) {
 			//alert($(this).val());
 			//#$("#carId").html("");
@@ -168,7 +168,7 @@ $(function(){
 });
 
 $(function(){
-	$(".vehicleTypeBike").click(function(){
+	$("#2w").click(function(){
 		if ($(this).is(':checked')) {
 			//alert($(this).val());
 			//#$("#carId").html("");
@@ -537,14 +537,17 @@ if (strlen($vphone)==0) {
 
 <label for="4w">
 	<img id="carId" src="images/car.png" alt="car" height="24" title="Car"/>
-	<input class="vehicleTypeCar" for="element_10" type="radio" name="vehicle_type" id="4w" value="4w">
+	<input class="reset-this" for="element_10" type="radio" name="vehicle_type" id="4w" value="4w">
 </label>
 <label for="2w">
 	<img id="bikeId" src="images/bike.png" alt="bike" height="32" title="Bike"/>
-	<input class="vehicleTypeBike" for="element_10" type="radio" name="vehicle_type" id="2w" value="2w">
+	<input class="reset-this" for="element_10" type="radio" name="vehicle_type" id="2w" value="2w">
 </label>
 
+
 <!--
+<input class="reset-this" type="radio" name="beds" value="1" />1+
+<input class="reset-this" type="radio" name="beds" value="2" />2+
 	<input class="description" for="element_10" type="radio" name="vehicle_type" value="4w"> Car
 	<input class="description" for="element_10" type="radio" name="vehicle_type" value="2w"> Bike
 -->
