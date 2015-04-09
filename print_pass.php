@@ -51,6 +51,7 @@ function print_pass(
 	$pass_header = <<<EOT
 ALPINE ECO Security Gate Visitor Pass
 SECURITY HELPLINE:9972-572-098
+FEEDBACK: visitoratalpineeco@gmail.com
 EOT;
 
 	$pass_footer = <<<EOT

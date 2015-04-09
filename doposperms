@@ -1,0 +1,28 @@
+#!/bin/bash
+POS_PRINTER=/dev/usb/lp0
+DELAY=5
+
+check_perms()
+{
+	if [ -c $POS_PRINTER ];
+	then
+		/bin/chmod a+w /dev/usb/lp0
+		if [ $? -eq 0 ]; then
+			echo "Anybody can print now"
+		else
+			echo "ERROR: Unable to set perms, check for root access"
+			exit 1
+		fi
+	else
+		echo "No printer detected at" $POS_PRINTER
+	fi
+}
+
+loop()
+{
+    while true; do
+	check_perms
+	sleep $DELAY
+    done
+}
+loop

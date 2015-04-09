@@ -1,0 +1,42 @@
+visitor	CREATE TABLE `visitor` (
+  `vid` int(11) NOT NULL AUTO_INCREMENT,
+  `vname` varchar(32) NOT NULL,
+  `vphone` varchar(12) NOT NULL,
+  `vgender` varchar(12) DEFAULT NULL,
+  `vage` int(11) NOT NULL,
+  `vaddress` varchar(256) NOT NULL,
+  `vcomments` varchar(512) DEFAULT NULL,
+  `vctime` datetime NOT NULL,
+  `vmtime` datetime NOT NULL,
+  `vatime` datetime NOT NULL,
+  `vphoto` mediumblob,
+  PRIMARY KEY (`vid`),
+  UNIQUE KEY `vphone` (`vphone`)
+) ENGINE=InnoDB AUTO_INCREMENT=2091 DEFAULT CHARSET=latin1
+vrecord	CREATE TABLE `vrecord` (
+  `vid` int(11) NOT NULL,
+  `vrecordid` int(11) NOT NULL AUTO_INCREMENT,
+  `vvehicle_reg_num` varchar(32) DEFAULT NULL,
+  `vvehicle_type` varchar(16) DEFAULT NULL,
+  `vvehicle_details` varchar(128) DEFAULT NULL,
+  `vitime` datetime NOT NULL,
+  `votime` datetime DEFAULT NULL,
+  `vflatnum` varchar(24) NOT NULL,
+  `vblock` varchar(32) NOT NULL,
+  `vpurpose` varchar(128) DEFAULT NULL,
+  `vtomeet` varchar(32) NOT NULL,
+  `vnum_visitors` int(11) DEFAULT NULL,
+  `vrcomments` varchar(256) DEFAULT NULL,
+  `vduration_fillup` int(11) DEFAULT NULL,
+  PRIMARY KEY (`vrecordid`),
+  KEY `vid` (`vid`),
+  CONSTRAINT `vrecord_ibfk_1` FOREIGN KEY (`vid`) REFERENCES `visitor` (`vid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3718 DEFAULT CHARSET=latin1
+vpic	CREATE TABLE `vpic` (
+  `vpicid` int(11) NOT NULL AUTO_INCREMENT,
+  `vid` int(11) NOT NULL,
+  `vphoto` mediumblob,
+  PRIMARY KEY (`vpicid`),
+  KEY `vid` (`vid`),
+  CONSTRAINT `vpic_ibfk_1` FOREIGN KEY (`vid`) REFERENCES `visitor` (`vid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
