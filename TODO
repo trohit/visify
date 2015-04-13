@@ -30,3 +30,6 @@ in visitor_add , which adds body.inc. jquery-ui.10.4 not found.
 8. in visitor checkin page show the last 5 visits
 9. allow visitors to get logged out by enetering the votime
 10. When phone number is changed, no new data is fetched.
+11. Store flat owner contact details
+12. Create an import tool for setting blocks and residents
+

@@ -8,6 +8,12 @@ DEPENDS Upon:
 5. sudo pip install php # for php goodness in python
 6. ccryot to encrypt mysql dumps
 7. media.navigator.permission.disabled in firefox to toggled
+8. Automatic security updates
+   You can set up unattended-upgrades pretty easily by typing this in a
+   terminal:
+	sudo apt-get install unattended-upgrades
+	sudo dpkg-reconfigure unattended-upgrades
+9. Auto ssh and reverse connection for remote admin
 
 
 Commands
@@ -16,4 +22,5 @@ sudo aptitude install --without-recommends ubuntu-desktop
 Links
 
 http://www.ubuntugeek.com/install-gui-in-ubuntu-server.html
+
 

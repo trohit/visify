@@ -1,0 +1,55 @@
+Reporting will consist of daily , weekly and monthly reports
+
+In stats dir locally
+
+.stats
+  |
+  +----daily
+  |     |
+  |     +--- POS:visitor count by block
+  |     +--- Top n most frequent Visitors to the complex
+  |     +--- Top n most visited flats
+  |
+  |----weekly
+  |     |
+  |     +--- POS:TODO
+  |
+  |----monthly
+  |     |
+  |     +--- POS:
+  |              Flats that had no visitor this month
+  |              Most freqently visited flat blockwise
+  |              TODO
+
+daily:
+
+On the POS
+visitor count by block
+most freqently visited flat
+
+By email
+
+In stats dir locally
+
+monthly:
+
+On the POS
+visitor count by block
+most freqent visitor for the month and number of times and where did he most frequently go to.
+
+By email
+
++----+--+--+--+--+--+--+--+--+--+--+--+--+--+
+|Date|Ar|Br|El|Gl|Hl|Jl|Jg|Zr|MB|MR|MT|Rs|Oh|
++----+--+--+--+--+--+--+--+--+--+--+--+--+--+
+|21Sa|15|11|20|13|13|14|13|16|15|24|17|9 |15|
+|22Su|31|22|25|8 |15|22|9 |22|20|22|28|8 |11|
+|23Mo|5 |6 |20|3 |11|10|11|12|10|11|19|12|11|
+|24Tu|14|13|8 |9 |11|7 |7 |9 |12|17|14|17|16|
+|25We|5 |9 |18|14|14|13|8 |11|12|16|9 |12|24|
+|26Th|17|14|22|12|9 |16|6 |12|15|17|20|16|14|
+|27Fr|15|15|10|13|9 |22|10|7 |13|20|16|4 |19|
+|28Sa|28|18|20|27|20|23|19|15|17|23|25|21|18|
+|29Su|14|18|29|12|14|22|18|11|24|32|34|8 |13|
+|30Mo|0 |0 |0 |0 |0 |0 |0 |0 |0 |0 |0 |0 |0 |
++----+--+--+--+--+--+--+--+--+--+--+--+--+--+

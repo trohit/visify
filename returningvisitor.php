@@ -30,7 +30,7 @@
 $(function() {
 	$( "#phone_num" ).autocomplete({
 		source: "search.php",
-			minLength: 2,
+			minLength: 4,
 			delay: 90,
 			//autoFocus: true,
 			select: function( event, ui ) {

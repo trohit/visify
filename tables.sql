@@ -10,6 +10,13 @@ CREATE USER 'visify'@'localhost';
 SET PASSWORD FOR 'visify'@'%' = PASSWORD('2FatLadies88');
 GRANT SELECT, INSERT, UPDATE, CREATE TEMPORARY TABLES, REFERENCES ON visify.* TO visify@localhost;
 
+
+CREATE USER 'backup'@'localhost';
+SET PASSWORD FOR 'backup'@'localhost' = PASSWORD('JSNCACNISQXGMA');
+GRANT SELECT, CREATE TEMPORARY TABLES ON visify.* TO 'backup'@'localhost';
+
+
+
 # can fail if user exists
 GRANT SELECT, INSERT, UPDATE, DELETE, DROP, ALTER, CREATE TEMPORARY TABLES ON test.* TO rohit@localhost;
 ##GRANT ALL ON test TO 'rohit'@'%';
