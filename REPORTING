@@ -7,12 +7,16 @@ In stats dir locally
   +----daily
   |     |
   |     +--- POS:visitor count by block
-  |     +--- Top n most frequent Visitors to the complex
-  |     +--- Top n most visited flats
+  |     +--- %tage of new visitors
+  |     +--- Any movein/moveout/intershift details
+  |     +--- Details of when Others was used
   |
   |----weekly
   |     |
   |     +--- POS:TODO
+  |     +--- Visitor count throught the week
+  |     +--- Top n most frequent Visitors to the complex
+  |     +--- Top n most visited flats
   |
   |----monthly
   |     |

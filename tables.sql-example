@@ -7,12 +7,12 @@
 #secret
 #CREATE USER 'rohit'@'%' IDENTIFIED BY PASSWORD '*14E65567ABDB5135D0CFD9A70B3032C179A49EE7';
 CREATE USER 'visify'@'localhost';
-SET PASSWORD FOR 'visify'@'%' = PASSWORD('2FatLadies88');
+SET PASSWORD FOR 'visify'@'%' = PASSWORD('XXXX');
 GRANT SELECT, INSERT, UPDATE, CREATE TEMPORARY TABLES, REFERENCES ON visify.* TO visify@localhost;
 
 
 CREATE USER 'backup'@'localhost';
-SET PASSWORD FOR 'backup'@'localhost' = PASSWORD('JSNCACNISQXGMA');
+SET PASSWORD FOR 'backup'@'localhost' = PASSWORD('XXXX');
 GRANT SELECT, CREATE TEMPORARY TABLES ON visify.* TO 'backup'@'localhost';
 
 

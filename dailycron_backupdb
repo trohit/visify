@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 # Program to make a backup of the mysql database 
 # two backups are made:
 # 1. in the directory where its invoked
@@ -10,6 +10,26 @@ import shutil
 # removes files older than 24 hours
 import os
 import datetime
+from ConfigParser import ConfigParser
+
+def readConfig(installationPath):
+	config = ConfigParser()
+	#r = config.read("sample.ini")
+        print("installationPath is:" + installationPath)
+
+        #installationPath="/var/www/html/d3/"
+        configAbsPath = installationPath + "/" + "credentials.ini"
+	r = config.read(configAbsPath)
+	
+	dictionary = {}
+	for section in config.sections():
+	    dictionary[section] = {}
+	    for option in config.options(section):
+	        dictionary[section][option] = config.get(section, option)
+	#pprint(dictionary)
+	#print("sendto is something like:"+ dictionary["Reports"]['sendto'])
+        #sys.exit(1)
+	return dictionary
 
 def remove_older_than_n_hours(search_dir, elapsed_hours=24):
     #dir_to_search = os.path.curdir
@@ -76,11 +96,29 @@ def dump_mysql_and_prune_old_files(localDumpDir, isSdCardPresent, sdDumpdirFullP
         MYSQLDUMP=subprocess.check_output('which mysqldump', shell=True).rstrip('\n')
         GZIP=subprocess.check_output('which gzip', shell=True).rstrip('\n')
         CCRYPT=subprocess.check_output('which ccrypt', shell=True).rstrip('\n')
+
+        # get installation path
+        installationPath = ""
+        isLink = os.path.islink(sys.argv[0])
+        if isLink == True:
+            targetPath = os.readlink(sys.argv[0])
+            installationPath = os.path.dirname(targetPath)
+        else:
+            #print("self :"+ sys.argv[0] + " is not a link")
+            targetPath = (sys.argv[0])
+            installationPath = os.path.dirname(targetPath)
         #DBNAME="test"
-        DBNAME="visify"
-        DBUSER="backup"
-        DBPASSWD="JSNCACNISQXGMA"
-        KEYFILE="/root/keyfile"
+        #DBNAME="visify"
+        #DBUSER="backup"
+        #DBPASSWD="XXXX"
+        #KEYFILE="/root/keyfile"
+
+        config          = readConfig(installationPath)
+        DBNAME          = config['Main']['db']
+        DBUSER          = config['Backup']['backup_username']
+        DBPASSWD        = config['Backup']['backup_password']
+        KEYFILE         = config['Backup']['backup_keyfile']
+
         TIMESTAMP=subprocess.check_output('date \"+%m-%d-%Y-%H%M\"', shell=True).rstrip('\n')
         MYSQLDUMP_OPTIONS=" --single-transaction "
         FULL_DUMP_PATH=localDumpDir + "/mysqldump_" +TIMESTAMP+".sql.gz.cpt"
@@ -103,7 +141,8 @@ agedHours = 96
 
 isSdCardPresent = False
 dumpDirRelativePath = ".dump"
-localDumpDirPathAbs = "/root/" + dumpDirRelativePath
+#localDumpDirPathAbs = "/root/" + dumpDirRelativePath
+localDumpDirPathAbs = "./" + dumpDirRelativePath
 base_path = find_sdcard_path()
 sdDumpdirFullPath = base_path + "/" + dumpDirRelativePath
 

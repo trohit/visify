@@ -1,0 +1,16 @@
+#!/bin/bash
+#INSTALLATION_PATH="/var/www/html/d3"
+# for some reason may not run with .sh suffix in filename
+if [ -L $0 ] ; then
+        echo "$0 is a symbolic link"
+        INSTALLATION_PATH="$(dirname "$(readlink -f "$0")")"
+else
+        INSTALLATION_PATH="$(cd "$(dirname "$0")" && pwd)"
+fi
+echo $INSTALLATION_PATH
+#exit
+DAILY_REPORT="/tmp/.daily_report"
+/usr/bin/php $INSTALLATION_PATH/run_daily_report.php > $DAILY_REPORT
+python $INSTALLATION_PATH/sendmail.py "Daily Visitor Report" $DAILY_REPORT
+echo "Daily Report Successful: $(date)" >> /tmp/visify.log
+

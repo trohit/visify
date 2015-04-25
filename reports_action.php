@@ -73,7 +73,11 @@ foreach($_REQUEST as $name=>$value){
 	switch($name){
 	case "start_date":
 		if (!empty($_REQUEST["start_date"])) {
-			list($st_dd,$st_mm,$st_yyyy) = explode("/",$value);
+			if (strstr($value, "/")) {
+				list($st_dd,$st_mm,$st_yyyy) = explode("/",$value);
+			} else if (strstr($value, "-")) {
+				list($st_dd,$st_mm,$st_yyyy) = explode("-",$value);
+			}
 			//$swizzled_value = $st_yyyy.$st_mm.$st_dd;
 			$swizzled_value = $st_yyyy.$st_mm.$st_dd."235959";
 			$arrFields[] = "vitime >= '".$swizzled_value."'";
@@ -82,7 +86,12 @@ foreach($_REQUEST as $name=>$value){
 		break;
 	case "end_date":
 		if (!empty($_REQUEST["end_date"])) {
-			list($end_dd,$end_mm,$end_yyyy) = explode("/",$value);
+			if (strstr($value, "/")) {
+				list($end_dd,$end_mm,$end_yyyy) = explode("/",$value);
+			} else if (strstr($value, "-")) {
+				list($end_dd,$end_mm,$end_yyyy) = explode("-",$value);
+			}
+			//list($end_dd,$end_mm,$end_yyyy) = explode("/",$value);
 			//$swizzled_value = $end_yyyy.$end_mm.$end_dd;
 			$swizzled_value = $end_yyyy.$end_mm.$end_dd."235959";
 			$arrFields[] = "vitime <= '".$swizzled_value."'";
@@ -168,14 +177,24 @@ if (isset($is_debug) && $is_debug) {
 	}
 
 	if (!empty($_REQUEST["start_date"])) {
-		list($st_dd,$st_mm,$st_yyyy) = explode("/",$_REQUEST["start_date"]);
+		if (strstr($_REQUEST["start_date"], "/")) {
+			list($st_dd,$st_mm,$st_yyyy) = explode("/",$_REQUEST["start_date"]);
+		} else if (strstr($_REQUEST["start_date"], "-")) {
+			list($st_dd,$st_mm,$st_yyyy) = explode("-",$_REQUEST["start_date"]);
+		}
+		//list($st_dd,$st_mm,$st_yyyy) = explode("/",$_REQUEST["start_date"]);
 		echo " from $st_dd.$st_mm.$st_yyyy";
 	}
 	if (!empty($_REQUEST["start_date"]) && (!empty($_REQUEST["end_date"]))) {
 		echo " and";
 	}
 	if (!empty($_REQUEST["end_date"])) {
-		list($end_dd,$end_mm,$end_yyyy) = explode("/",$_REQUEST["end_date"]);
+		if (strstr($_REQUEST["end_date"], "/")) {
+			list($end_dd,$end_mm,$end_yyyy) = explode("/",$_REQUEST["end_date"]);
+		} else if (strstr($_REQUEST["end_date"], "-")) {
+			list($end_dd,$end_mm,$end_yyyy) = explode("-",$_REQUEST["end_date"]);
+		}
+		//list($end_dd,$end_mm,$end_yyyy) = explode("/",$_REQUEST["end_date"]);
 		echo " ending before $end_dd.$end_mm.$end_yyyy" ;
 	}
 	echo "\n<BR>\n";

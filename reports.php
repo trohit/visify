@@ -292,7 +292,7 @@ display_menu_common("Reports");
 //exit(1);
 ?>
 	<div id="form_container">
-<form id="reports" action="reports_action.php" method="post">		<table border="0">
+<form id="reports" action="reports_action.php" method="get">		<table border="0">
 <tr> 
 	<td>
 		<b><label>Block:</label></b> 
