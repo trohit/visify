@@ -658,6 +658,30 @@ function disp_purpose_count_by_date($cand_date)
 		draw_table($results);
 	}
 }
+
+function get_specific_purpose_details_by_date($purpose, $cand_date_from, $cand_date_to)
+{
+	#$query = "SELECT vcomments AS COMMENTS, COUNT(*) AS COUNT FROM vrecord,visitor WHERE visitor.vid=vrecord.vid AND vitime >= '$cand_date_from' AND vitime <= '$cand_date_to' AND vpurpose='$purpose' GROUP BY vcomments ORDER BY COUNT DESC"; 
+	$query = "SELECT vcomments AS SpecificPurposeForOthers, COUNT(*) AS COUNT FROM vrecord,visitor WHERE visitor.vid=vrecord.vid AND vitime >= '$cand_date_from' AND vitime <= '$cand_date_to' AND vpurpose='$purpose' GROUP BY vcomments ORDER BY COUNT DESC"; 
+	#print $query;
+	$results = DB::query($query);
+	#print_r($results);
+	if ($results != false) {
+		draw_table($results);
+	}
+}
+
+function get_specific_moving_details_by_date($cand_date_from, $cand_date_to)
+{
+	$query = "select vpurpose AS Purpose, vcomments AS Commment, vname AS Name, vphone AS Phone,vblock AS Block, vflatnum AS FlatNum, vvehicle_reg_num AS VehicleReg,vvehicle_type AS Type, vitime AS Time from visitor, vrecord where vrecord.vid=visitor.vid AND vitime >= '$cand_date_from' AND vitime <= '$cand_date_to' AND (vpurpose='InternalShift' OR vpurpose='MoveIn' OR vpurpose='MoveOut') ORDER BY vpurpose";
+	#print $query;
+	$results = DB::query($query);
+	#print_r($results);
+	if ($results != false) {
+		draw_table($results);
+	}
+}
+
 $is_debug = 0;
 #print_r(hoursRange());
 #exit(1);
@@ -696,6 +720,17 @@ if ($mode == "lab") {
 #echo "Target date is:" . $target_date;
 disp_visitor_count_blockwise_daily($block_arr, $num_interval);
 disp_purpose_count_by_date($target_date);
+#get_others_details_by_date(get_from_today(-25), get_from_today(0));
+#echo get_from_today(-1) ."..." . get_from_today(0);
+get_specific_purpose_details_by_date('Others', get_from_today(-1), get_from_today(0));
+get_specific_moving_details_by_date(get_from_today(-1), get_from_today(0));
+
+
+
+
+
+#get_specific_purpose_details_by_date('Others', get_from_today(-30), get_from_today(-29));
+exit;
 
 #print(get_new_visitor_count_by_date($targetDate));
 #echo arr2textTable($r, false);

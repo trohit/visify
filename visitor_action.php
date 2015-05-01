@@ -32,7 +32,7 @@ display_menu_common("Visitor Checkin");
 require_once(dirname(__FILE__) . "/print_pass.php");
 ?>
 <div align="center">
-	<img src='images/thankyou-banner.jpg' title='Thank You'/>
+	<img src='images/thankyou-banner.jpg' height='80' width='384' title='Thank You'/>
 </div>
 <div align="center">
 <!--
@@ -118,7 +118,7 @@ if($is_verbose) {
 		));
 		// new visitor
 		$vid = DB::insertId(); // which id did it choose?!? tell me!!
-		echo "SUCCESS! Inserted details of FIRST visit for NEW visitor with id $vid\n";
+		echo "SUCCESS! Inserted details of FIRST visit for NEW visitor with id $vid";
 	} else {
 		$is_returning_visitor = true;
 		if ($is_exists_pic == "false") {
@@ -176,7 +176,7 @@ if($is_verbose) {
 	$vrecordid = DB::insertId(); // which id did it choose?!? tell me!!
 	if ($is_returning_visitor) {
 		// Old Visitor
-		echo "SUCCESS! Inserted details of new visit for returning visitor with id $vid\n";
+		echo "SUCCESS! Inserted details of visit for returning visitor with id $vid";
 	}
 	echo '<BR>';
 	echo "Made note of the visit with recordid $vrecordid.\n";

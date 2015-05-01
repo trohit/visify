@@ -36,11 +36,28 @@ def send_mail(subject, body, installationPath):
 
     config = readConfig(installationPath)
 
-    username 	= config['Reports']['from_username']
-    password 	= config['Reports']['from_password']
-    to 		= config['Reports']['sendto']
+    username 	    = config['Reports']['from_username']
+    password 	    = config['Reports']['from_password']
+    to 		    = config['Reports']['sendto']
+    to_2            = ''
+    to_3            = ''
+    securitymailid  = ''
+    if 'sendto_2' in config['Reports'].keys():
+        to_2 = config['Reports']['sendto_2']
 
-    print("Sending mail to :" + to)
+    if 'sendto_3' in config['Reports'].keys():
+        to_3 = config['Reports']['sendto_3']
+
+    if 'securitymailid' in config['Reports'].keys():
+        securitymailid  = config['Reports']['securitymailid']
+
+    recipientList = [to, to_2, to_3, securitymailid]
+    #remove empty strings
+    recipientList = filter(None, recipientList)
+
+    print("Sending mail to :")
+    pprint(recipientList)
+    #sys.exit(1)
 
     # Gmail Login
     #username = 'XXXX@gmail.com'
@@ -57,7 +74,8 @@ def send_mail(subject, body, installationPath):
     msg['To']       = to
 
     # can add some more to addrs if needed
-    TOADDRS         = to
+    #TOADDRS         = to
+    TOADDRS         = recipientList
     
     # Create the body of the message (a plain-text and an HTML version).
     text = "Please enable HTML formatting in your email client to view this mail properly"

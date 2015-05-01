@@ -48,7 +48,9 @@ DB::$dbName 	= $ini_array["db"];
 DB::$host 	= $ini_array["host"];
 #DB::$port = '12345'; // defaults to 3306 if omitted
 #DB::$encoding = 'utf8'; // defaults to latin1 if omitted
-//$is_debug = true;
+$max_report_search_results = $ini_array["max_report_search_results"];
+
+#$is_debug = true;
 if (isset($is_debug) && $is_debug) {
 	echo "<table>";
 
@@ -116,6 +118,12 @@ foreach($_REQUEST as $name=>$value){
 			$is_condition_present = true;
 		}
 		break;
+	case "purpose":
+		if (!empty($_REQUEST["purpose"])) {
+			$arrFields[] = "vpurpose = '" . $value ."'";
+			$is_condition_present = true;
+		}
+		break;
 	case "submit":
 		break;
 	case "form_id":
@@ -136,11 +144,11 @@ if (empty($arrFields) || count($arrFields) == 0) {
 //searching for records where visitor photo exists
 //SELECT (visitor.vid),vrecordid,vname,vphone,vctime,vblock,vflatnum,vvehicle_reg_num FROM visitor,vrecord WHERE vrecord.vid=visitor.vid AND visitor.vphoto <>'';
 
-$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_reg_num FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
+$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
 if (isset($arrFields)) {
 	$query .= "AND ".implode(" AND ",$arrFields);
 }
-$query .= " LIMIT 2000";
+$query .= " LIMIT " . $max_report_search_results;
 
 if (isset($is_debug) && $is_debug) {
 	echo "<br>\n$query<br>\n";
@@ -205,7 +213,12 @@ $counter = DB::count();
 if ($counter <= 0) {
 	echo "No Match. Try <a href=\"reports.php\">searching again</a>\n.";
 } else {
-	echo $counter . " matches found";
+	echo $counter;
+	if ($counter >= $max_report_search_results) {
+		echo "(Maxlimit Reached) ";
+	}
+       	echo " matches found. ";
+	echo "Click here to <a href=\"reports.php\">search again</a>\n.";
 	echo "<BR>\n";
 }
 $is_table_header_printed = false;
@@ -228,6 +241,7 @@ foreach ($results as $row) {
 			//	echo "<\th>\n";
 			//}
 			if ($key=="vctime") {
+				// do not print this field
 				continue;
 			}
 
