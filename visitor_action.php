@@ -32,7 +32,7 @@ display_menu_common("Visitor Checkin");
 require_once(dirname(__FILE__) . "/print_pass.php");
 ?>
 <div align="center">
-	<img src='images/thankyou-banner.jpg' height='80' width='384' title='Thank You'/>
+	<img src='images/thankyou-banner.jpg' height='60' width='288' title='Thank You'/>
 </div>
 <div align="center">
 <!--
@@ -77,14 +77,14 @@ if($is_verbose) {
 
 /* extract all the data - PARSING. */
 	// mandatory fields.
-	$vname 			= $_POST["name"];
-	$vphone			= $_POST["phone_num"];
+	$vname			= ((!empty($_REQUEST["name"                ]))?trim($_REQUEST["name"     ]):"");
+	$vphone			= ((!empty($_REQUEST["phone_num"              ]))?trim($_REQUEST["phone_num"     ]):"");
 
 	//optional fields.
 	$vgender 		= ((!empty($_POST["gender"	]))?$_POST["gender"     ]:NULL);
 	$vage			= ((!empty($_POST["age"		]))?$_POST["age"     ]:0);
 	$vaddress		= ((!empty($_POST["vaddress"	]))?$_POST["vaddress"]:0);
-	$vcomments		= ((!empty($_POST["comments"	]))?$_POST["comments"]:"");
+	$vcomments		= ((!empty($_POST["comments"	]))?trim($_POST["comments"]):"");
 
 	$start_time		= date("Y-m-d H:i:s");
 	$vctime			= $start_time;
@@ -118,7 +118,7 @@ if($is_verbose) {
 		));
 		// new visitor
 		$vid = DB::insertId(); // which id did it choose?!? tell me!!
-		echo "SUCCESS! Inserted details of FIRST visit for NEW visitor with id $vid";
+		echo "Success! Inserted details of FIRST visit for NEW visitor with id $vid";
 	} else {
 		$is_returning_visitor = true;
 		if ($is_exists_pic == "false") {
@@ -145,11 +145,11 @@ if($is_verbose) {
 	$vvehicle_reg_num	= ((!empty($_POST["vehicle_reg_num"		]))?$_POST["vehicle_reg_num"     ]:0);
 	$vvehicle_type		= ((!empty($_POST["vehicle_type"		]))?$_POST["vehicle_type"     ]:0);
 	$vitime 		= $start_time;
-	$votime			= $start_time;
+	#$votime			= $start_time;
 	$vphoto;
 	$vflatnum		= $_POST["flat_num"];
 	$vblock			= $_POST["block"];
-	$vtomeet		= $_POST["to_meet"];
+	$vtomeet		= ((!empty($_REQUEST["to_meet"             ]))?trim($_REQUEST["to_meet"     ]):"");
 	$vnum_visitors		= $_POST["num_visitors"];
 	$vpurpose		=  ((!empty($_POST["purpose"		]))?$_POST["purpose"     ]:0);
 
@@ -172,7 +172,7 @@ if($is_verbose) {
 		'vnum_visitors'		=> $vnum_visitors,
 		'vduration_fillup'	=> $vduration_fillup,
 	));
-	echo "<BR>";
+	#echo "<BR>";
 	$vrecordid = DB::insertId(); // which id did it choose?!? tell me!!
 	if ($is_returning_visitor) {
 		// Old Visitor
@@ -225,6 +225,7 @@ foreach ($_REQUEST as $key => $value) {
 	$value = sanitize($value);
 	if ($key=="block_other") continue;
 	if($is_debug == false) {
+		if ($key=="isVehicleSelected") continue;
 		if ($key=="isSkipPicSelected") continue;
 		if ($key=="submit") continue;
 		if ($key=="vid") continue;
@@ -294,7 +295,11 @@ foreach ($_REQUEST as $key => $value) {
 	echo "</td>";
 	echo "<td>";
 
-	echo $value;
+	if ($key=="vehicle_type") {
+		show_image_by_vehicle_type($value);
+	} else {
+		echo $value;
+	}
 	//if ($key == "name" && $vid == NULL) {
 	if ($key == "name" && is_null($vid)) {
 		echo "<img src='images/new-icon.png' title='First-Time Visitor'/>";

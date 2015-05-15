@@ -44,3 +44,52 @@ function block_changed(selected_block)
 	// This is to force the user to make a choice
 	document.getElementById('flat_num').selectedIndex = -1
 }
+
+function flat_changed(selected_block, selected_flat)
+{
+	//alert("Flat changed" + selected_block + selected_flat);
+	var num_limit = 5;
+	var url = 'unit_fetch_details.php' + '?block=' + selected_block + '&flatnum=' + selected_flat + '&num_limit=' + num_limit;
+	$("#txt_resident").html("");
+	//$("#txt_resident").append(selected_block + selected_flat);
+	//document.getElementById('txt_resident').style.display='inline';
+	//$('#txt_resident').style.display='inline';
+
+
+	$.getJSON(url,function(result1){
+	//alert("Flat changed" + selected_block + selected_flat);
+		$("#txt_resident").html("");
+		var result;
+		var isFirstRow = true;
+		$.each(result1.slice(0,num_limit), function(i, data) {
+			//use latest row to pre-fill form
+			if (isFirstRow) {
+				isFirstRow = false;
+				result = data;
+			}
+			// fetch all names, pre-fill first name
+			var ul_data = data.vtomeet
+			ul_data = ul_data + "<BR>";
+			//<a href='javascript:set_resident("text1")'>text1</a>
+			al_data = "<a href='javascript:set_resident(\""+data.vtomeet+"\")'>"+data.vtomeet+"</a> &nbsp;";
+			//alert(al_data);
+			$("#txt_resident").append(al_data);
+			//alert(ul_data);
+		});
+		if (result) {
+			//use latest row to pre-fill form
+			//$("#txt_resident").html("");
+			//alert("As per records, name is " + result.vname + " filling other fields");
+			$("#to_meet").val(result.vtomeet);
+			// notify other listeners that this field changed
+			//$("#block").trigger("change");
+			//if ($("#block").val() == "Others") {
+			//	$("#block_other").val(result.vflatnum);
+			//} else {
+			//	$("#flat_num").val(result.vflatnum);
+			//}
+			//alert(result.vid);
+		}
+	}); //end of getJSON
+	$("#txt_resident").css("font-size", 12);
+}

@@ -185,5 +185,14 @@ function sanitize($input, $link=NULL)
 	return $output;
 }
 
+function show_image_by_vehicle_type($vehicle_type)
+{
+	if ($vehicle_type == "2w") {
+		echo '<img id="bikeId" src="images/bike_checked.png" alt="bike" height="32" title="Bike"/>';
+	} else if ($vehicle_type == "4w") {
+		echo ' <img id="carId" src="images/car_checked.png" alt="car" height="24" title="Car"/>';
+	}
+}
+
 
 ?>

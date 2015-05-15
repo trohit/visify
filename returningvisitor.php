@@ -81,7 +81,15 @@ function doLoadStuff()
 	$("#phone_num").trigger("change");
 	//$("#block").trigger("change");
 	showVehicleinfo();
+
 }
+
+
+function set_resident(name)
+{
+  $("#to_meet").val(name)
+}
+
 
 function startTime() {
 	var today=new Date();
@@ -499,12 +507,12 @@ if (strlen($vphone)==0) {
    </tr>
 -->
    <tr>
-     <td> <label class="description" for="element_10"> <img src="images/contact.jpg"/> Visitor Mobile Num*</label></td>
+     <td> <label class="description" for="element_10"> <img src="images/mobile1.png"/> Visitor Mobile Num*</label></td>
      <td> <label class="description" for="element_1"><img src="images/person.jpg"/> Visitor Name * </label> </td>
      <td> <label class="description" for="element_2"><img src="images/num_ppl.png"/> Headcount * </label> </td>
    </tr>
    <tr>
-     <td> <input id="phone_num" name="phone_num" type="text" class="element text medium" autofocus data-trigger="keyup"  data-type="digits" data-rangelength="[10,10]" data-required="true" title="phone consist of 10 numeric characters." <?php echo (isset($vphone))?('value="'.$vphone.'"'):""; ?>/></td>
+     <td> <input id="phone_num" name="phone_num" type="text" class="element text medium" placeholder="9972572098" autofocus data-trigger="keyup"  data-type="digits" data-rangelength="[10,10]" data-required="true" title="phone consist of 10 numeric characters." <?php echo (isset($vphone))?('value="'.$vphone.'"'):""; ?>/></td>
 <!--
      <td> <input id="name" name="name" type="text" maxlength="32" value="" class="element text large"  placeholder="FirstName LastName" data-regexp="^[A-Za-z ]+$" data-required="true" onkeyup="showNameHint(this.value)"/> </td>
 -->
@@ -545,16 +553,9 @@ if (strlen($vphone)==0) {
 </label>
 
 
-<!--
-<input class="reset-this" type="radio" name="beds" value="1" />1+
-<input class="reset-this" type="radio" name="beds" value="2" />2+
-	<input class="description" for="element_10" type="radio" name="vehicle_type" value="4w"> Car
-	<input class="description" for="element_10" type="radio" name="vehicle_type" value="2w"> Bike
--->
-
      </td>
      <td id="vehicle_num" name="vehicle_num" style='display:none'> 
-	<input type="text" id="vehicle_reg_num" name="vehicle_reg_num" class="element text big" maxlength="25" value="" placeholder="KA03AB1234" data-trigger="keyup"  data-type="alphanum" data-rangelength="[7,10]"  style="text-transform:uppercase" title="phone consist of 10 numeric characters."/>
+	<input type="text" id="vehicle_reg_num" name="vehicle_reg_num" class="element text big" maxlength="25" value="" placeholder="KA03AB1234" data-trigger="keyup"  data-type="alphanum" data-rangelength="[7,10]"  style="text-transform:uppercase" title="Vehicle Number should consist of 7-10 numeric characters."/>
      </td>
 <!--
      <td>
@@ -565,25 +566,12 @@ if (strlen($vphone)==0) {
    </tr>
 </table>
 <!--
-<input type="radio" name="vehicle_type" value="4w"><img src="images/car.jpg" alt="car" title="Car"/>
-<input type="radio" name="vehicle_type" value="2w"><img src="images/bike.jpg" alt="bike" title="Bike"/>
-
-		<div>
-			<li id="li_7" >
-			<label class="description" for="element_4"> <img src="images/car.jpg"/> Vehicle Registration Number </label>
-			<input type="text" id="vehicle_reg_num" name="vehicle_reg_num" class="element text small" maxlength="25" value="" placeholder="KA03AB1234" data-trigger="keyup"  data-type="alphanum" data-rangelength="[7,10]" title="phone consist of 10 numeric characters."/>
-			</li>
-		</div> 
--->
-
 <img id="top" src="images/top.png" alt="">
+-->
 <!-- Begin Owners details-->
 		<div>
 			<li id="li_10" >
 			<label class="description" for="element_6">  <img src="images/tomeet_icon.jpg" width="32" height="32"/>Block Name / Flat Number *</label>
-<!--
-			<input id="to_meet" name="to_meet" class="element text small" type="text" maxlength="32" value="" placeholder= "Barrack Obama" style="text-transform:capitalize" data-required="true"/> 
--->
 			<select name="block" id="block" class="element select small" onChange="block_changed(this.value);" data-required="true">
 				<?php
 				require_once("common_lib.php");
@@ -591,7 +579,7 @@ if (strlen($vphone)==0) {
 				display_block_options("block.ini", $display_dummy_option);
 				?>
 			</select>
-			<select name="flat_num" id='flat_num' class="element select small" title="Flat number needs to be selected">
+			<select name="flat_num" id='flat_num' class="element select small" onChange="flat_changed(document.getElementById('block').value, this.value);" title="Flat number needs to be selected">
 			</select>
 
 			<label class="description" id="label_block_other" style='display:none'>Specify where exactly:</label>
@@ -602,20 +590,8 @@ if (strlen($vphone)==0) {
 
 		<div>
 			<li id="li_11" >
-			<label class="description" for="element_6">  Name of Resident *</label>
+			<label class="description" for="element_6">  Name of Resident * / Purpose *</label>
 			<input id="to_meet" name="to_meet" class="element text small" type="text" maxlength="32" value="" placeholder= "Barrack Obama" style="text-transform:capitalize" data-required="true"/> 
-			</li>
-		</div> 
-
-
-<!-- End Owners details-->
-<img id="top" src="images/top.png" alt="">
-		<div>
-			<li id="li_12" >
-			<label class="description" for="element_7">Purpose *</label>
-<!--
-			<input id="purpose" name="purpose" class="element text medium" type="text" maxlength="128" value="" placeholder="(optional)"/> 
--->
 			<select class="element select small" id="purpose" name="purpose"> 
 				<!--
 				<option value="" selected="selected"></option>
@@ -627,6 +603,17 @@ if (strlen($vphone)==0) {
 				display_purpose_options("purpose.ini");
 				?>
 			</select>
+
+                        <div id="txt_resident"></div>
+
+			</li>
+		</div> 
+
+
+<!-- End Owners details-->
+<!--
+<img id="top" src="images/top.png" alt="">
+-->
 
 			<label class="description" for="element_8">Comments </label>
 			<input id="comments" name="comments" class="element text medium" type="text" maxlength="128" value="" placeholder="(optional)"/> 
