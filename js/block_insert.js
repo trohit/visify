@@ -68,28 +68,22 @@ function flat_changed(selected_block, selected_flat)
 				result = data;
 			}
 			// fetch all names, pre-fill first name
-			var ul_data = data.vtomeet
-			ul_data = ul_data + "<BR>";
-			//<a href='javascript:set_resident("text1")'>text1</a>
 			al_data = "<a href='javascript:set_resident(\""+data.vtomeet+"\")'>"+data.vtomeet+"</a> &nbsp;";
 			//alert(al_data);
 			$("#txt_resident").append(al_data);
-			//alert(ul_data);
 		});
 		if (result) {
 			//use latest row to pre-fill form
-			//$("#txt_resident").html("");
-			//alert("As per records, name is " + result.vname + " filling other fields");
 			$("#to_meet").val(result.vtomeet);
 			// notify other listeners that this field changed
 			//$("#block").trigger("change");
-			//if ($("#block").val() == "Others") {
-			//	$("#block_other").val(result.vflatnum);
-			//} else {
-			//	$("#flat_num").val(result.vflatnum);
-			//}
-			//alert(result.vid);
 		}
 	}); //end of getJSON
-	$("#txt_resident").css("font-size", 12);
+	// make the font smaller
+	// http://stackoverflow.com/questions/7654708/jquery-changing-font-family-and-font-size
+	//$('#txt_resident').css("font-family", "Impact");
+	//$('#txt_resident').css("font-family", "Verdana");
+	//$('#txt_resident').css("font-family", "Arial");
+	$('#txt_resident').css("font-family", "Comic Sans MS");
+	$("#txt_resident").css("font-size", 14);
 }

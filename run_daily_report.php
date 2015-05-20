@@ -673,7 +673,7 @@ function get_specific_purpose_details_by_date($purpose, $cand_date_from, $cand_d
 
 function get_specific_moving_details_by_date($cand_date_from, $cand_date_to)
 {
-	$query = "select vpurpose AS Purpose, vcomments AS Commment, vname AS Name, vphone AS Phone,vblock AS Block, vflatnum AS FlatNum, vvehicle_reg_num AS VehicleReg,vvehicle_type AS Type, vitime AS Time from visitor, vrecord where vrecord.vid=visitor.vid AND vitime >= '$cand_date_from' AND vitime <= '$cand_date_to' AND (vpurpose='InternalShift' OR vpurpose='MoveIn' OR vpurpose='MoveOut') ORDER BY vpurpose";
+	$query = "select vpurpose AS Purpose, vcomments AS Commment, vname AS Name, vphone AS Phone,vtomeet as ForResident, vblock AS Block, vflatnum AS FlatNum, vvehicle_reg_num AS VehicleReg,vvehicle_type AS Type, vitime AS Time from visitor, vrecord where vrecord.vid=visitor.vid AND vitime >= '$cand_date_from' AND vitime <= '$cand_date_to' AND (vpurpose='InternalShift' OR vpurpose='MoveIn' OR vpurpose='MoveOut') ORDER BY vpurpose";
 	#print $query;
 	$results = DB::query($query);
 	#print_r($results);
@@ -682,6 +682,23 @@ function get_specific_moving_details_by_date($cand_date_from, $cand_date_to)
 	}
 }
 
+function get_record_count()
+{
+	$query = "SELECT COUNT(*) AS total FROM vrecord";
+	#print($query);
+	$results = DB::query($query);
+	#print_r($results);
+	return($results[0]["total"]);
+}
+
+function get_visitor_count()
+{
+	$query = "SELECT COUNT(*) AS total FROM visitor";
+	#print($query);
+	$results = DB::query($query);
+	#print_r($results);
+	return($results[0]["total"]);
+}
 $is_debug = 0;
 #print_r(hoursRange());
 #exit(1);
@@ -724,6 +741,9 @@ disp_purpose_count_by_date($target_date);
 #echo get_from_today(-1) ."..." . get_from_today(0);
 get_specific_purpose_details_by_date('Others', get_from_today(-1), get_from_today(0));
 get_specific_moving_details_by_date(get_from_today(-1), get_from_today(0));
+$visitor_count = get_visitor_count();
+$record_count = get_record_count();
+print "Tracking ". $record_count . " visits from " . $visitor_count . " visitors"; 
 
 
 

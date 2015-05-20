@@ -23,12 +23,17 @@ function get_past_by_number($phone_num, $num_limit=1)
 	$response = array();
 
 	while ($row = mysqli_fetch_assoc($result)) {
+		// also add weekday
+		$weekday = get_weekday_by_date($row['vitime']);
+		$row['weekday'] = $weekday;
+		#print_r($row);
 		array_push($response, $row);
 	}
 	// remove 0 values from the array
 	$count = count($response);
 	for($i = 0; $i < $count; $i++) {
-		$response[$i] = array_filter($response[$i]);
+		// trim the elements first and then array_filter to filter empty elements
+		$response[$i] = array_filter(array_map('trim', $response[$i]));
 	}
 	//print_r($response);
 

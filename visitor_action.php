@@ -77,7 +77,7 @@ if($is_verbose) {
 
 /* extract all the data - PARSING. */
 	// mandatory fields.
-	$vname			= ((!empty($_REQUEST["name"                ]))?trim($_REQUEST["name"     ]):"");
+	$vname			= ((!empty($_REQUEST["name"                ]))?ucwords(trim($_REQUEST["name"     ])):"");
 	$vphone			= ((!empty($_REQUEST["phone_num"              ]))?trim($_REQUEST["phone_num"     ]):"");
 
 	//optional fields.
@@ -149,7 +149,7 @@ if($is_verbose) {
 	$vphoto;
 	$vflatnum		= $_POST["flat_num"];
 	$vblock			= $_POST["block"];
-	$vtomeet		= ((!empty($_REQUEST["to_meet"             ]))?trim($_REQUEST["to_meet"     ]):"");
+	$vtomeet		= ((!empty($_REQUEST["to_meet"             ]))?ucwords(trim($_REQUEST["to_meet"     ])):"");
 	$vnum_visitors		= $_POST["num_visitors"];
 	$vpurpose		=  ((!empty($_POST["purpose"		]))?$_POST["purpose"     ]:0);
 

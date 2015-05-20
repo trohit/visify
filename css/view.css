@@ -1156,3 +1156,17 @@ font-weight: bold;
     word-spacing : normal;
     z-index : auto;
 }
+
+/*
+ * for restricting width of columns in the report results table.
+ */
+.reports_action tbody td#report_result
+{
+    max-width: 10%;
+/*
+    max-height: 150px;
+    overflow: hidden;
+    word-wrap: break-word;
+*/
+    word-wrap: overflow-wrap;
+}

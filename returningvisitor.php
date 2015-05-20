@@ -84,7 +84,7 @@ function doLoadStuff()
 
 }
 
-
+//http://stackoverflow.com/questions/9452296/javascript-to-jquery-add-text-in-input-onclick
 function set_resident(name)
 {
   $("#to_meet").val(name)
@@ -192,6 +192,7 @@ function showVehicleinfo()
 	//alert("showVehicleinfo");
 	if ($('#isVehicleSelected').is(':checked')) {	
 		$('#vehicleTable').attr('border', '1');
+		//$('#vehicleTable').attr('border', '0');
 		$("#vehicle_num").show("fast");
 		$("#vehicle_type").show("fast");
 		$("#txt_display_vehicle_labels").show("fast");
@@ -331,6 +332,8 @@ $(document).ready(function(){
 
 		$.getJSON(url,function(result1){
 			$("#txt_side_msg").html("");
+			// blank out any other unit residents details
+			$("#txt_resident").html("");
 
 
 			var result;
@@ -344,7 +347,7 @@ $(document).ready(function(){
 				// headcount not populated intentionally
 				// vehicle type not populated intentionally
 				// TODO: purpose
-				var ul_data = data.vitime+" "+data.vtomeet+" "+data.vblock+" "+data.vflatnum;
+				var ul_data = data.weekday + " " + data.vitime+" "+data.vtomeet+" "+data.vblock+" "+data.vflatnum;
 				if (data.vvehicle_type) {
 					ul_data = ul_data + " " + data.vvehicle_type;
 				}
@@ -415,9 +418,29 @@ $(document).ready(function(){
 
 
 	}); //end of phone num change
+
+
+
+
 }); // end doc ready
 
 
+function purpose_changed(selected_purpose)
+{
+	if (selected_purpose == "Others") {
+		alert("Use 'Others' only if no other suitable category exists");
+	}
+		/*
+			//to make an additional field visible if block Others is selected.
+		block_changed_value_other(selected_purpose);
+		document.getElementById('flat_span').innerHTML=option_text_array[selected_purpose];
+
+		// also disable the default selection so that validation logic knows that 
+		// this field was not explicitly selected by the user. 
+		// This is to force the user to make a choice
+		document.getElementById('flat_span').selectedIndex = -1
+		 */
+}
 
 
 /*
@@ -487,7 +510,7 @@ if (strlen($vphone)==0) {
 <div id="txt_date"></div>
 </div>
 -->
-<img src="images/entry-icon.png" alt="Entry" style="float:left;margin:0 5px 0 0;" />Visit
+<img src="images/entry-icon.png" alt="Entry" height="24" width="24" style="float:left;margin:0 5px 0 0;" />Visit
 <div id="txt_date" align="center"></div>
 		<form id="new_visitor" name="new_visitor" class="appnitro"  method="post" action="visitor_add.php" data-validate="parsley">
 
@@ -530,7 +553,7 @@ if (strlen($vphone)==0) {
 </table>
 
 <!--
-<table border="1" id="vehicleTable" id="vehicleTable" width="100%" style='display:inline'>
+<table border="0" id="vehicleTable" id="vehicleTable" width="100%" style='display:inline'>
 -->
 <table border="0" id="vehicleTable" id="vehicleTable" width="100%">
    <tr id="txt_display_vehicle_labels" style='display:none'>
@@ -592,7 +615,7 @@ if (strlen($vphone)==0) {
 			<li id="li_11" >
 			<label class="description" for="element_6">  Name of Resident * / Purpose *</label>
 			<input id="to_meet" name="to_meet" class="element text small" type="text" maxlength="32" value="" placeholder= "Barrack Obama" style="text-transform:capitalize" data-required="true"/> 
-			<select class="element select small" id="purpose" name="purpose"> 
+			<select class="element select small" id="purpose" onChange="purpose_changed(this.value);" name="purpose"> 
 				<!--
 				<option value="" selected="selected"></option>
 				-->

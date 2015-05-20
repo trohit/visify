@@ -224,7 +224,7 @@ if ($counter <= 0) {
 $is_table_header_printed = false;
 $row_num = 1;
 //echo "\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"33%\">";
-echo "\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"1\">";
+echo "\n<table id=\"reports_action\" class=\"reports_action\" cellpadding=\"0\" cellspacing=\"0\" border=\"1\" style=\"font-size:65%;\">";
 foreach ($results as $row) {
 	//echo "\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"33%\">";
 	if ($is_table_header_printed == false) {
@@ -247,7 +247,9 @@ foreach ($results as $row) {
 
 			//strip the first 'v' from each header name
 			//so vitime become itime
-			$new_key = substr($key, 1);
+			// replace underscores with spaces
+			// and then uppercase first letter of each word
+			$new_key = ucwords(str_replace('_', ' ', substr($key, 1)));
 			echo "<th>".$new_key."</th>\n";
 		}
 		echo "</tr>\n";
@@ -279,16 +281,22 @@ foreach ($results as $row) {
 			continue;
 		} else if (strpos($key,'time') !== false) {
 			$weekday = get_weekday_by_date($value);
-			$value .= $weekday;
+			$value .= " " . $weekday;
 			//echo "<td>". $value . " " . $weekday . "</td>";
 			echo "<td>";
 			echo "<span title=\"".$row['vctime']."\">$value</span>";
 			echo "</td>";
 		} else if ($key=="vid") {
 			echo "<td>$row_num</td>";
+		} else if ($key=="vcomments") {
+			//echo "<td class=\"report_result\">$value</td>";
+			echo "<td class=\"report_result\" id=\"report_result\">$value</td>";
 		} else {
-			//echo "<td><input type=\"text\" name=\"".$key."\" value=\"". $value."\" readonly /></td>";
 			echo "<td>$value</td>";
+			//echo "<td><input type=\"text\" name=\"".$key."\" value=\"". $value."\" readonly /></td>";
+			//echo "<td style=\"max-width: 150px;word-wrap: break-word;\">$value</td>";
+			//echo "<td class=\"report_result\" id=\"report_result\">$value</td>";
+			//echo "<td class=\"report_result\">$value</td>";
 		}
 		echo "\n";
 	}

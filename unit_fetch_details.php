@@ -22,6 +22,7 @@ function get_names_by_unit($block, $flat, $num_limit=4)
 	//$result=mysqli_query($con, "SELECT vitime, vtomeet FROM vrecord WHERE vblock='$block' AND vflatnum='$flat'ORDER BY vrecordid DESC LIMIT $num_limit");
 
 	$response = array();
+	
 
 	while ($row = mysqli_fetch_assoc($result)) {
 		array_push($response, $row);
@@ -29,9 +30,10 @@ function get_names_by_unit($block, $flat, $num_limit=4)
 	// remove 0 values from the array
 	$count = count($response);
 	for($i = 0; $i < $count; $i++) {
-		$response[$i] = array_filter($response[$i]);
+		// trim the elements first and then array_filter to filter empty elements
+		$response[$i] = array_filter(array_map('trim', $response[$i]));
 	}
-	//print_r($response);
+	#print_r($response);
 
 	//sleep(1);
 	//echo($row[0]);
