@@ -194,5 +194,46 @@ function show_image_by_vehicle_type($vehicle_type)
 	}
 }
 
+function get_image_by_vehicle_type($vehicle_type, $height=24)
+{
+	if ($vehicle_type == "2w") {
+		return '<img id="bikeId" src="images/bike_checked.png" alt="bike" height="'.$height.'" title="Bike"/>';
+	} else if ($vehicle_type == "4w") {
+		return ' <img id="carId" src="images/car_checked.png" alt="car" height="'.$height.'" title="Car"/>';
+	}
+}
 
+function prepare_vname($vname)
+{
+	$new_vname = ucwords(str_replace('_', ' ', $vname));
+	return $new_vname;
+}
+
+function get_day_of_week($tempdate)
+{
+	//return date('l', strtotime( $tempdate));
+	return date('D', strtotime( $tempdate));
+}
+function get_from_today($n)
+{
+	return date('Y-m-d',strtotime($n." days"));
+}
+function get_date_from_base_date($n, $base_date)
+{
+	return date('Y-m-d',strtotime($n." days", strtotime($base_date)));
+}
+function get_yesterday()
+{
+	return date('Y-m-d',strtotime("-1 days"));
+}
+/*
+ * converts date like 2015-05-01 to 1st May 2015 Wed
+ * no sanity checks, so make sure input is valid
+ * formats ref: http://php.net/manual/en/function.date.php
+ */
+function convert_date_boring_to_interesting($date)
+{
+	$newDate = date("D, M j, Y", strtotime($date));
+	return $newDate;
+}
 ?>

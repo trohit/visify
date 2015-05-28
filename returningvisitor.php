@@ -52,6 +52,14 @@ $(function() {
 <link rel="stylesheet" href="js/parsley.min.js">
 -->
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 
 </head>
 <body id="main_body" onload="doLoadStuff()">
@@ -297,6 +305,22 @@ $(document).ready(function(){
 	if ($("#block").val() != "") {
 		$("#block").trigger("change");
 	}
+<?php
+	//forces the focus to move to the next input element.
+	$force_visitor_info_load = <<<EOT
+	$("#phone_num").change(function() {
+		var inputs = $(this).closest('form').find(':input');
+		inputs.eq( inputs.index(this)+ 1 ).focus();
+	});
+EOT;
+	$vphone	= $_REQUEST["phone_num"];
+	$is_phone_given = $_REQUEST["phone_num"];
+	if (trim(strlen($is_phone_given)==10)) {
+		//echo "No info for " . $vphone;
+		echo $force_visitor_info_load;
+		//unset($vphone);
+	}
+?>
 /*
 	$("#phone_num").change(function(){
 		alert(" phone nume Clicked");
@@ -419,9 +443,6 @@ $(document).ready(function(){
 
 	}); //end of phone num change
 
-
-
-
 }); // end doc ready
 
 
@@ -430,59 +451,9 @@ function purpose_changed(selected_purpose)
 	if (selected_purpose == "Others") {
 		alert("Use 'Others' only if no other suitable category exists");
 	}
-		/*
-			//to make an additional field visible if block Others is selected.
-		block_changed_value_other(selected_purpose);
-		document.getElementById('flat_span').innerHTML=option_text_array[selected_purpose];
-
-		// also disable the default selection so that validation logic knows that 
-		// this field was not explicitly selected by the user. 
-		// This is to force the user to make a choice
-		document.getElementById('flat_span').selectedIndex = -1
-		 */
 }
 
-
-/*
-	function getPastVisits()
-	{
-		alert("Populating past visits.");
-		$("#txt_side_msg").html("<img src='images/ajax-loader.gif' /> checking past visits...");
-
-
-		var phone_num=$("#phone_num").val();
-
-		var url = 'visitor_fetch_details.php' + '?phone_num=' + phone_num + '&num_limit=5';
-		alert(url);
-
-
-		$.getJSON(url,function(result){
-			$("#txt_side_msg").html("");
-			//$.each(result, function(i, field){
-			//	$("div").append(i+":"+field + " ");
-			//});
-			//alert("got json callback");
-			$("#txt_past_visits").html("");
-			if (result) {
-				//alert("As per records, name is " + result.vname + " filling other fields");
-				$("#txt_past_visits").val(result);
-				//$("#block").trigger("change");
-			}
-
-		}); //end of getJSON
-
-
-	}
-}); // end doc ready
-*/
-
-
-
 </script>
-
-
-
-
 
 <div id="loading">
 
@@ -490,16 +461,13 @@ function purpose_changed(selected_purpose)
 <?php
 require_once("common.php");	
 display_menu_common("Visitor Checkin");
-
-// check if phone num was already provided
-$vphone			= ((!empty($_REQUEST["phone_num"	]))?sanitize($_REQUEST["phone_num"]):NULL);
-if (strlen($vphone)==0) {
-	unset($vphone);
-} 
 ?>
 <div align="center">
-<!i-- need to keep both imgs together without any spaces for no gaps between images -->
+<!-- need to keep both imgs together without any spaces for no gaps between images -->
+<!--
 <img src="images/eco-logo.jpg" alt="Logo" border="0" height="90" width="100"/><img src="images/eco_building.jpg" alt="Logo"  border="0" height="90" width="700">
+-->
+<img src="images/eco-logo.jpg" alt="Logo" border="0" height="45" width="50"/><img src="images/eco_building.jpg" alt="Logo"  border="0" height="45" width="750">
 </div>
 
 <div id="form_container" data-parsley-validate>
@@ -535,8 +503,13 @@ if (strlen($vphone)==0) {
      <td> <label class="description" for="element_2"><img src="images/num_ppl.png"/> Headcount * </label> </td>
    </tr>
    <tr>
-     <td> <input id="phone_num" name="phone_num" type="text" class="element text medium" placeholder="9972572098" autofocus data-trigger="keyup"  data-type="digits" data-rangelength="[10,10]" data-required="true" title="phone consist of 10 numeric characters." <?php echo (isset($vphone))?('value="'.$vphone.'"'):""; ?>/></td>
+     <td> <input id="phone_num" name="phone_num" type="text" class="element text medium" placeholder="9972572098" autofocus data-trigger="keyup"  data-type="digits" data-rangelength="[10,10]" data-required="true" title="phone consist of 10 numeric characters." <?php echo (isset($vphone))?('value="'.$vphone.'"'):"";?>/></td>
+<?php
+echo " <script language='javascript'>$(\"#phone_num\").trigger(\"change\");</script>";
+?>
 <!--
+echo "<script language='javascript'>alert('hello');</script>";
+echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
      <td> <input id="name" name="name" type="text" maxlength="32" value="" class="element text large"  placeholder="FirstName LastName" data-regexp="^[A-Za-z ]+$" data-required="true" onkeyup="showNameHint(this.value)"/> </td>
 -->
      <td> <input id="name" name="name" type="text" maxlength="32" value="" class="element text large"  placeholder="FirstName LastName" style="text-transform:capitalize" style="whitespace:nowrap" data-regexp="^[A-Za-z ]+$" data-required="true"/> </td>

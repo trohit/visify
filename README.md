@@ -14,6 +14,7 @@ DEPENDS Upon:
 	sudo apt-get install unattended-upgrades
 	sudo dpkg-reconfigure unattended-upgrades
 9. Auto ssh and reverse connection for remote admin
+10. audio player such as afplay to play wav files for checkout
 
 
 Commands

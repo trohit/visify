@@ -10,7 +10,9 @@
         #mandatory{background-color: Green; color: Red; padding: 3px 10px; cursor:pointer; display: inline-block; border-radius: 5px;}
         #preview{margin: 20px 0;}
 	label{display: block;}
+/*
 	td {white-space:nowrap}
+*/
 	th {white-space:nowrap}
 
 </style>
@@ -144,7 +146,9 @@ if (empty($arrFields) || count($arrFields) == 0) {
 //searching for records where visitor photo exists
 //SELECT (visitor.vid),vrecordid,vname,vphone,vctime,vblock,vflatnum,vvehicle_reg_num FROM visitor,vrecord WHERE vrecord.vid=visitor.vid AND visitor.vphoto <>'';
 
-$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
+//$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
+//$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vvehicle_type,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
+$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_type,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
 if (isset($arrFields)) {
 	$query .= "AND ".implode(" AND ",$arrFields);
 }
@@ -235,6 +239,7 @@ foreach ($results as $row) {
 
 
 		foreach ($row as $key => $value) {
+			$value = trim($value);
 			//if ($key == "vid") {
 			//	echo "<th style=\"display:none;\">";
 			//	echo $key;
@@ -242,6 +247,10 @@ foreach ($results as $row) {
 			//}
 			if ($key=="vctime") {
 				// do not print this field
+				continue;
+			}
+			if ($key=="vvehicle_type") {
+				//will be shown in the vehicle number column
 				continue;
 			}
 
@@ -255,23 +264,24 @@ foreach ($results as $row) {
 		echo "</tr>\n";
 		$is_table_header_printed = true;
 	}
+
+	// make a temp copy of vehicle type and remove the key
+	// since keeping the key causes issues
+	$tmp_vehicle_type = $row["vvehicle_type"];
+	unset($row["vvehicle_type"]);
+	#print_r($row);
+
 	echo "<tr>\n";
 	if (isset($is_show_selector) && ($is_show_selector)) {
 		echo "<td><input type=\"submit\" value=\"ShowPic\"></td>\n";
 	}
 	foreach ($row as $key => $value) {
-		//echo "<td>" . $value . "</td>";
-		//echo '<form id="select_record" name="select_record" class="appnitro"  method="REQUEST" action="disp_photo.php">';
-		//echo "<td>";
-		//echo '<form id="select_record" name="select_record" class="appnitro"  method="REQUEST" action="disp_photo.php?vid=';
-		//echo $row['vid']."\"\>";
-		//echo "</form>";
-		//echo "</td>";
-
+		$value = trim($value);
 		if ($value == "0") {
 			echo "<td></td>";
 		} else if ($key=="vname") {	
 			//echo "<td><a href=\"find_action.php?phone_num=".$row['vphone']."\" >$value</a></td>";
+			$row['vname'] = ucwords($row['vname']);
 			$pic_title = $row['vname'];
 			echo "<td><a href=\"disp_photo.php?vid=".$row['vid']."\" rel=\"lightbox-pic\" title=\"".$pic_title."\">".$row['vname']."</a></td>\n";
 		} else if ($key=="vphone") {	
@@ -288,10 +298,18 @@ foreach ($results as $row) {
 			echo "</td>";
 		} else if ($key=="vid") {
 			echo "<td>$row_num</td>";
+		} else if ($key=="vvehicle_reg_num") {
+			$value = strtoupper($value);
+			$img_size = 12;
+			echo "<td>";
+			echo get_image_by_vehicle_type($tmp_vehicle_type,$img_size);
+			echo $value;
+			echo "</td>";
 		} else if ($key=="vcomments") {
 			//echo "<td class=\"report_result\">$value</td>";
 			echo "<td class=\"report_result\" id=\"report_result\">$value</td>";
 		} else {
+			$value = ucwords($value);
 			echo "<td>$value</td>";
 			//echo "<td><input type=\"text\" name=\"".$key."\" value=\"". $value."\" readonly /></td>";
 			//echo "<td style=\"max-width: 150px;word-wrap: break-word;\">$value</td>";

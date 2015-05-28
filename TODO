@@ -32,5 +32,5 @@ in visitor_add , which adds body.inc. jquery-ui.10.4 not found.
 10. When phone number is changed, no new data is fetched.
 11. Store flat owner contact details
 12. Create an import tool for setting blocks and residents
-13. Correct dates timestamp in do_daily_dump
-
+13. Correct dates timestamp in do_daily_dump 
+14. Find a better way to select dates in active visitors page

@@ -2,321 +2,444 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Reports</title>
+<title>Active Visitors</title>
     <style>
         body{font-family:Sans-Serif;}
         canvas{position:absolute; left: -9999em;}
         #button{background-color: Yellow; color: Red; padding: 3px 10px; cursor:pointer; display: inline-block; border-radius: 5px;}
         #mandatory{background-color: Green; color: Red; padding: 3px 10px; cursor:pointer; display: inline-block; border-radius: 5px;}
         #preview{margin: 20px 0;}
-        label{display: block;}
+	label{display: block;}
+/*
+	td {white-space:nowrap}
+	th {white-space:nowrap}
+*/
+	div.ui-datepicker { font-size: 70%; }
 </style>
 <link rel="stylesheet" type="text/css" href="css/view.css" media="all">
 <link rel="stylesheet" href="css/parsley.css">
 <link rel="stylesheet" href="css/zdnet.css">
+<link rel="stylesheet" href="css/slimbox2.css" type="text/css" media="screen" />
+
 <script type="text/javascript" src="js/view.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/slimbox2.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.css">
+<script src="js/jquery-ui.js"></script>
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 
 </head>
-
-
-<body>
-<script src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/block.js"></script>
-
-<script language="javascript" type="text/javascript">
-function setDates(period)
-{
-	var currentTime = new Date();
-	var month = currentTime.getMonth()+1; //Because Jan starts from zero
-	var year = currentTime.getFullYear();
-	var day = currentTime.getDate();
-	var maxdays=0;
-	if(period==10) //Today
-	{
-		//var date = new Date('2012','02','01');
-		//alert('the original date is '+date);
-		//var newdate = new Date(date);
-		////alert('new date is '+newdate);
-		//newdate.setDate(newdate.getDate() - 1);
-		//alert('prev date is '+newdate);
-
-		//alert('today is'+currentTime);
-		var prevTime = new Date(currentTime);
-		prevTime.setDate(currentTime.getDate() - 1);
-		//alert('yesterday was'+prevTime);
-		var prev_month = prevTime.getMonth()+1; //Beacause Jan starts from zero
-		var prev_year = prevTime.getFullYear();
-		var prev_day = prevTime.getDate();
-
-		//days and months from 1-9 need a leading '0' in front of them to prevent errors
-		if(month < 10) { month = '0'+month; }
-		if(day < 10) { day = '0'+day; }
-		var current_to_date=day + "/" + month + "/" + year;
-
-		if(prev_month < 10) { prev_month = '0'+prev_month; }
-		if(prev_day < 10) { prev_day = '0'+prev_day; }
-		var current_from_date=prev_day + "/" + prev_month + "/" + prev_year;
-
-		//alert('from date is '+current_from_date);
-		//alert('to date is '+current_to_date);
-
-
-		document.getElementById('start_date').value=current_from_date;
-		document.getElementById('end_date').value=current_to_date;
-		return;
-	}
-	if(period==20) //Last 2 days
-	{
-		var prevTime = new Date(currentTime);
-		prevTime.setDate(currentTime.getDate() - 2);
-		var prev_month = prevTime.getMonth()+1; //Because Jan starts from zero
-		var prev_year = prevTime.getFullYear();
-		var prev_day = prevTime.getDate();
-
-		//days and months from 1-9 need a leading '0' in front of them to prevent errors
-		if(month < 10) { month = '0'+month; }
-		if(day < 10) { day = '0'+day; }
-		var current_to_date=day + "/" + month + "/" + year;
-
-		if(prev_month < 10) { prev_month = '0'+prev_month; }
-		if(prev_day < 10) { prev_day = '0'+prev_day; }
-		var current_from_date=prev_day + "/" + prev_month + "/" + prev_year;
-
-		document.getElementById('start_date').value=current_from_date;
-		document.getElementById('end_date').value=current_to_date;
-		return;
-	}
-	if(period==70) //Last 1 week
-	{
-		var prevTime = new Date(currentTime);
-		prevTime.setDate(currentTime.getDate() - 7);
-		var prev_month = prevTime.getMonth()+1; //Because Jan starts from zero
-		var prev_year = prevTime.getFullYear();
-		var prev_day = prevTime.getDate();
-
-		//days and months from 1-9 need a leading '0' in front of them to prevent errors
-		if(month < 10) { month = '0'+month; }
-		if(day < 10) { day = '0'+day; }
-		var current_to_date=day + "/" + month + "/" + year;
-
-		if(prev_month < 10) { prev_month = '0'+prev_month; }
-		if(prev_day < 10) { prev_day = '0'+prev_day; }
-		var current_from_date=prev_day + "/" + prev_month + "/" + prev_year;
-
-		document.getElementById('start_date').value=current_from_date;
-		document.getElementById('end_date').value=current_to_date;
-		return;
-	}
-	if(period==0) //Current Month
-	{
-		var to_month=month;
-		var to_year=year;
-		maxdays=day;
-	}
-	else if(period==1) // Last Month
-	{
-		month=month-1;
-		if(month==0) //if Present month January. Last month Means Deccember.
-		{
-			month=12;
-			year--;
-		}
-		var to_year=year;
-		var to_month=month;
-	}
-	else if(period==3 || period==6) // Last 3 months or 6 months
-	{
-		if(month==1)
-		{
-			to_month=12;
-			to_year=year-1;
-		}
-		else
-		{
-			to_month=month-1;
-			to_year=year;
-		}
-		for(i=0;i<period;i++)
-		{
-			if(month==1)
-			{
-				month=12;
-				year--;
-			}
-			else
-			{
-				month--;
-			}
-		}
-	}
-
-	if(period==-1)
-	{
-		document.getElementById('start_date').value='';
-		document.getElementById('end_date').value='';
-	}
-	else
-	{
-		if(month < 10)
-		{
-			month = '0'+month;
-		}
-		var current_from_date="01"+ "/" + month  + "/" + year;
-		if(maxdays==0)
-		{
-			var maxdays=daysInMonth(to_month, to_year);
-		}
-		if(maxdays < 10)
-		{
-			maxdays = '0'+maxdays;
-		}
-		if(to_month < 10)
-		{
-			to_month = '0'+to_month;
-		}
-		var current_to_date=maxdays + "/" + to_month + "/" + to_year;
-		document.getElementById('start_date').value=current_from_date;
-		document.getElementById('end_date').value=current_to_date;
-	}
-}
-
-function daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-}
-function CompareDates()
-{
-     var str1 = document.getElementById("start_date").value;
-     var str2 = document.getElementById("end_date").value;
-     var currentdate = new Date();
-     var dt1  = parseInt(str1.substring(0,2),10);
-     var mon1 = parseInt(str1.substring(3,5),10); mon1=mon1-1;
-     var yr1  = parseInt(str1.substring(6,10),10);
-     var dt2  = parseInt(str2.substring(0,2),10);
-     var mon2 = parseInt(str2.substring(3,5),10);mon2=mon2-1;
-     var yr2  = parseInt(str2.substring(6,10),10);
-     var date1 = new Date(yr1, mon1, dt1);
-     var date2 = new Date(yr2, mon2, dt2);
-     if(date2 < date1)
-     {
-         alert("To Date cannot be greater than From Date");
-         return false;
-     }
-     else
-     {
-         if(currentdate<date1)
-         {
-             alert('The From Date should be less than or equal to current Date');
-             return false;
-         }
-         if(currentdate<date2)
-         {
-             alert('The To Date should be less than or equal to current Date');
-             return false;
-         }
-         return true;
-     }
-}
-$(document).ready(function () {
-	  //your code here
-	$(function(){
-
-		$('#end_date').datepicker({
-			inline: true
-		});
-		$('#start_date').datepicker({
-			inline: true
-		});
-	});
-});
-</script>
-
-
-</head>
-<body id="main_body" >
-	
+<body id="main_body" class="appnitro">
 	<img id="top" src="images/top.png" alt="">
 <?php
+
+ini_set('display_startup_errors',1);
+ini_set('display_errors',1);
+error_reporting(-1);
+
+$is_debug = false;
+//$is_debug = true;
+
+require_once 'meekrodb.2.2.class.php';
 require_once("common.php");	
+require_once("common_lib.php");	
 display_menu_common("Active Visitors");
 ?>
+<!--
+<div id="scanner">
+    <input type="text" id="barcode" placeholder="Waiting for barcode ..." size="40">
+</div>
+-->
 <?php
-//phpinfo();
-//exit(1);
+$selectedDate		= ((!empty($_REQUEST["selected_date"	]))?trim($_REQUEST["selected_date"]):"");
+echo '<div id="find_result_container">';
 ?>
-	<div id="form_container">
-<form action="reports_action.php" method="post">		<table border="0">
-<tr> 
+<div id="scanner" align="center">
+<table id="active_visitors_table" border="0">
+<tr>
 	<td>
-		<b><label>Block:</label></b> 
-		<select name="block" id="block" onChange="block_changed(this.value);">
-				<?php
-				require_once("common_lib.php");
-				$display_dummy_option = true;
-				display_block_options("block.ini", $display_dummy_option);
-				?>
-		</select>
-	</td>
+	<form id="form_datepicker" action="active_visitors.php" method="get">
+ <div class="input-group date" id="timepicker">
+  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> </span>
+	<input type="text" id="datepicker" value="<?php echo $selectedDate;?>" width="20">
+</div>
 
+	<input type="hidden" id="selected_date" name="selected_date" value="">
+<!--
+	<div class="form-group">
+ <div class="input-group date" id="timepicker">
+  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> </span>
+  <input type="text" class="form-control" />
+ </div>
+</div>
+-->
+
+
+<!--
+	<input type="submit" value="Just do it"> 
+-->
+	</form>
+
+
+	</td>
 	<td>
-		<b><label id="label_block_other" style='display:none'>Specify where exactly:</label></b> 
-		<input type="text" name="block_other" id="block_other" style='display:none'/>
-	</td>
+	<div id="checkout_visitor">
+	<audio id="checkout_sound">
+    	<source src="sounds/button-3.mp3">
+    	<source src="sounds/button-3.ogg">
+  	</audio>
 
-<td><b>
-<label id="label_flat_num" sty;e='display:block'>Flat Number:</label></b> 
-<span id='flat_span'>
-<select name="flat_num" style='display:block'>
-<option value="0">All</option>
-</select></span>
-</td>
-
-	<td colspan="2">
-		<b><label>Purpose:</label></b>
-		<select id="purpose" name="purpose"> 
-			<?php
-			require_once("common_lib.php");
-			$display_dummy_option = true;
-			display_purpose_options("purpose.ini", $display_dummy_option);
-			?>
-		</select>
+	<input type="text" id="barcode" onkeypress="handleKeyPress(event)" placeholder="Enter Barcode ..." size="40">
+	</div>
 	</td>
+	<td><img id="doStuff" src="images/go_48.png" href="#" height="20" width="20"/></td>
+</tr>
+</table>
+</div>
+
+<script>
+function handleKeyPress(e){
+	var key=e.keyCode || e.which;
+	if (key==13){ //Enter key pressed
+		//alert("key pressed");
+		doDirtierWork(e);
+	}
+}
+
+</script>
+<?php
+global $results;
+
+require_once("parse_config.php");	
+
+$ini_array = parse_config();
+DB::$user 	= $ini_array["username"];
+DB::$password 	= $ini_array["password"];
+DB::$dbName 	= $ini_array["db"];
+DB::$host 	= $ini_array["host"];
+#DB::$port = '12345'; // defaults to 3306 if omitted
+#DB::$encoding = 'utf8'; // defaults to latin1 if omitted
+
+if ($is_debug == true) {
+	$limit = 10;
+} else {
+	$limit = 500;
+}
+
+if ($selectedDate) {
+	echo '<input type="hidden" id="dateSelected" name="dateSelected" value="true">';
+	echo '<input type="hidden" id="actualDate" name="actualDate" value="'.$selectedDate.'">';
+} else {
+	echo '<input type="hidden" id="dateSelected" name="dateSelected" value="false">';
+}
+function get_query_active_visitors($selectedDate, $limit=500)
+{
+	$query = "SELECT vrecordid, visitor.vid AS vid, vname,vphone,vnum_visitors, vcomments,vitime, vblock,vflatnum,vtomeet,vvehicle_type, vvehicle_reg_num,vnum_visitors FROM visitor,vrecord WHERE  vitime LIKE '" . $selectedDate . "%' AND (votime is NULL OR vitime<=>votime) AND vrecord.vid=visitor.vid LIMIT " . $limit;
+	return $query;
+}
+
+
+#$query = "SELECT visitor.vid,vname,vphone,vcomments,vitime,vblock,vflatnum,vtomeet,vvehicle_reg_num FROM visitor,vrecord WHERE vitime!=votime AND  vitime> '2015-05-05' AND vrecord.vid=visitor.vid LIMIT 10"; 
+
+
+#$cutoff_date = "2015-03-10";
+$cutoff_date = get_from_today(0);
+if (!empty($selectedDate)) {
+	$cutoff_date = $selectedDate;
+}
+$query = get_query_active_visitors($cutoff_date, $limit);
+
+if ($is_debug == true) {
+	echo $query;
+}
+
+	#echo $query;
+
+if (isset($is_debug) && $is_debug) {
+	echo "query is <br>\n$query\n";
+	//exit;
+}
+?>
+
+<?php
+$is_first_criteria = true;
+echo "Searching for active visitors on " . convert_date_boring_to_interesting($cutoff_date);
+echo "\n<BR>\n";
+$results = DB::query($query);
+
+$counter = DB::count();
+if ($counter <= 0) {
+	echo "No Match. Try choosing a different date\n.";
+} else {
+	echo $counter;
+	if ($counter >= $limit) {
+		echo "(Maxlimit Reached) ";
+	}
+	echo " matches found";
+	echo "<BR>\n";
+}
+$here_th_find_result = <<<EOT
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
+<tr>
+<th col width="15%">Pic</th>
+<th col width="2%">SNo</th>
+<th col width="10%">Name</th>
+<th col width="7%">Phone</th>
+<th col width="2%">Ppl</th>
+<th col width="10%">Remark</th>
+<th col width="10%">Intime</th>
+<th col width="10%">Block</th>
+<th col width="5%">Flatnum</th>
+<th col width="10%">To Meet</th>
+<th col width="8%">Vehicle Reg</th>
+<th col width="2%">Do</th>
 </tr>
 
-		<tr>
-		<td> <label>Visit Dates(dd/mm/yyyy)</label></td>
-		<td><label></label></td>
-		<td> <label>From:</label> 
-<!--
-		<input type="text" name="start_date" value="01/02/2014" id="start_date" size="10" class="element select medium" class="postField" onChange="return CompareDates();" /> </td>
--->
-<input type="text" name="start_date" value="<?php echo date("d/m/Y", time()-(60*60*24)); ?>" id="start_date" size="12" class="element select medium" class="postField" onChange="return CompareDates();" /> </td>
-		<td><label>To:</label> 
-		<input type="text" name="end_date" value="<?php echo date("d/m/Y");?>" id="end_date" size="12"  class="element select medium" class="postField" onChange="return CompareDates();" /> </td>
-		</tr>
-		<tr>
-		<td colspan=5>
-		<a href='javascript:setDates(10);'>Today</a> &nbsp;
-		<a href='javascript:setDates(20);'>Last 2 days</a> &nbsp;
-		<a href='javascript:setDates(70);'>Last 1 wk</a> &nbsp;
-		<a href='javascript:setDates(0);'>This Mnth</a> &nbsp;
-		<a href='javascript:setDates(1);'>Last Mnth</a> &nbsp;
-		<a href='javascript:setDates(3);'>Last 3 Mnths</a> &nbsp;
-		<a href='javascript:setDates(6);'>Last 6 Mnths</a> &nbsp;
-		<a href='javascript:setDates(-1);'>All</a></td>
-		</tr>
-		<tr>
-		<td></td>
-		<td></td>
-		<td rowspan="4"><input type="submit" name="get_charges" value="Get Details" id="get_charges" class="primaryAction" />&nbsp;</td>
-		</tr>
-		</table>
-<!--
-		<input type='hidden' name='block_name' id='block_name' value=''/>
--->
-</form>
+EOT;
+/*
+ *
+ 
+<td><a href=\"visitor-edit.php?vid=".$row['vid']."\" target=\"_blank\"><img src=\"images/vcard_edit.png\" alt=\"Edit Visitor\" border=3 style=\"width: 50%; height: 50%\"/></a></td>
+
+ */
+$here_tr_find_action = <<<EOT
+<tr>
+<td><img src=\"images/vcard_edit.png\" alt=\"Edit Visitor\" border=3 style=\"width: 50%; height: 50%\"/></td>
+<td>A</td>
+</tr>
+
+EOT;
+$link_style = <<< EOT
+<style>
+a:link {color:white;}    /* unvisited link */
+a:visited {color:white;} /* visited link */
+a:hover {color:yellow;}   /* mouse over link */
+a:active {color:white;}  /* selected link */
+</style>
+EOT;
+
+echo $here_th_find_result;
+ 
+foreach ($results as $row) {
+	#print_r($row);
+
+	echo "<tr id=\"".$row["vrecordid"]."\">\n";
+	$remark = DB::queryFirstField("SELECT vcomments from visitor where vid=%s",$row['vid']);
+	$pic_title = $row['vname']. " " .$remark;
+
+	$vctime = DB::queryFirstField("SELECT vctime from visitor where vid=%s",$row['vid']);
 
 
-	<div id="footer"> &copy; Visify 2014<?php if(date("Y") != "2014") echo "-".date("Y")?> </div>
-	</div>
-	</body>
+	echo "<td><a href=\"disp_photo.php?vid=".$row['vid']."\" target=\"_blank\" rel=\"lightbox\" title=\"".$pic_title."\"><img id=\"magnify\" class=\"resize\" src=\"disp_photo.php?vid=".$row['vid']."\" alt=\"\" border=3 style=\"width: 50%; height: 50%\"/></a></td>\n";
+	foreach ($row as $key => $value) {
+		if ($key == "vid") {
+			continue;
+		} else if ($key == "vname") {
+			$p_vname = prepare_vname($value);
+			echo "<td>";
+			#echo "<a href=\"disp_photo.php?vid=".$row['vid']."\" >$value</a>";
+			echo "<a href=\"disp_photo.php?vid=".$row['vid']."\" >$p_vname</a>";
+			echo "</td>";
+		} else if ($key == "vitime") {
+			// also show the time at which the visitor first visited the place
+			// as a tooltip
+
+			//echo "<span title=\"My tip\">text</span>";
+			//echo "<td>$value ".get_weekday_by_date($value)."</td>";
+			#$my_itime = $row['vitime'] ." ".  get_weekday_by_date($row['vitime']);
+			#$my_ctime = $vctime ." ".  get_weekday_by_date($vctime);
+
+			echo "<td>";
+			#echo "<span title=\"1st Entry:".$my_ctime."\">$my_itime</span>";
+			echo $row['vitime'];
+			echo "</td>";
+		} else if ($key == "vctime") {
+			// not printing to save screen space
+			continue;
+		} else if ($key == "vvehicle_type") {
+			continue;
+		} else if ($key == "vvehicle_reg_num") {
+			$img_size = 16;
+			echo "<td>";
+			$vehicle_img =  get_image_by_vehicle_type($row['vvehicle_type'],$img_size);
+			if (!empty($vehicle_img)) {
+				echo $vehicle_img;
+			}
+			if (!empty($value)) {
+				$value = strtoupper($value);
+				echo "$value";
+			}
+
+			#echo $row['vvehicle_type'];
+			#print_r($row);
+			echo "</td>";
+
+		} else {
+			if ($value != "0") {
+				echo "<td>$value</td>";
+			} else {
+				echo "<td></td>";
+			}
+		}
+		echo "\n";
+
+		//print actions
+		//echo "$here_tr_find_action";
+
+	}
+	echo "\n<td id=\"btn".$row["vrecordid"]."\">\n";
+	#echo "\n<a href=\"edit_visitor.php?vid=".$row['vid']."\"> <img src=\"images/vcard_edit.png\" title=\"Edit Visitor\" style=\"width:32px; height:32px\"/>";
+	//echo "\n<img src=\"images/phone.png\" title=\"SMS Visitor\" style=\"width:16px; height:16px\"/>";
+	#echo "\n<a class=\"checkout\" href=\"checkout_visitor.php?phone_num=".$row['vphone']."\"><img src=\"images/exit-icon.png\" title=\"Check-out Visitor\" style=\"width:32px; height:32px\"/></a>";
+	echo "\n<a class=\"checkout\"> <img src=\"images/exit-icon.png\" title=\"Check-out Visitor\" style=\"width:32px; height:32px\"/></a>";
+	#echo "\n<a href=\"returningvisitor.php?phone_num=".$row['vphone']."\"><img src=\"images/exit-icon.png\" title=\"Check-in Visitor again\" style=\"width:32px; height:32px\"/></a>";
+	echo "\n</td>";
+	echo "\n</tr>\n";
+	
+}
+echo "</table>\n";
+?>
+
+<div align="center">
+	<style scoped> form { display: inline; } </style>
+	<form> <input type="button" value="Print this page" onClick="window.print()"> </form>
+<!--
+	<form action="active_visitors.php"> <input type="submit" value="Find Again"> </form>
+-->
+</div>
+</div>
+
+
+
+<script type="text/javascript">
+	var delayBefore = 200;
+	var delayAfter = 200;
+	function doDirtyWork(parent, tickOffVal) {
+		$.ajax({
+			type: 'get',
+			url: 'checkout_visitor.php',
+			data: 'ajax=1&checkout_vrecordid=' + tickOffVal,
+			beforeSend: function() {
+				parent.animate({'backgroundColor':'#fb6c6c'},delayBefore);
+			},
+			success: function() {
+				parent.slideUp(delayAfter,function() {
+					parent.remove();
+					console.log('Checked out!' + tickOffVal);
+					//$("#checkout_sound").get(0).play();
+					document.getElementById('checkout_sound').play();
+				});
+				$("#barcode").focus();
+			}// end function success
+		});//end ajax
+		$("#barcode").val("");
+	}//end doDirtyWork
+	function doDirtierWork(e) {
+		e.preventDefault();
+		var tickoffId = $("#barcode").val();
+		var parent = $('#'+tickoffId); 
+		//alert("yeah, i know" + tickoffId);
+		doDirtyWork(parent, tickoffId);
+	}//end doDirtierWork
+/*
+	function getActiveRecordsByDate(candidateDate) {
+		alert("getActiveRecordsByDate:Fetching "+ $( "#datepicker" ).val());
+		$(location).attr('href','active_visitors.php?date='+candidateDate );
+	}//end getActiveRecordsByDate
+*/
+var current_h = null;
+var current_w = null;
+var magni=1.5
+
+
+//get by class
+$('.resize').hover(
+    function(){
+        current_h = $(this, 'img')[0].height;
+        current_w = $(this, 'img')[0].width;
+        $(this).stop(true, false).animate({width: (current_w * magni), height: (current_h * magni)}, 300);
+    },
+    function(){
+        $(this).stop(true, false).animate({width: current_w + 'px', height: current_h + 'px'}, 300);
+    }
+);
+$(document).ready(function() {
+
+	$("#datepicker").datepicker({dateFormat: "yy-mm-dd"});
+	//should not set date if date is already provided
+	if ($("#dateSelected").val() == "false") {
+		$('#datepicker').datepicker().datepicker('setDate', 'today');
+	} else{
+		//alert("need to poulate with selected date" +  $("#actualDate").val());
+		$('#datepicker').datepicker().datepicker('setDate', $("#actualDate").val());
+		
+	}
+	$("#datepicker" ).datepicker( "option", "autoSize", true );
+	$("#datepicker" ).datepicker( "option", "maxDate", "+0d" );
+
+	$("#barcode").focus();
+	var isFocus = false;
+	// do stuff when the checkout button is pressed next to a row
+	$('a.checkout').click(function(e) {
+		e.preventDefault();
+		var parent = $(this).parent().parent();
+		var toBetickedOff = parent.attr('id');
+		doDirtyWork(parent, toBetickedOff);
+	});//end click
+
+	// do stuff when a number is submitted from the scanner or into the textbox
+	$("#doStuff").click(function(e){
+		var tickoffId = $("#barcode").val();
+		var parent = $('#'+tickoffId);
+		doDirtyWork(parent, tickoffId);
+
+
+	}); //end of submit
+
+	$(function() {
+		//alert("date picker");
+		$("#datepicker").datepicker({dateFormat: "yy-mm-dd"});
+		//$("#datepicker").css({ font-size:10px; });
+		//div.ui-datepicker{ font-size:10px; };
+		//alert($( "#datepicker" ).val());
+	});//end datepicker
+
+
+
+
+	$("#datepicker").on("change", function(e){	
+		var tmpDate = $("#datepicker").val()
+		$("#selected_date").val(tmpDate);
+		//alert("selected_date:"+$("#selected_date").val());
+		$("#form_datepicker").trigger('submit');
+
+	});
+
+
+
+/*
+	$("#datepicker").on("change", function(e){	
+		e.preventDefault();
+		//var candidateDate = $( "#datepicker" ).val());
+		//alert("picking "+ $( "#datepicker" ).val());
+		getActiveRecordsByDate($( "#datepicker" ).val());
+		alert("boo");
+	});
+*/
+});// end of ready
+
+
+</script>
+
+</body>
 </html>
+

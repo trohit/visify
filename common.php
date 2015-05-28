@@ -11,7 +11,7 @@ function display_menu_common($menu_option)
 	$menu_opts = array (
 //		"Dashboard"		=>"dashboard.php",
 		"Visitor Checkin"	=>"returningvisitor.php",
-//		"Active Visitors"	=>"active_visitors.php",
+		"Active Visitors"	=>"active_visitors.php",
 		"Find Records"		=>"find.php",
 		"Reports"		=>"reports.php",
 //		"Settings"		=>"settings.php"
@@ -44,6 +44,7 @@ EOD;
 		echo "\t\t<li".$flag."><a href=\"".$x_value."\">".$x."</a></li>\n";
 	}
 	echo $ftr;
+
 
 }
 /*
