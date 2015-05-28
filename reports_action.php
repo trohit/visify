@@ -195,7 +195,7 @@ if (isset($is_debug) && $is_debug) {
 			list($st_dd,$st_mm,$st_yyyy) = explode("-",$_REQUEST["start_date"]);
 		}
 		//list($st_dd,$st_mm,$st_yyyy) = explode("/",$_REQUEST["start_date"]);
-		echo " from $st_dd.$st_mm.$st_yyyy";
+		echo " after $st_dd.$st_mm.$st_yyyy";
 	}
 	if (!empty($_REQUEST["start_date"]) && (!empty($_REQUEST["end_date"]))) {
 		echo " and";
@@ -207,7 +207,7 @@ if (isset($is_debug) && $is_debug) {
 			list($end_dd,$end_mm,$end_yyyy) = explode("-",$_REQUEST["end_date"]);
 		}
 		//list($end_dd,$end_mm,$end_yyyy) = explode("/",$_REQUEST["end_date"]);
-		echo " ending before $end_dd.$end_mm.$end_yyyy" ;
+		echo " ending not later than $end_dd.$end_mm.$end_yyyy" ;
 	}
 	echo "\n<BR>\n";
 }

@@ -385,6 +385,16 @@ $(document).ready(function() {
 	}
 	$("#datepicker" ).datepicker( "option", "autoSize", true );
 	$("#datepicker" ).datepicker( "option", "maxDate", "+0d" );
+	$("#datepicker" ).datepicker({
+		showOn: "both",
+		showWeek: true,
+		todayHighlight: true,
+		clearBtn: true,
+		todayBtn: true,
+		dateFormat: "yy-mm-dd",
+		buttonImage: "images/DatePicker.gif",
+		changeMonth: true,
+	});
 
 	$("#barcode").focus();
 	var isFocus = false;
@@ -404,15 +414,18 @@ $(document).ready(function() {
 
 
 	}); //end of submit
-
+/*
 	$(function() {
 		//alert("date picker");
 		$("#datepicker").datepicker({dateFormat: "yy-mm-dd"});
+		$("#datepicker").datepicker({todayHighlight: true});
+		$("#datepicker").datepicker({todayBtn: true});
+		$("#datepicker").datepicker({todayBtn: "linked"});
 		//$("#datepicker").css({ font-size:10px; });
 		//div.ui-datepicker{ font-size:10px; };
 		//alert($( "#datepicker" ).val());
 	});//end datepicker
-
+*/
 
 
 
