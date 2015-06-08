@@ -14,8 +14,11 @@ body
 
 
 	background:url(../images/ruby-sundial.gif) 0 0 repeat;
-	 */
 	background:url(../walls/wall_newyork_bw.jpg) 0 0 repeat;
+	background:url(../walls/cloud_1639x1024.jpg) 0 0 repeat;
+	background:url(../images/presence.png) 1 0 repeat;
+	 */
+	background:url(../images/congruent_outline.png) 0 0 repeat;
 	font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
 	font-size:small;
 	/*

@@ -64,6 +64,7 @@ $selectedDate		= ((!empty($_REQUEST["selected_date"	]))?trim($_REQUEST["selected
 echo '<div id="find_result_container">';
 ?>
 <div id="scanner" align="center">
+<div id="txt_side_msg"></div>
 <table id="active_visitors_table" border="0">
 <tr>
 	<td>
@@ -172,7 +173,7 @@ if (isset($is_debug) && $is_debug) {
 
 <?php
 $is_first_criteria = true;
-echo "Searching for active visitors on " . convert_date_boring_to_interesting($cutoff_date);
+echo "<div id=\"active_visitors_query_status\">Searching for active visitors on " . convert_date_boring_to_interesting($cutoff_date). "</div>";
 echo "\n<BR>\n";
 $results = DB::query($query);
 
@@ -190,12 +191,12 @@ if ($counter <= 0) {
 $here_th_find_result = <<<EOT
 <table width="100%" cellpadding="0" cellspacing="0" border="1">
 <tr>
-<th col width="15%">Pic</th>
-<th col width="2%">SNo</th>
+<th col width="2%">#</th>
+<th col width="5%">SNo</th>
 <th col width="10%">Name</th>
 <th col width="7%">Phone</th>
 <th col width="2%">Ppl</th>
-<th col width="10%">Remark</th>
+<th col width="20%">Remark</th>
 <th col width="10%">Intime</th>
 <th col width="10%">Block</th>
 <th col width="5%">Flatnum</th>
@@ -226,7 +227,7 @@ a:hover {color:yellow;}   /* mouse over link */
 a:active {color:white;}  /* selected link */
 </style>
 EOT;
-
+$count = 1;
 echo $here_th_find_result;
  
 foreach ($results as $row) {
@@ -238,16 +239,25 @@ foreach ($results as $row) {
 
 	$vctime = DB::queryFirstField("SELECT vctime from visitor where vid=%s",$row['vid']);
 
-
-	echo "<td><a href=\"disp_photo.php?vid=".$row['vid']."\" target=\"_blank\" rel=\"lightbox\" title=\"".$pic_title."\"><img id=\"magnify\" class=\"resize\" src=\"disp_photo.php?vid=".$row['vid']."\" alt=\"\" border=3 style=\"width: 50%; height: 50%\"/></a></td>\n";
+	echo "<td>$count</td>";
+	$count++;
+	#echo "<td><a href=\"disp_photo.php?vid=".$row['vid']."\" target=\"_blank\" rel=\"lightbox\" title=\"".$pic_title."\"><img id=\"magnify\" class=\"resize\" src=\"disp_photo.php?vid=".$row['vid']."\" alt=\"\" border=3 style=\"width: 50%; height: 50%\"/></a></td>\n";
 	foreach ($row as $key => $value) {
 		if ($key == "vid") {
 			continue;
 		} else if ($key == "vname") {
 			$p_vname = prepare_vname($value);
+			/*
 			echo "<td>";
 			#echo "<a href=\"disp_photo.php?vid=".$row['vid']."\" >$value</a>";
 			echo "<a href=\"disp_photo.php?vid=".$row['vid']."\" >$p_vname</a>";
+			echo "</td>";
+			 */
+			echo "<td><a href=\"disp_photo.php?vid=".$row['vid']."\" target=\"_blank\" rel=\"lightbox\" title=\"".$p_vname."\">$p_vname</a></td>\n";
+		} else if ($key == "vtomeet") {
+			$p_val = prepare_vtomeet($value);
+			echo "<td>";
+			echo $p_val;
 			echo "</td>";
 		} else if ($key == "vitime") {
 			// also show the time at which the visitor first visited the place
@@ -268,7 +278,7 @@ foreach ($results as $row) {
 		} else if ($key == "vvehicle_type") {
 			continue;
 		} else if ($key == "vvehicle_reg_num") {
-			$img_size = 16;
+			$img_size = 24;
 			echo "<td>";
 			$vehicle_img =  get_image_by_vehicle_type($row['vvehicle_type'],$img_size);
 			if (!empty($vehicle_img)) {
@@ -430,6 +440,11 @@ $(document).ready(function() {
 
 
 	$("#datepicker").on("change", function(e){	
+		$("#active_visitors_table").hide();
+		$("#txt_side_msg").html("");
+		$("#txt_side_msg").html("<img src='images/ajax-loader.gif' /> checking...");
+		$("#active_visitors_query_status").html("");
+		$("#active_visitors_query_status").html("Fetching records...");
 		var tmpDate = $("#datepicker").val()
 		$("#selected_date").val(tmpDate);
 		//alert("selected_date:"+$("#selected_date").val());

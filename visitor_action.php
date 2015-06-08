@@ -142,7 +142,7 @@ if($is_verbose) {
 	}
 
 	/* next insert record into the vrecord. */
-	$vvehicle_reg_num	= ((!empty($_POST["vehicle_reg_num"		]))?$_POST["vehicle_reg_num"     ]:0);
+	$vvehicle_reg_num	= ((!empty($_POST["vehicle_reg_num"		]))?strtoupper($_POST["vehicle_reg_num"]):0);
 	$vvehicle_type		= ((!empty($_POST["vehicle_type"		]))?$_POST["vehicle_type"     ]:0);
 	$vitime 		= $start_time;
 	#$votime			= $start_time;

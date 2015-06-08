@@ -24,6 +24,7 @@ if (mysqli_connect_errno()) {
 	echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
+$is_debug = false;
 //$is_debug = true;
 if ($is_debug) {
 	echo "DEBUG:phone num:" . $phone_num;

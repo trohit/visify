@@ -197,6 +197,7 @@ function show_image_by_vehicle_type($vehicle_type)
 function get_image_by_vehicle_type($vehicle_type, $height=24)
 {
 	if ($vehicle_type == "2w") {
+		$height += $height*0.4;
 		return '<img id="bikeId" src="images/bike_checked.png" alt="bike" height="'.$height.'" title="Bike"/>';
 	} else if ($vehicle_type == "4w") {
 		return ' <img id="carId" src="images/car_checked.png" alt="car" height="'.$height.'" title="Car"/>';
@@ -207,6 +208,10 @@ function prepare_vname($vname)
 {
 	$new_vname = ucwords(str_replace('_', ' ', $vname));
 	return $new_vname;
+}
+function prepare_vtomeet($vtomeet)
+{
+	return prepare_vname($vtomeet);
 }
 
 function get_day_of_week($tempdate)
