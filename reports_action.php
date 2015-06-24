@@ -148,7 +148,7 @@ if (empty($arrFields) || count($arrFields) == 0) {
 
 //$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
 //$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vvehicle_type,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
-$query = "SELECT visitor.vid,vitime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_type,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
+$query = "SELECT visitor.vid,vitime,votime,vname,vphone,vctime,vblock,vflatnum,vtomeet,vvehicle_type,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid ";
 if (isset($arrFields)) {
 	$query .= "AND ".implode(" AND ",$arrFields);
 }
@@ -289,7 +289,7 @@ foreach ($results as $row) {
 		} else if ($key=="vctime") {
 			//do not print creation time
 			continue;
-		} else if (strpos($key,'time') !== false) {
+		} else if (strpos($key,'itime') !== false) {
 			$weekday = get_weekday_by_date($value);
 			$value .= " " . $weekday;
 			//echo "<td>". $value . " " . $weekday . "</td>";

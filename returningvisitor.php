@@ -371,7 +371,14 @@ EOT;
 				// headcount not populated intentionally
 				// vehicle type not populated intentionally
 				// TODO: purpose
-				var ul_data = data.weekday + " " + data.vitime+" "+data.vtomeet+" "+data.vblock+" "+data.vflatnum;
+				//var ul_data = data.weekday + " " + data.vitime+" "+ data.votime+" "+data.vtomeet+" "+data.vblock+" "+data.vflatnum;
+				var ul_data = data.weekday + " " + data.vitime+" ";
+				if (data.votime) {
+					ul_data = ul_data + data.votime+" "+data.vtomeet+" "+data.vblock+" "+data.vflatnum;
+				} else {
+					ul_data = ul_data + " "+data.vtomeet+" "+data.vblock+" "+data.vflatnum;
+
+				}
 				if (data.vvehicle_type) {
 					ul_data = ul_data + " " + data.vvehicle_type;
 				}

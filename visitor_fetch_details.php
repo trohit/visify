@@ -18,7 +18,7 @@ function get_past_by_number($phone_num, $num_limit=1)
 	//$phone_num=$_REQUEST["phone_num"];
 	//$phone_num=886330440;
 
-	$result=mysqli_query($con, "SELECT (visitor.vid),vrecordid,vname,vitime,vtomeet,vblock,vflatnum,vvehicle_type,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid AND visitor.vphone='$phone_num' ORDER BY vrecordid DESC LIMIT $num_limit");
+	$result=mysqli_query($con, "SELECT (visitor.vid),vrecordid,vname,vitime,votime,vtomeet,vblock,vflatnum,vvehicle_type,vvehicle_reg_num,vpurpose,vcomments FROM visitor,vrecord WHERE vrecord.vid=visitor.vid AND visitor.vphone='$phone_num' ORDER BY vrecordid DESC LIMIT $num_limit");
 
 	$response = array();
 

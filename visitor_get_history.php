@@ -25,7 +25,7 @@ $vid		= sanitize($vid);
 //$vid=77;
 
 	/* also get some helpful hints on where this visitor has been to in the past. */
-	$results = DB::query("SELECT vflatnum,vblock,vitime FROM vrecord WHERE vid=%s ORDER BY vrecordid DESC LIMIT 5", $vid);
+	$results = DB::query("SELECT vflatnum,vblock,vitime,votime FROM vrecord WHERE vid=%s ORDER BY vrecordid DESC LIMIT 5", $vid);
 	echo "\n";
 	echo '<table border="1">';
 	echo "\n";

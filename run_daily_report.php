@@ -188,9 +188,15 @@ function get_visitor_count_by_date_arr($search_date_arr)
 	return($result_arr);
 
 }
+function get_active_visitors_count_by_date($selectedDate)
+{
+	$query = "SELECT COUNT(*) FROM vrecord WHERE vitime LIKE '" . $selectedDate . "%' AND (votime is NULL OR vitime<=>votime)";
+	$result = DB::queryFirstRow($query);
+	return($result['COUNT(*)']);
+}
 function get_visitor_count_by_date($cand_date)
 {
-	$query = "SELECT COUNT(*)  FROM vrecord WHERE "." vitime  LIKE '$cand_date%'";
+	$query = "SELECT COUNT(*) FROM vrecord WHERE "." vitime  LIKE '$cand_date%'";
 	$result = DB::queryFirstRow($query);
 	return($result['COUNT(*)']);
 }
@@ -741,6 +747,18 @@ disp_purpose_count_by_date($target_date);
 #echo get_from_today(-1) ."..." . get_from_today(0);
 get_specific_purpose_details_by_date('Others', get_from_today(-1), get_from_today(0));
 get_specific_moving_details_by_date(get_from_today(-1), get_from_today(0));
+
+# track viistors still inside the complex
+$active_visitors_yesterday = get_active_visitors_count_by_date(get_from_today(-1));
+$total_visitors_yesterday  = get_visitor_count_by_date(get_from_today(-1));
+$derived_checkedout_visitors_yesterday = $total_visitors_yesterday - $active_visitors_yesterday;
+$percent_checkedout_visitors_yesterday = round(@($derived_checkedout_visitors_yesterday / $total_visitors_yesterday) * 100.0);
+$date_yesterday = get_from_today(-1);
+print "Out of a total of $total_visitors_yesterday on $date_yesterday, $percent_checkedout_visitors_yesterday% ($derived_checkedout_visitors_yesterday) visitors were checked out";
+# ie submitted slips on checkout Or were checked out by security.";
+echo "\n";
+
+
 $visitor_count = get_visitor_count();
 $record_count = get_record_count();
 print "Tracking ". $record_count . " visits from " . $visitor_count . " visitors"; 
