@@ -144,7 +144,7 @@ if ($selectedDate) {
 }
 function get_query_active_visitors($selectedDate, $limit=500)
 {
-	$query = "SELECT vrecordid, visitor.vid AS vid, vname,vphone,vnum_visitors, vcomments,vitime, vblock,vflatnum,vtomeet,vvehicle_type, vvehicle_reg_num,vnum_visitors FROM visitor,vrecord WHERE  vitime LIKE '" . $selectedDate . "%' AND (votime is NULL OR vitime<=>votime) AND vrecord.vid=visitor.vid LIMIT " . $limit;
+	$query = "SELECT vrecordid, visitor.vid AS vid, vname,vphone,vnum_visitors,vpurpose, vcomments,vitime, vblock,vflatnum,vtomeet,vvehicle_type, vvehicle_reg_num,vnum_visitors FROM visitor,vrecord WHERE  vitime LIKE '" . $selectedDate . "%' AND (votime is NULL OR vitime<=>votime) AND vrecord.vid=visitor.vid LIMIT " . $limit;
 	return $query;
 }
 
@@ -174,7 +174,7 @@ if (isset($is_debug) && $is_debug) {
 <?php
 $is_first_criteria = true;
 echo "<div id=\"active_visitors_query_status\">Searching for active visitors on " . convert_date_boring_to_interesting($cutoff_date). "</div>";
-echo "\n<BR>\n";
+#echo "\n<BR>\n";
 $results = DB::query($query);
 
 $counter = DB::count();
@@ -189,14 +189,15 @@ if ($counter <= 0) {
 	echo "<BR>\n";
 }
 $here_th_find_result = <<<EOT
-<table width="100%" cellpadding="0" cellspacing="0" border="1">
+<table class="table-striped" width="100%" cellpadding="0" cellspacing="0" border="1" style="font-size:85%;">
 <tr>
 <th col width="2%">#</th>
 <th col width="5%">SNo</th>
 <th col width="10%">Name</th>
 <th col width="7%">Phone</th>
 <th col width="2%">Ppl</th>
-<th col width="20%">Remark</th>
+<th col width="10%">Purpose</th>
+<th col width="10%">Remark</th>
 <th col width="10%">Intime</th>
 <th col width="10%">Block</th>
 <th col width="5%">Flatnum</th>
@@ -321,7 +322,9 @@ echo "</table>\n";
 
 <div align="center">
 	<style scoped> form { display: inline; } </style>
+<!--
 	<form> <input type="button" value="Print this page" onClick="window.print()"> </form>
+-->
 <!--
 	<form action="active_visitors.php"> <input type="submit" value="Find Again"> </form>
 -->

@@ -362,6 +362,7 @@ EOT;
 
 			var result;
 			var isFirstRow = true;
+			var visit_count = 0;
 			$.each(result1.slice(0,num_limit), function(i, data) {
 				//use latest row to pre-fill form
 				if (isFirstRow) {
@@ -387,10 +388,20 @@ EOT;
 				}
 				ul_data = ul_data + "<BR>";
 				$("#txt_side_msg").append(ul_data);
+				visit_count++;
 
 			});
 
 			if (result) {
+				// Pointer to more info
+				//var phone_num=$("#phone_num").val();
+				var more_str = "<a href='find_action.php?phone_num=" + phone_num + "'  target=\"_blank\">More..." + "</a>"; 
+				//alert(more_str);
+				//alert(phone_num);
+				if (visit_count == num_limit) {
+					$("#txt_side_msg").append(more_str);
+				}
+
 				//$("#txt_side_msg").html("");
 				//alert("As per records, name is " + result.vname + " filling other fields");
 				// vname,vphone,vctime,vtomeet,vblock,vflatnum,vvehicle_reg_num FROM visitor,vrecord WHERE vrecord.vid=visitor.vid AND visitor.vphone='$phone_num' ORDER BY vrecordid DESC LIMIT 1");
@@ -485,9 +496,17 @@ display_menu_common("Visitor Checkin");
 <div id="txt_date"></div>
 </div>
 -->
-<img src="images/entry-icon.png" alt="Entry" height="24" width="24" style="float:left;margin:0 5px 0 0;" />Visit
+<img class="img-responsive" src="images/entry-icon.png" alt="Entry" height="24" width="24" style="float:left;margin:0 5px 0 0;" />
+		<?php
+		require_once("common_lib.php");
+		if (is_mobile()) {
+			echo '<p class="text-success">Middle Gate</p>';
+		} else {
+			echo '<p class="text-success">Main Gate</p>';
+		}
+		?>
 <div id="txt_date" align="center"></div>
-		<form id="new_visitor" name="new_visitor" class="appnitro"  method="post" action="visitor_add.php" data-validate="parsley">
+		<form role="form-inline" id="new_visitor" name="new_visitor" class="appnitro"  method="post" action="visitor_add.php" data-validate="parsley">
 
 		<div class="form_description">
 <!--
@@ -543,7 +562,7 @@ echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
    </tr>
    <tr>
      <td>
-	<input class="description" type="checkbox" name="isVehicleSelected" id="isVehicleSelected" onclick="showVehicleinfo()" value="vehicle" checked title="Add Vehicle Details"></td>
+	<input class="form-control" type="checkbox" name="isVehicleSelected" id="isVehicleSelected" onclick="showVehicleinfo()" value="vehicle" checked title="Add Vehicle Details"></td>
      <td id="vehicle_type" style='display:none'> 
 
 <label for="4w">
@@ -587,6 +606,7 @@ echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
 
 			<label class="description" id="label_block_other" style='display:none'>Specify where exactly:</label>
 			<input type="text" name="block_other" id="block_other" style='display:none'/>
+                        <div id="txt_unit"></div>
 			</li>
 		</div> 
 
@@ -617,11 +637,15 @@ echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
 <!--
 <img id="top" src="images/top.png" alt="">
 -->
+		<div>
 
 			<label class="description" for="element_8">Comments </label>
 			<input id="comments" name="comments" class="element text medium" type="text" maxlength="128" value="" placeholder="(optional)"/> 
 			</li>
 		</div> 
+<input type="submit" class="btn btn-primary validate"  name="submit" value="Continue" onclick="return ValidateForm();"/>
+<button type="reset" class="btn btn-warning btn-sm" value="Reset" onclick="resetOtherFields()">Reset</button>
+</div> 
 
 
 
@@ -641,8 +665,6 @@ echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
 <!--
 <input id="saveForm" class="button_text" type="submit" name="submit" value="Continue" />
 -->
-<input type="submit" class="btn btn-default validate"  name="submit" value="Continue" onclick="return ValidateForm();"/>
-<button type="reset" value="Reset" onclick="resetOtherFields()">Reset</button>
 </div> 
 </form>
 
