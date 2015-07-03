@@ -50,6 +50,16 @@ function flat_changed(selected_block, selected_flat)
 	//alert("Flat changed" + selected_block + selected_flat);
 	var num_limit = 5;
 	var url = 'unit_fetch_details.php' + '?block=' + selected_block + '&flatnum=' + selected_flat + '&num_limit=' + num_limit;
+
+
+	var unit_history_str = "<a href='find_action.php?&block=" + selected_block + "&flat_num=" + selected_flat + "'  target=\"_blank\">Past Visitors to this Unit" + "</a>"; 
+	//alert(more_str);
+	//alert(phone_num);
+	$("#txt_unit").html("");
+	$("#txt_unit").append(unit_history_str);
+	$('#txt_unit').css("font-family", "Comic Sans MS");
+	$("#txt_unit").css("font-size", 14);
+
 	$("#txt_resident").html("");
 	//$("#txt_resident").append(selected_block + selected_flat);
 	//document.getElementById('txt_resident').style.display='inline';
@@ -66,9 +76,12 @@ function flat_changed(selected_block, selected_flat)
 			if (isFirstRow) {
 				isFirstRow = false;
 				result = data;
+				al_data = "";
+			} else {
+				al_data = ", ";
 			}
 			// fetch all names, pre-fill first name
-			al_data = "<a href='javascript:set_resident(\""+data.vtomeet+"\")'>"+data.vtomeet+"</a> &nbsp;";
+			al_data = al_data + "<a href='javascript:set_resident(\""+data.vtomeet+"\")'>"+data.vtomeet+"</a>";
 			//alert(al_data);
 			$("#txt_resident").append(al_data);
 		});

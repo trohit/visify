@@ -6,6 +6,7 @@ error_reporting(-1);
 require_once 'meekrodb.2.2.class.php';
 require_once("common.php");	
 require_once("draw_table.php");	
+#require_once 'visitor_report_lib.php';
 #require_once("array-to-texttable.php");
 
 //DB::$user = 'root';
@@ -40,12 +41,85 @@ $sql_fields_arr = array(
         "vpurpose" => "Purpose",
         "vtomeet" => "To Meet",
 );
+function get_block_info()
+{
+	$file = 'block.ini';
+	$block_info = parse_ini_file($file);
+	return $block_info;
+}
+function get_visitor_report_heading_for_period($from, $to, $ncols, $heading)
+{
+	$heading1 =  "VISITOR REPORT" . " - $heading HISTORY";
+	$heading2 =  "" . $from . " TO " . $to;
 
+	$line1 = str_pad($heading1, $ncols,'-', STR_PAD_BOTH);
+	$line2 = str_pad($heading2, $ncols,'_', STR_PAD_BOTH);
+	return $line1 ."\n" .  $line2 . "\n";;
+}
+/*
+ * Inputs:
+ * $from, $to, $shorten_fieldnames
+ *
+ * Output:
+ * block_arr
+ */
+function get_visitor_count_by_block_arr_by_period($block_arr, $from, $to, $shorten_fieldnames)
+{
+	$sql_from = str_replace("-", "", $from);
+	$sql_to = str_replace("-", "", $to);
+	for($iter = $from;$iter != $to; $iter = get_date_from_base_date(1, $iter)) {
+		#print("comparing $iter to $to\n");
+		$res = get_visitor_count_by_block_arr_by_date($block_arr, $iter, $shorten_fieldnames);
+		$result_arr[$iter]=$res;
+		#print_r(get_visitor_count_by_block_arr_by_date($block_arr, $iter));
+	}
+	/*
+	foreach($block_arr as $blockname=>$blockval) {
+		$query = "SELECT COUNT(*)  FROM vrecord WHERE vblock='" . $blockval ."' AND vitime >= '$from' AND vitime <= '$to'";
+		$result = DB::queryFirstRow($query);
+		$result_arr[$search_date] = $result['COUNT(*)'];
+	}
+	 */
+	#print_r($result_arr);
+	return($result_arr);
+
+}
+/*
+ * @Input
+ * 	date specified in 'Y-m-d' 
+ * 	where:
+ * 		Y - A four digit representation of a year
+ * 		m - A numeric representation of a month (from 01 to 12)
+ * 		d - The day of the month (from 01 to 31)
+ * 	aka YYYY-MM-DD format
+ * @Output
+ * 	Returns 3 letter day of week Mon, Tue, .. Sun
+ * @Comments	
+ * 	D - A textual representation of a day (three letters)
+ * 	Ref: http://www.w3schools.com/php/func_date_date.asp
+ */
 function get_day_of_week($tempdate)
 {
 	//return date('l', strtotime( $tempdate));
 	return date('D', strtotime( $tempdate));
 }
+
+/*
+ * @Input
+ * 	integer specifying offest in number of days
+ * 	where:
+ * 		+ve integers mean return a future date from today
+ * 		-ve integers mean return a past date from today	
+ * @Output
+ * 	date specified in 'Y-m-d' 
+ * 	where:
+ * 		Y - A four digit representation of a year
+ * 		m - A numeric representation of a month (from 01 to 12)
+ * 		d - The day of the month (from 01 to 31)
+ * 	aka YYYY-MM-DD format
+ * @Comments	
+ * 	Ref: http://www.w3schools.com/php/func_date_date.asp
+ */
 function get_from_today($n)
 {
 	return date('Y-m-d',strtotime($n." days"));
@@ -353,6 +427,82 @@ function get_register_log($search_date)
 	#print("Sent mail...");
 }
 
+function arr2textTable($table, $brevity=false) {
+    function clean($var) { 
+        $search=array("`((?:https?|ftp)://\S+[[:alnum:]]/?)`si","`((?<!//)(www\.\S+[[:alnum:]]/?))`si");
+        $replace=array("<a href=\"$1\" rel=\"nofollow\">$1</a>","<a href=\"http://$1\" rel=\"nofollow\">$1</a>");
+        $var = preg_replace($search, $replace, $var);
+        return $var;
+    }
+    foreach ($table AS $rowname => $row) {
+	    if ($brevity) {
+		    $first_col_name = "Date";    
+	    } else {
+		    $first_col_name = "Date-of-Report";    
+	    }
+	$first_cell_length = strlen($first_col_name);    
+	#print($rowname);    
+        $cell_count = 0;
+        foreach ($row AS $key=>$cell) {
+            $cell_length = strlen($cell);
+            $key_length = strlen($key);
+            $cell_length = $key_length > $cell_length ? $key_length : $cell_length;
+            $cell_count++;
+            if (!isset($cell_lengths[$key]) || $cell_length > $cell_lengths[$key])
+                $cell_lengths[$key] = $cell_length;
+        }   
+    }
+    $bar = "+";
+    $header = "|";
+    if ($brevity) {
+	    $header .= "".str_pad($first_col_name, $first_cell_length, " ", STR_PAD_RIGHT) . "|";
+	    $bar .= str_pad("", $first_cell_length, "-")."+";
+    } else {
+	    $header .= " ".str_pad($first_col_name, $first_cell_length, " ", STR_PAD_RIGHT) . " |";
+	    $bar .= str_pad("", $first_cell_length+2, "-")."+";
+    }
+
+    foreach ($cell_lengths AS $fieldname => $length) {
+	if ($brevity)
+		$bar .= str_pad("", $length, "-")."+";
+	else	
+		$bar .= str_pad("", $length+2, "-")."+";
+        $name = $fieldname;
+        if (strlen($name) > $length) {
+            $name = substr($name, 0, $length-1);
+        }
+	if ($brevity)
+		$header .= "".str_pad($name, $length, " ", STR_PAD_RIGHT) . "|";
+	else	
+		$header .= " ".str_pad($name, $length, " ", STR_PAD_RIGHT) . " |";
+    }
+    $output = "${bar}\n${header}\n${bar}\n";
+
+
+    foreach ($table AS $rowname => $row) {
+	$output .= "|";
+
+	if ($brevity) {
+		$rowname = substr($rowname, 8). "" . substr(get_day_of_week($rowname),0,2);
+		#echo $rowname;
+		$output .= "".str_pad($rowname, $first_cell_length, " ", STR_PAD_RIGHT) . "|";
+	} else {
+		// first two chars of year are not needed in this century viz. 2015-...
+		// append day of week
+		$rowname = substr($rowname, 2). " " . get_day_of_week($rowname);
+		$output .= " ".str_pad($rowname, $first_cell_length, " ", STR_PAD_RIGHT) . " |";
+	}
+        foreach ($row AS $key=>$cell) {
+		if ($brevity)
+			$output .= "".str_pad($cell, $cell_lengths[$key], " ", STR_PAD_RIGHT) . "|";
+		else
+			$output .= " ".str_pad($cell, $cell_lengths[$key], " ", STR_PAD_RIGHT) . " |";
+        }
+        $output .= "\n";
+    }
+    $output .= $bar."\n";
+    return clean($output);
+}
 function arr2textTable_daily_total($table, $brevity=false) {
 
     
@@ -705,6 +855,45 @@ function get_visitor_count()
 	#print_r($results);
 	return($results[0]["total"]);
 }
+
+function print_monthly_report($date_upto, $ncols=45)
+{
+	$from = date_sub(date_create($date_upto), date_interval_create_from_date_string("1 month"));
+	$to = date_create($date_upto);	
+
+	$from_date = date_format($from,"Y-m-d");
+	$to_date = date_format($to,"Y-m-d");
+
+	$block_info = get_block_info();
+
+	$r = (get_visitor_count_by_block_arr_by_period($block_info, $from_date, $to_date, true));
+	$report_heading = get_visitor_report_heading_for_period($from_date, $to_date, $ncols, "MONTHLY");
+	print($report_heading);
+	echo arr2textTable($r, true);
+}
+function print_weekly_report($date_upto, $ncols=45)
+{
+	$from = date_sub(date_create($date_upto), date_interval_create_from_date_string("1 week"));
+	$to = date_create($date_upto);	
+
+	$from_date = date_format($from,"Y-m-d");
+	$to_date = date_format($to,"Y-m-d");
+
+	$block_info = get_block_info();
+
+	$r = (get_visitor_count_by_block_arr_by_period($block_info, $from_date, $to_date, true));
+	$report_heading = get_visitor_report_heading_for_period($from_date, $to_date, $ncols, "WEEKLY");
+	print($report_heading);
+	echo arr2textTable($r, true);
+}
+function print_report_summary()
+{
+	$visitor_count = get_visitor_count();
+	$record_count = get_record_count();
+	print "Tracking ". $record_count . " visits from " . $visitor_count . " visitors"; 
+	echo "\n";
+}
+
 $is_debug = 0;
 #print_r(hoursRange());
 #exit(1);
@@ -754,17 +943,24 @@ $total_visitors_yesterday  = get_visitor_count_by_date(get_from_today(-1));
 $derived_checkedout_visitors_yesterday = $total_visitors_yesterday - $active_visitors_yesterday;
 $percent_checkedout_visitors_yesterday = round(@($derived_checkedout_visitors_yesterday / $total_visitors_yesterday) * 100.0);
 $date_yesterday = get_from_today(-1);
-print "Out of a total of $total_visitors_yesterday on $date_yesterday, $percent_checkedout_visitors_yesterday% ($derived_checkedout_visitors_yesterday) visitors were checked out";
+print "Out of a total of $total_visitors_yesterday visitors on $date_yesterday,";
+print "\n";
+print "$percent_checkedout_visitors_yesterday% ($derived_checkedout_visitors_yesterday) visitors were checked out.";
+print "\n";
+print "The remaining $active_visitors_yesterday visitors were not checked out.";
+print "\n";
+
 # ie submitted slips on checkout Or were checked out by security.";
 echo "\n";
 
 
-$visitor_count = get_visitor_count();
-$record_count = get_record_count();
-print "Tracking ". $record_count . " visits from " . $visitor_count . " visitors"; 
 
+# Weekly History
+//if (get_day_of_week(get_from_today(0)) == "Sat") {
+	print_weekly_report(get_from_today(0));
+//}
 
-
+print_report_summary();
 
 
 #get_specific_purpose_details_by_date('Others', get_from_today(-30), get_from_today(-29));

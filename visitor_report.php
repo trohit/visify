@@ -9,7 +9,7 @@ $is_debug = 0;
 #
 
 
-function print_monthly_report($date_upto, $ncols)
+function print_monthly_report($date_upto, $ncols=45)
 {
 	$from = date_sub(date_create($date_upto), date_interval_create_from_date_string("1 month"));
 	$to = date_create($date_upto);	
@@ -20,11 +20,11 @@ function print_monthly_report($date_upto, $ncols)
 	$block_info = get_block_info();
 
 	$r = (get_visitor_count_by_block_arr_by_period($block_info, $from_date, $to_date, true));
-	$report_heading = get_visitor_report_heading_for_period($from_date, $to_date, $ncols);
+	$report_heading = get_visitor_report_heading_for_period($from_date, $to_date, $ncols, "MONTHLY");
 	print($report_heading);
 	echo arr2textTable($r, true);
 }
-function print_weekly_report($date_upto, $ncols)
+function print_weekly_report($date_upto, $ncols=45)
 {
 	$from = date_sub(date_create($date_upto), date_interval_create_from_date_string("1 week"));
 	$to = date_create($date_upto);	
@@ -35,7 +35,7 @@ function print_weekly_report($date_upto, $ncols)
 	$block_info = get_block_info();
 
 	$r = (get_visitor_count_by_block_arr_by_period($block_info, $from_date, $to_date, true));
-	$report_heading = get_visitor_report_heading_for_period($from_date, $to_date, $ncols);
+	$report_heading = get_visitor_report_heading_for_period($from_date, $to_date, $ncols, "WEEKLY");
 	print($report_heading);
 	echo arr2textTable($r, true);
 }
@@ -49,7 +49,8 @@ $search_date_arr = (get_visitor_count_by_date_arr(get_dates_n_days_arr(-30)));
 #print_r(get_visitor_count_by_block_arr_by_date($results, get_from_today(-2)));
 #print_r(get_visitor_count_by_block_arr_by_period($results, get_from_today(-3), get_from_today(0)));
 #print_monthly_report(get_from_today(0), 45);
-print_weekly_report(get_from_today(0), 45);
+#print_weekly_report(get_from_today(0), 45);
+print_weekly_report(get_from_today(0));
 return;
 $r = (get_visitor_count_by_block_arr_by_period($results, get_from_today(-30), get_from_today(0), true));
 $report_heading = get_visitor_report_heading_for_period(get_from_today(-30), get_from_today(0));

@@ -1019,3 +1019,12 @@ font-weight: bold;
     word-wrap: overflow-wrap;
 */
 }
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
+.aligncenter {
+	text-align: center;
+}

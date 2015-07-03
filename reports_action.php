@@ -17,13 +17,20 @@
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/view.css" media="all">
-<link rel="stylesheet" href="css/parsley.css">
 <link rel="stylesheet" href="css/zdnet.css">
 <link rel="stylesheet" href="css/slimbox2.css" type="text/css" media="screen" />
 <script type="text/javascript" src="js/view.js"></script>
 <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="js/slimbox2.js"></script>
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 </head>
 <body id="main_body" class="appnitro">
 <?php
@@ -228,7 +235,7 @@ if ($counter <= 0) {
 $is_table_header_printed = false;
 $row_num = 1;
 //echo "\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"33%\">";
-echo "\n<table id=\"reports_action\" class=\"reports_action\" cellpadding=\"0\" cellspacing=\"0\" border=\"1\" style=\"font-size:65%;\">";
+echo "\n<table id=\"reports_action\" class=\"table-striped\" cellpadding=\"0\" cellspacing=\"0\" border=\"1\" style=\"font-size:65%;\">";
 foreach ($results as $row) {
 	//echo "\n<table cellpadding=\"0\" cellspacing=\"0\" width=\"33%\">";
 	if ($is_table_header_printed == false) {
@@ -319,6 +326,7 @@ foreach ($results as $row) {
 		echo "\n";
 	}
 	$row_num++;
+	echo "</tr>\n";
 	//echo "<td><input type=\"submit\" value=\"Change\"></td>\n";
 	//echo "<td><input type=\"submit\" value=\"Delete\"></td>\n";
 	//echo "</tr>\n</table>\n";
