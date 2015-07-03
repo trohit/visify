@@ -1,6 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
+<link rel="shortcut icon" href="/eco.jpg" type="image/jpeg">
+<link rel="icon" href="/eco.jpg" type="image/jpeg">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Visitor Check-in</title>
     <style>
@@ -21,6 +23,8 @@
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/jquery-ui.js"></script>
 <link rel="stylesheet" href="css/style.css">
+
+
 <style>
 .ui-autocomplete-loading {
 	background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
@@ -618,11 +622,15 @@ echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
 <img id="top" src="images/top.png" alt="">
 -->
 
+		<div>
 			<label class="description" for="element_8">Comments </label>
 			<input id="comments" name="comments" class="element text medium" type="text" maxlength="128" value="" placeholder="(optional)"/> 
 			</li>
 		</div> 
+<input type="submit" class="btn btn-primary validate"  name="submit" value="Continue" onclick="return ValidateForm();"/>
+<button type="reset" class="btn btn-warning" value="Reset" onclick="resetOtherFields()">Reset</button>
 
+</div> 
 
 
 <!--
@@ -640,9 +648,9 @@ echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
               <div class="invalid-form-error-message"></div>
 <!--
 <input id="saveForm" class="button_text" type="submit" name="submit" value="Continue" />
--->
 <input type="submit" class="btn btn-default validate"  name="submit" value="Continue" onclick="return ValidateForm();"/>
 <button type="reset" value="Reset" onclick="resetOtherFields()">Reset</button>
+-->
 </div> 
 </form>
 
