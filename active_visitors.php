@@ -189,7 +189,7 @@ if ($counter <= 0) {
 	echo "<BR>\n";
 }
 $here_th_find_result = <<<EOT
-<table class="table-striped" width="100%" cellpadding="0" cellspacing="0" border="1" style="font-size:85%;">
+<table class="table table-striped table-condensed" width="100%" cellpadding="0" cellspacing="0" border="1" style="font-size:85%;">
 <tr>
 <th col width="2%">#</th>
 <th col width="5%">SNo</th>
