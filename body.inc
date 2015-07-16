@@ -40,9 +40,7 @@ display_menu_common("Visitor Checkin");
 ?>
 <input type="hidden" name="startdate" id="todayDate"/>
 <div align="center">
-<img src="images/eco-logo.jpg" alt="Logo" height="90" width="100"/>
-<img src="images/eco_building.jpg" alt="Logo" height="90" width="700">
-<div id="txt_date"></div>
+<img src="images/eco-logo.jpg" alt="Logo" border="0" height="45" width="50"/><img src="images/eco_building.jpg" alt="Logo"  border="0" height="45" width="750">
 </div>
 <div id="form_container" data-parsley-validate>
 <!--

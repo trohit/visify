@@ -205,6 +205,10 @@ if($is_verbose) {
 			echo "KB) \n";
 		}
 	}
+	//update unit stats
+	DB::update('vunit', 
+		array('lvrecordid' => $vrecordid, 'lvitime' => $vitime), 
+		"vblock=%s and vflatnum=%s", $vblock, $vflatnum);
 
 	echo "<BR>";
 	echo "Click <a href=\"index.php\">here to go back to the Main Page</a>.\n";

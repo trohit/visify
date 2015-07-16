@@ -37,6 +37,10 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 
+<!-- Speech Support -->
+<link rel="stylesheet" href="css/speech-input.css">
+
+
 </head>
 <body id="main_body" class="appnitro">
 	<img id="top" src="images/top.png" alt="">
@@ -93,13 +97,19 @@ echo '<div id="find_result_container">';
 
 	</td>
 	<td>
-	<div id="checkout_visitor">
+	<div id="checkout_visitor" class="si-wrapper">
 	<audio id="checkout_sound">
     	<source src="sounds/button-3.mp3">
     	<source src="sounds/button-3.ogg">
   	</audio>
 
-	<input type="text" id="barcode" onkeypress="handleKeyPress(event)" placeholder="Enter Barcode ..." size="40">
+	<input type="text" id="barcode" class="si-input" onkeypress="handleKeyPress(event)" placeholder="Enter Barcode ..." size="40">
+        <button class="si-btn">
+                speech input
+                <span class="si-mic"></span>
+                <span class="si-holder"></span>
+        </button>
+
 	</div>
 	</td>
 	<td><img id="doStuff" src="images/go_48.png" href="#" height="20" width="20"/></td>
@@ -107,7 +117,9 @@ echo '<div id="find_result_container">';
 </table>
 </div>
 
+<script src="js/speech-input.js"></script>
 <script>
+
 function handleKeyPress(e){
 	var key=e.keyCode || e.which;
 	if (key==13){ //Enter key pressed

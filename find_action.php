@@ -25,6 +25,14 @@
 <script type="text/javascript" src="js/slimbox2.js"></script>
 
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 
 </head>
 <body id="main_body" class="appnitro">
@@ -64,17 +72,6 @@ DB::$host 	= $ini_array["host"];
 #DB::$port = '12345'; // defaults to 3306 if omitted
 #DB::$encoding = 'utf8'; // defaults to latin1 if omitted
 
-#$vname			= "Viol";
-#$vnumber		= "234";
-
-/*
-$base_query = "SELECT vid,vname,vphone,vcomments,vctime FROM visitor WHERE 1=1 AND ";
-
-if ($vname != "") {
-	$query_add = "WHERE vname LIKE%ss";
-	$query_end = 
-}
- */
 
 /*
 foreach($_REQUEST as $name=>$value){
@@ -119,7 +116,7 @@ if (empty($arrFields) || count($arrFields) == 0) {
 	echo "Too few selectors to Match. Try <a href=\"find.php\">Searching Again</a>\n.";
 	exit(1);
 }
-$query = "SELECT visitor.vid,vname,vphone,vcomments,vitime,vblock,vflatnum,vtomeet,vvehicle_reg_num FROM visitor,vrecord WHERE vrecord.vid=visitor.vid  AND ".implode(" AND ",$arrFields);
+$query = "SELECT visitor.vid,vname,vphone,vcomments,vitime,votime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vvehicle_type, vpurpose FROM visitor,vrecord WHERE vrecord.vid=visitor.vid  AND ".implode(" AND ",$arrFields);
 //$query .= " GROUP BY visitor.vid ORDER BY vrecord.vrecordid DESC LIMIT 10";
 
 //$is_debug = true;
@@ -148,19 +145,21 @@ if ($counter <= 0) {
 	echo "<BR>\n";
 }
 $here_th_find_result = <<<EOT
-<table width="100%" cellpadding="0" cellspacing="0" border="1">
+<table width="100%" class="table table-striped" border="1" cellpadding="0" cellspacing="0" border="1" style="font-size:80%;">
 <tr>
 <th col width="15%">Pic</th>
-<th col width="2%">ID</th>
+<th col width="4%">ID</th>
 <th col width="10%">Name</th>
 <th col width="7%">Phone</th>
 <th col width="10%">Remark</th>
-<th col width="14%">Last Visit</th>
+<th col width="10%">Last Visit</th>
+<th col width="10%">Outtime</th>
 <th col width="10%">Block</th>
-<th col width="5%">Flatnum</th>
+<th col width="3%">Flatnum</th>
 <th col width="10%">To Meet</th>
 <th col width="8%">Vehicle Reg</th>
-<th col width="8%">Actions</th>
+<th col width="10%">Purpose</th>
+<th col width="1%">Do</th>
 </tr>
 
 EOT;
@@ -172,7 +171,7 @@ EOT;
  */
 $here_tr_find_action = <<<EOT
 <tr>
-<td><img src=\"images/vcard_edit.png\" alt=\"Edit Visitor\" border=3 style=\"width: 50%; height: 50%\"/></td>
+<td><img src=\"images/vcard_edit.png\" alt=\"Edit Visitor\" border=3 style=\"width: 25%; height: 25%\"/></td>
 <td>A</td>
 </tr>
 
@@ -240,6 +239,9 @@ foreach ($results as $row) {
 			// not printing to save screen space
 			continue;
 
+		} else if ($key == "vvehicle_type") {
+			// not printing to save screen space
+			continue;
 		} else {
 			if ($value != "0") {
 				echo "<td>$value</td>";
@@ -254,10 +256,11 @@ foreach ($results as $row) {
 
 	}
 	echo "\n<td>";
-	echo "\n<a href=\"edit_visitor.php?vid=".$row['vid']."\"> <img src=\"images/vcard_edit.png\" title=\"Edit Visitor\" style=\"width:32px; height:32px\"/>";
+	echo "\n<a href=\"edit_visitor.php?vid=".$row['vid']."\"> <img src=\"images/vcard_edit.png\" title=\"Edit Visitor\" style=\"width:18px; height:18px\"/>";
 	//echo "\n<img src=\"images/phone.png\" title=\"SMS Visitor\" style=\"width:16px; height:16px\"/>";
-	echo "\n<img src=\"images/exit-icon.png\" title=\"Check-out Visitor\" style=\"width:32px; height:32px\"/>";
-	echo "\n<a href=\"returningvisitor.php?phone_num=".$row['vphone']."\"><img src=\"images/exit-icon.png\" title=\"Check-in Visitor again\" style=\"width:32px; height:32px\"/></a>";
+	//echo "\n<img src=\"images/exit-icon.png\" title=\"Check-out Visitor\" style=\"width:18px; height:18px\"/>";
+	echo "<br>";
+	echo "\n<a href=\"returningvisitor.php?phone_num=".$row['vphone']."\"><img src=\"images/exit-icon.png\" title=\"Check-in Visitor again\" style=\"width:18px; height:18px\"/></a>";
 	echo "\n</td>";
 	echo "\n</tr>\n";
 	

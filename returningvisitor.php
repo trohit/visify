@@ -65,6 +65,9 @@ $(function() {
 <!-- Latest compiled and minified JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 
+<!-- Speech Support -->
+<link rel="stylesheet" href="css/speech-input.css">
+
 </head>
 <body id="main_body" onload="doLoadStuff()">
 <noscript>
@@ -221,6 +224,22 @@ function showVehicleinfo()
 function ValidateForm()
 {
 	//alert("Doing validation");
+	// do not allow useless comments
+	//alert($("#comments").val());
+	var i = 0;
+	if (($("#comments").val().toUpperCase() === "VISIT") && 
+		($("#purpose").val()==="Others")) {
+		i++;
+		if (i % 2) {
+			alert("Please enter a meaningful comment about this visitor");
+		} else {
+			alert("In the comments section, please describe why this visit is being made");
+		}
+		$("#comments").focus();
+		$("#comments").select();
+
+		return false;
+	}
 	/*
 	if($("#isVehicleSelected").is(':checked')) {
 		// check that vehicle type is selected and vehicle registration number entered
@@ -252,7 +271,7 @@ function ValidateForm()
 			//alert("setting isVehicleSelected to false");
 			$('#isVehicleSelected').prop('checked', false);
 			$('#isVehicleSelected').val('FALSE');
-		}
+	}
 
 	if (document.getElementById("block_other").value=="" && 
 		document.getElementById("flat_num").value=="") {
@@ -275,6 +294,8 @@ function ValidateForm()
 			//alert("either flat_num or other_detail provided, so thumbs up");	
 			return true;
 		}
+
+	
 }
 /*
 function showNameHint(str)

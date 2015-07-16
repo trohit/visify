@@ -20,6 +20,9 @@ DEPENDS Upon:
 Commands
 sudo aptitude install --without-recommends ubuntu-desktop
 
+sudo apt-get install libmysqlclient-dev
+sudo pip install mysql-python
+
 Links
 
 http://www.ubuntugeek.com/install-gui-in-ubuntu-server.html
