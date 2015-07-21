@@ -838,6 +838,17 @@ function get_specific_moving_details_by_date($cand_date_from, $cand_date_to)
 	}
 }
 
+function get_specific_unchecked_details_by_date($cand_date_from, $cand_date_to)
+{
+	$query = "select vpurpose AS Purpose, vcomments AS Commment, vname AS Name, vphone AS Phone,vtomeet as ForResident, vblock AS Block, vflatnum AS FlatNum, vvehicle_reg_num AS VehicleReg,vvehicle_type AS Type, vitime AS Time from visitor, vrecord where vrecord.vid=visitor.vid AND vitime >= '$cand_date_from' AND vitime <= '$cand_date_to' AND votime IS NULL";
+	#print $query;
+	$results = DB::query($query);
+	#print_r($results);
+	if ($results != false) {
+		draw_table($results);
+	}
+}
+
 function get_record_count()
 {
 	$query = "SELECT COUNT(*) AS total FROM vrecord";
@@ -947,14 +958,18 @@ print "Out of a total of $total_visitors_yesterday visitors on $date_yesterday,"
 print "\n";
 print "$percent_checkedout_visitors_yesterday% ($derived_checkedout_visitors_yesterday) visitors were checked out.";
 print "\n";
-print "The remaining $active_visitors_yesterday visitors were not checked out.";
-print "\n";
 
 # ie submitted slips on checkout Or were checked out by security.";
-echo "\n";
+if ($active_visitors_yesterday) {
+	print "The remaining $active_visitors_yesterday visitors were not checked out.";
+	print "\n";
+	print "Details of Visitors that were not checked out.";
+	echo "\n";
+	get_specific_unchecked_details_by_date(get_from_today(-1), get_from_today(0));
+}
 
 
-
+print "\n";
 # Weekly History
 //if (get_day_of_week(get_from_today(0)) == "Sat") {
 	print_weekly_report(get_from_today(0));
