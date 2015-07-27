@@ -23,6 +23,16 @@ sudo aptitude install --without-recommends ubuntu-desktop
 sudo apt-get install libmysqlclient-dev
 sudo pip install mysql-python
 
+sudo apt-get install php5-dev make php-pear
+sudo pecl install mongo
+sudo echo "extension=mongo.so" | sudo tee /etc/php5/mods-available/mongo.ini
+sudo apt-get install php5-mongo
+
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+sudo apt-get update
+sudo apt-get install mongodb-org
+
 Links
 
 http://www.ubuntugeek.com/install-gui-in-ubuntu-server.html

@@ -510,7 +510,7 @@ display_menu_common("Visitor Checkin");
 <!--
 <img src="images/eco-logo.jpg" alt="Logo" border="0" height="90" width="100"/><img src="images/eco_building.jpg" alt="Logo"  border="0" height="90" width="700">
 -->
-<img src="images/eco-logo.jpg" alt="Logo" border="0" height="45" width="50"/><img src="images/eco_building.jpg" alt="Logo"  border="0" height="45" width="750">
+<img src="images/eco-logo.jpg" alt="Logo" border="0" width="9.5%"/><img src="images/eco_building.jpg" alt="Logo"  border="0" width="61%">
 </div>
 
 <div id="form_container" data-parsley-validate>
