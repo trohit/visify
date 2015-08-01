@@ -905,6 +905,42 @@ function print_report_summary()
 	echo "\n";
 }
 
+# gets a count of how many units were visited since the selectedDate
+function get_distinct_unit_count($selectedDate)
+{
+	$query = "SELECT COUNT(*) AS UNITCOUNT FROM vunit WHERE lvitime >= '" . $selectedDate ."'";
+	#print($query);
+	$results = DB::query($query);
+	#print_r($results);
+	return($results[0]["UNITCOUNT"]);
+}
+
+# gets a count of n most visited units from a given date
+#
+#	+---------------------+----------+-------+
+#	| vblock              | vflatnum | count |
+#	+---------------------+----------+-------+
+#	| ResidentialServices | Mart     |    97 |
+#	| ResidentialServices | Office   |    68 |
+#	| MontTitlis-R        | 1010     |    37 |
+#	| MontBlanc-P         | 501      |    34 |
+#	| MontBlanc-P         | 303      |    27 |
+#	| Helicon-E           | 703      |    25 |
+#	| Bernese-B           | 702      |    23 |
+#	+---------------------+----------+-------+
+#
+function get_top_n_visit_count($selectedDate, $n = 10)
+{
+	$query = "SELECT vunit.vblock AS Block, vunit.vflatnum AS Flatnum, count(*) AS COUNT FROM vrecord,vunit WHERE vunit.vblock=vrecord.vblock AND vunit.vflatnum=vrecord.vflatnum AND vitime >='$selectedDate' GROUP BY vunit.vblock,vunit.vflatnum ORDER BY COUNT DESC LIMIT $n";
+	#print($query);
+	$results = DB::query($query);
+	#print_r($results);
+	if ($results != false) {
+		print("Top $n visited units from $selectedDate\n");
+		draw_table($results);
+	}
+}
+
 $is_debug = 0;
 #print_r(hoursRange());
 #exit(1);
@@ -969,14 +1005,26 @@ if ($active_visitors_yesterday) {
 }
 
 
+$tot_distinct_units = get_distinct_unit_count(get_from_today(-1));
+echo $tot_distinct_units . " distinct units visited today.";
+echo "\n";
+
+$tot_distinct_weekly_units = get_distinct_unit_count(get_from_today(-7));
+echo $tot_distinct_weekly_units . " distinct units visited within the last 7 days";
+echo "\n";
+	
+$tot_distinct_monthly_units = get_distinct_unit_count(get_from_today(-30));
+echo $tot_distinct_monthly_units . " distinct units visited within the last one month";
+echo "\n";
 print "\n";
+get_top_n_visit_count(get_from_today(-1));
+
 # Weekly History
 //if (get_day_of_week(get_from_today(0)) == "Sat") {
 	print_weekly_report(get_from_today(0));
 //}
 
 print_report_summary();
-
 
 #get_specific_purpose_details_by_date('Others', get_from_today(-30), get_from_today(-29));
 exit;
