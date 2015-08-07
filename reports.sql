@@ -8,3 +8,6 @@ select count(*) from vunit where lvitime >= '2015-07-30';
 select count(*) from vunit where lvrecordid is NULL;
 #stats - top 20 most visited flats
 select vunit.vblock, vunit.vflatnum, count(*) as count from vrecord,vunit where vunit.vblock=vrecord.vblock and vunit.vflatnum=vrecord.vflatnum and vitime >'2015-05-01' group by vunit.vblock,vunit.vflatnum order by count desc limit 20;
+#vehicles
+select vvehicle_reg_num,vvehicle_type from vrecord where vvehicle_reg_num IS NOT NULL and vvehicle_reg_num != '0'  and vitime LIKE '2015-05-01%' and vvehicle_type='4w'  ;
+
