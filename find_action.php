@@ -62,6 +62,7 @@ $vflatnum		= sanitize($vflatnum);
 $vblock			= sanitize($vblock); 
 
 
+
 require_once("parse_config.php");	
 
 $ini_array = parse_config();
@@ -117,6 +118,7 @@ if (empty($arrFields) || count($arrFields) == 0) {
 	exit(1);
 }
 $query = "SELECT visitor.vid,vname,vphone,vcomments,vitime,votime,vblock,vflatnum,vtomeet,vvehicle_reg_num,vvehicle_type, vpurpose FROM visitor,vrecord WHERE vrecord.vid=visitor.vid  AND ".implode(" AND ",$arrFields);
+$query .= " ORDER BY vrecord.vrecordid DESC LIMIT 100";
 //$query .= " GROUP BY visitor.vid ORDER BY vrecord.vrecordid DESC LIMIT 10";
 
 //$is_debug = true;

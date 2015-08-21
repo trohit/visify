@@ -27,6 +27,9 @@ DB::$host 	= $ini_array["host"];
 
 $send_to = "talukdar.rohit@yahoo.com";
 
+# threshold percentage of unvisited units
+# beyond which it does not make sense to print each one of them
+$thresh_unvisited_units = 15;
 $sql_fields_arr = array(
         #"vrecordid" => "Serial#",
         "vitime" => "In Time",
@@ -381,10 +384,10 @@ function send_mail($subject, $message, $recipient)
 	return $res;
 }
 
-function get_register_log($search_date)
+function get_register_log($search_date, $send_to)
 {
 	global $sql_fields_arr;
-	global $send_to;
+	#global $send_to;
 
 	$sql_result_file = '/tmp/.visitor_'.$search_date.'.daily';
 	#unlink($sql_result_file);
@@ -419,6 +422,7 @@ function get_register_log($search_date)
 	# SELECT 'Visitor Name','Visitor Phone','VisitorId' UNION ALL SELECT vname, vphone, visitor.vid FROM vrecord,visitor WHERE visitor.vid=vrecord.vid AND vitime LIKE '2015-03-15%' INTO OUTFILE '/tmp/orders.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
 	print($query);
 	$result = DB::query($query);
+	return $result;
 
 	#exit(1);
 
@@ -917,21 +921,23 @@ function get_distinct_unit_count($selectedDate)
 
 # gets a count of n most visited units from a given date
 #
-#	+---------------------+----------+-------+
-#	| vblock              | vflatnum | count |
-#	+---------------------+----------+-------+
-#	| ResidentialServices | Mart     |    97 |
-#	| ResidentialServices | Office   |    68 |
-#	| MontTitlis-R        | 1010     |    37 |
-#	| MontBlanc-P         | 501      |    34 |
-#	| MontBlanc-P         | 303      |    27 |
-#	| Helicon-E           | 703      |    25 |
-#	| Bernese-B           | 702      |    23 |
-#	+---------------------+----------+-------+
-#
+#  +---------------------+---------+----------------+------------+-------+
+#  |        Block        | Flatnum |    Resident    |  SPurpose  | COUNT |
+#  +---------------------+---------+----------------+------------+-------+
+#  | ResidentialServices | Mart    | Alpine Shop    | Delivery   | 28    |
+#  | ResidentialServices | Office  | Main Gate      | Servicing  | 22    |
+#  | MontTitlis-R        | 1005    | D Sowjanya     | Delivery   | 8     |
+#  | Bernese-B           | 308     | Gourav Ranjan  | Maid       | 6     |
+#  | MontTitlis-R        | 303     | Nerash         | Cook       | 5     |
+#  | MontBlanc-P         | 501     | Anuj Parashar  | Maid       | 5     |
+#  | Julian-F            | 508     | Tharu          | Maid       | 5     |
+#  | MontRosa-Q          | 901     | Gourav         | Cook       | 4     |
+#  | MontRosa-Q          | 306     | Anita          | Maid       | 4     |
+#  | Aronia-A            | 406     | Gopi Kaja      | Cook       | 4     |
+#  +---------------------+---------+----------------+------------+-------+
 function get_top_n_visit_count($selectedDate, $n = 10)
 {
-	$query = "SELECT vunit.vblock AS Block, vunit.vflatnum AS Flatnum, count(*) AS COUNT FROM vrecord,vunit WHERE vunit.vblock=vrecord.vblock AND vunit.vflatnum=vrecord.vflatnum AND vitime >='$selectedDate' GROUP BY vunit.vblock,vunit.vflatnum ORDER BY COUNT DESC LIMIT $n";
+	$query = "SELECT vunit.vblock AS Block, vunit.vflatnum AS Flatno,vtomeet as Resident, vpurpose AS SPurpose, count(*) AS COUNT FROM vrecord,vunit WHERE vunit.vblock=vrecord.vblock AND vunit.vflatnum=vrecord.vflatnum AND vitime >='$selectedDate' GROUP BY vunit.vblock,vunit.vflatnum ORDER BY COUNT DESC LIMIT $n";
 	#print($query);
 	$results = DB::query($query);
 	#print_r($results);
@@ -939,6 +945,30 @@ function get_top_n_visit_count($selectedDate, $n = 10)
 		print("Top $n visited units from $selectedDate\n");
 		draw_table($results);
 	}
+}
+
+function get_total_units()
+{
+	$query = "select COUNT(*) AS COUNT from vunit";
+	#print($query);
+	$results = DB::query($query);
+	return($results[0]["COUNT"]);
+}
+#
+# fetch unvisited units since the specified go back period
+function get_unvisited_units_since($go_back_period = "1 month", $n = 1000)
+{
+	$selectedDate = date_sub(date_create(get_from_today(0)), date_interval_create_from_date_string($go_back_period));
+	$from_date = date_format($selectedDate,"Y-m-d");
+	$query = "select vunit.vblock AS Block, vunit.vflatnum AS Flatno from vunit where lvitime <'$from_date' LIMIT $n";
+	#print($query);
+	$results = DB::query($query);
+	#print_r($results);
+	#if ($results != false) {
+	#	print("Units not visited units since the last $go_back_period\n");
+	#	draw_table($results);
+	#}
+	return $results;
 }
 
 $is_debug = 0;
@@ -984,7 +1014,7 @@ disp_purpose_count_by_date($target_date);
 get_specific_purpose_details_by_date('Others', get_from_today(-1), get_from_today(0));
 get_specific_moving_details_by_date(get_from_today(-1), get_from_today(0));
 
-# track viistors still inside the complex
+# track visitors still inside the complex
 $active_visitors_yesterday = get_active_visitors_count_by_date(get_from_today(-1));
 $total_visitors_yesterday  = get_visitor_count_by_date(get_from_today(-1));
 $derived_checkedout_visitors_yesterday = $total_visitors_yesterday - $active_visitors_yesterday;
@@ -1018,6 +1048,19 @@ echo $tot_distinct_monthly_units . " distinct units visited within the last one 
 echo "\n";
 print "\n";
 get_top_n_visit_count(get_from_today(-1));
+$duration_unvisited_units = "3 months";
+$res_unvisited_units = get_unvisited_units_since($duration_unvisited_units);
+$cnt_unvisited_units = count($res_unvisited_units);
+$tot_units = get_total_units();
+$percent_unvisited_units = round(($cnt_unvisited_units / $tot_units) * 100);
+#echo "$percent_unvisited_units = ($cnt_unvisited_units / $tot_units)";
+if ($percent_unvisited_units < $thresh_unvisited_units) {
+	draw_table($res_unvisited_units);
+} else {
+	echo "Unvisited Units % since the last $duration_unvisited_units: $percent_unvisited_units";
+	echo "\n";
+}
+
 
 # Weekly History
 //if (get_day_of_week(get_from_today(0)) == "Sat") {

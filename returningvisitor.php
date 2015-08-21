@@ -693,6 +693,13 @@ echo " <SCRIPT LANGUAGE='javascript'>$(\"#phone_num\").trigger(\"change\");"
 <input id="saveForm" class="button_text" type="submit" name="submit" value="Continue" />
 -->
 </div> 
+		<?php
+		if (is_mobile()) {
+			echo '<input type="hidden" name="vgate_hidden" id="vgate" value="1"/>';
+		} else {
+			echo '<input type="hidden" name="vgate_hidden" id="vgate" value="0"/>';
+		}
+		?>
 </form>
 
 <div id="txt_visitor_history" style='display:none'></div>

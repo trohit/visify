@@ -253,4 +253,18 @@ function is_mobile()
 		return false;
 	}
 }
+
+# takes the db field name and returns a presentable name 
+# if the presentable/canonical name does not exist,
+# returns the field name as-is
+function get_canonical_name($cfield)
+{
+	// get length of pic
+	$cname = DB::queryFirstField("SELECT cname FROM vconfig WHERE cfield=%s", $cfield);
+	//echo "cname is: " . $cname . "\n";
+	if ($cname) {
+		return $cname;
+	}
+	return $cfield;
+}
 ?>

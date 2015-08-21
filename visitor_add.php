@@ -7,7 +7,7 @@ require_once("common_lib.php");
 
 $is_debug 	= false;
 $is_verbose 	= false;
-//$is_debug 	= true;
+$is_debug 	= false;
 //$is_verbose 	= true;
 if($is_verbose) {
 	phpinfo();
@@ -52,6 +52,7 @@ global $vehicle_reg_num;
 global $vehicle_type;
 global $purpose;
 global $comments;
+global $vgate;
 
 $vtomeet		= ((!empty($_REQUEST["to_meet"             ]))?trim($_REQUEST["to_meet"     ]):"");
 $block			= ((!empty($_REQUEST["block"              ]))?trim($_REQUEST["block"     ]):"");
@@ -86,9 +87,11 @@ if ($is_vehicle_selected != "") {
 
 $purpose		= ((!empty($_REQUEST["purpose"              ]))?trim($_REQUEST["purpose"     ]):"");
 $comments		= ((!empty($_REQUEST["comments"              ]))?trim($_REQUEST["comments"     ]):"");
+$vgate			= ((!empty($_REQUEST["vgate_hidden"        ]))?trim($_REQUEST["vgate_hidden"     ]):"");
 
 $purpose		= sanitize($purpose);
 $comments		= sanitize($comments);
+$vgate			= sanitize($vgate);
 
 //print_r($_REQUEST);
 if ($block=="Others") {
@@ -107,7 +110,8 @@ if ($block=="Others") {
 		$vphone,
 		$vehicle_reg_num,
 		$purpose,
-		$comments
+		$comments,
+		$vgate
 	);
 	//print_r($new_request);
 }
@@ -222,7 +226,7 @@ echo "<td>";
 foreach ($_REQUEST as $key => $value) {
 	$value = sanitize($value);
 	if ($key=="block_other") continue;
-	if (!(strpos($key,"hidden")===false)) continue;
+	if (!(strpos($key,"hidden")===false) && (strcmp($key, "vgate_hidden")!=0)) continue;
 	//print "[$key] ";
 	if ($is_vehicle_selected) {
 		if ($key == "isVehicleSelected" && !$is_debug) continue;
@@ -243,7 +247,7 @@ foreach ($_REQUEST as $key => $value) {
 		$key = "To Meet";
 	}
 
-	echo ucfirst(str_replace("_"," ",$key));
+	echo ucfirst(str_replace("_"," ",get_canonical_name($key)));
 	echo "</td>";
 	echo "<td>";
 	if ($key=="vehicle_type") {
@@ -256,6 +260,9 @@ foreach ($_REQUEST as $key => $value) {
 	} else if ($key == "name") {
 		echo "<img src='images/repeat.png' title='Repeat Visitor'/>";
 	}
+	#if ($key=="vgate_hidden") {
+	#	echo $value;
+	#}
 	echo "</td>";
 	echo "</tr>";
 }

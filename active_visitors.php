@@ -156,7 +156,7 @@ if ($selectedDate) {
 }
 function get_query_active_visitors($selectedDate, $limit=500)
 {
-	$query = "SELECT vrecordid, visitor.vid AS vid, vname,vphone,vnum_visitors,vpurpose, vcomments,vitime, vblock,vflatnum,vtomeet,vvehicle_type, vvehicle_reg_num,vnum_visitors FROM visitor,vrecord WHERE  vitime LIKE '" . $selectedDate . "%' AND (votime is NULL OR vitime<=>votime) AND vrecord.vid=visitor.vid LIMIT " . $limit;
+	$query = "SELECT vrecordid, visitor.vid AS vid, vgate, vname,vphone,vnum_visitors,vpurpose, vcomments,vitime, vblock,vflatnum,vtomeet,vvehicle_type, vvehicle_reg_num,vnum_visitors FROM visitor,vrecord WHERE  vitime LIKE '" . $selectedDate . "%' AND (votime is NULL OR vitime<=>votime) AND vrecord.vid=visitor.vid LIMIT " . $limit;
 	return $query;
 }
 
@@ -203,8 +203,9 @@ if ($counter <= 0) {
 $here_th_find_result = <<<EOT
 <table class="table table-striped table-condensed" width="100%" cellpadding="0" cellspacing="0" border="1" style="font-size:85%;">
 <tr>
-<th col width="2%">#</th>
-<th col width="5%">SNo</th>
+<th col width="1%">#</th>
+<th col width="4%">SNo</th>
+<th col width="2%">Gate</th>
 <th col width="10%">Name</th>
 <th col width="7%">Phone</th>
 <th col width="2%">Ppl</th>
@@ -307,7 +308,7 @@ foreach ($results as $row) {
 			echo "</td>";
 
 		} else {
-			if ($value != "0") {
+			if ($value != "0" || $key == "vgate") {
 				echo "<td>$value</td>";
 			} else {
 				echo "<td></td>";
