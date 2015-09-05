@@ -284,7 +284,12 @@ foreach ($results as $row) {
 	}
 	foreach ($row as $key => $value) {
 		$value = trim($value);
-		if ($value == "0") {
+		if ($key == "vgate") {
+			echo "<td>";
+			echo interpret_gate($value);
+			echo "</td>";
+
+		} else if ($value == "0") {
 			echo "<td></td>";
 		} else if ($key=="vname") {	
 			//echo "<td><a href=\"find_action.php?phone_num=".$row['vphone']."\" >$value</a></td>";

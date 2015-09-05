@@ -306,6 +306,11 @@ foreach ($results as $row) {
 			#echo $row['vvehicle_type'];
 			#print_r($row);
 			echo "</td>";
+		} else if ($key == "vgate") {
+			echo "<td>";
+			echo interpret_gate($value);
+
+			echo "</td>";
 
 		} else {
 			if ($value != "0" || $key == "vgate") {

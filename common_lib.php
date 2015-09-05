@@ -267,4 +267,8 @@ function get_canonical_name($cfield)
 	}
 	return $cfield;
 }
+function interpret_gate($gateval)
+{
+	return $gateval + 1;
+}
 ?>
