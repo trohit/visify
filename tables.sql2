@@ -1,4 +1,4 @@
-visitor	CREATE TABLE `visitor` (
+CREATE TABLE `visitor` (
   `vid` int(11) NOT NULL AUTO_INCREMENT,
   `vname` varchar(32) NOT NULL,
   `vphone` varchar(12) NOT NULL,
@@ -13,7 +13,7 @@ visitor	CREATE TABLE `visitor` (
   PRIMARY KEY (`vid`),
   UNIQUE KEY `vphone` (`vphone`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2091 DEFAULT CHARSET=latin1
-vrecord	CREATE TABLE `vrecord` (
+CREATE TABLE `vrecord` (
   `vid` int(11) NOT NULL,
   `vrecordid` int(11) NOT NULL AUTO_INCREMENT,
   `vvehicle_reg_num` varchar(32) DEFAULT NULL,
@@ -32,7 +32,7 @@ vrecord	CREATE TABLE `vrecord` (
   KEY `vid` (`vid`),
   CONSTRAINT `vrecord_ibfk_1` FOREIGN KEY (`vid`) REFERENCES `visitor` (`vid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3718 DEFAULT CHARSET=latin1
-vpic	CREATE TABLE `vpic` (
+CREATE TABLE `vpic` (
   `vpicid` int(11) NOT NULL AUTO_INCREMENT,
   `vid` int(11) NOT NULL,
   `vphoto` mediumblob,
@@ -40,3 +40,23 @@ vpic	CREATE TABLE `vpic` (
   KEY `vid` (`vid`),
   CONSTRAINT `vpic_ibfk_1` FOREIGN KEY (`vid`) REFERENCES `visitor` (`vid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
+CREATE TABLE `vunit` (
+  `vunitid` int(11) NOT NULL AUTO_INCREMENT,
+  `vblock` varchar(32) NOT NULL,
+  `vflatnum` varchar(24) NOT NULL,
+  `vintercom` varchar(12) DEFAULT NULL,
+  `vointercom` varchar(12) DEFAULT NULL,
+  -- to record flats that have never been visited
+  `lvrecordid` int(11) DEFAULT NULL,
+  -- to record flats that have not been visited for a specific period
+  `lvitime` datetime DEFAULT NULL,
+  PRIMARY KEY (`vunitid`),
+  UNIQUE KEY `unique_index` (`vblock`,`vflatnum`)
+) ENGINE=InnoDB AUTO_INCREMENT=6573 DEFAULT CHARSET=latin1
+
+CREATE TABLE `vconfig`(
+        `cfield` varchar(32) NOT NULL,
+        `cname` varchar(32) NOT NULL,
+        UNIQUE KEY `unique_index` (`cfield`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
