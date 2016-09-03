@@ -28,10 +28,13 @@ CREATE TABLE `vrecord` (
   `vnum_visitors` int(11) DEFAULT NULL,
   `vrcomments` varchar(256) DEFAULT NULL,
   `vduration_fillup` int(11) DEFAULT NULL,
+  `vgate` int(3) DEFAULT '0',
+  `vogate` int(3) DEFAULT NULL,
   PRIMARY KEY (`vrecordid`),
   KEY `vid` (`vid`),
   CONSTRAINT `vrecord_ibfk_1` FOREIGN KEY (`vid`) REFERENCES `visitor` (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3718 DEFAULT CHARSET=latin1
+) ENGINE=InnoDB AUTO_INCREMENT=11151 DEFAULT CHARSET=latin1
+
 CREATE TABLE `vpic` (
   `vpicid` int(11) NOT NULL AUTO_INCREMENT,
   `vid` int(11) NOT NULL,
