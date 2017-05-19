@@ -1,22 +1,24 @@
 # visify
 
 
-A Visitor Tracking and Management Utility
+# A Visitor Tracking and Management Utility
 
-Overview:
+# Overview:
 http://bit.ly/ecogatepass
 
-Minimum Hardware Needed:
+# Minimum Hardware Needed:
 1. A PC
 2. An ESC POS compatible Printer
 3. A flash card / USB for automated backups in the case of a disk outage
 
-Features:
-# Tracks visitors by their Mobile Number
-# Relevant details like visitor's photo, name, affiliation, host name and authorized areas of access captured
-# Cloud deployable
-# Gate pass option
-# Automated Daily reports
+# Features:
+1. Tracks visitors by their Mobile Number
+1. Relevant details like visitor's photo, name, affiliation, host name and authorized areas of access captured
+1. Cloud deployable / Self Hosted
+1. Gate pass option
+1. Automated Daily reports
+1. Multi Gate Tracking
+1. Easily scalable using tablets or mobile
 
 Technologies:
 LAMP Stack, AJAX, Jquery, Python
