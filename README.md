@@ -4,9 +4,9 @@
 # A Visitor Tracking and Management Utility
 
 # Overview:
+[![Overview](https://raw.githubusercontent.com/trohit/visify/master/visitor-management-system.jpg)](https://www.slideshare.net/slideshow/embed_code/56370363)
+Alt Link:
 http://bit.ly/ecogatepass
-
-![https://www.slideshare.net/slideshow/embed_code/56370363](https://raw.githubusercontent.com/trohit/visify/master/visitor-management-system.jpg)
 
 # Minimum Hardware Needed:
 1. A PC
