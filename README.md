@@ -5,6 +5,7 @@
 
 # Overview:
 http://bit.ly/ecogatepass
+<iframe src="https://www.slideshare.net/slideshow/embed_code/56370363" width="476" height="400"></iframe>
 
 # Minimum Hardware Needed:
 1. A PC
