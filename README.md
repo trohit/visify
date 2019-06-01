@@ -5,7 +5,8 @@
 
 # Overview:
 http://bit.ly/ecogatepass
-<iframe src="https://www.slideshare.net/slideshow/embed_code/56370363" width="476" height="400"></iframe>
+
+![https://www.slideshare.net/slideshow/embed_code/56370363](https://raw.githubusercontent.com/trohit/visify/master/visitor-management-system.jpg)
 
 # Minimum Hardware Needed:
 1. A PC
